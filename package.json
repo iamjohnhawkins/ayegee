@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "dev": "node --watch src/index.js",
+    "deploy": "gcloud run deploy ayegee --source . --region=${GCP_REGION:-us-central1} --project=${GCP_PROJECT}",
+    "deploy:full": "gcloud run deploy ayegee --source . --region=${GCP_REGION:-us-central1} --project=${GCP_PROJECT} --add-cloudsql-instances=${GCP_PROJECT}:${GCP_REGION:-us-central1}:${CLOUDSQL_INSTANCE:-ayegee-db} --set-env-vars=INSTANCE_CONNECTION_NAME=${GCP_PROJECT}:${GCP_REGION:-us-central1}:${CLOUDSQL_INSTANCE:-ayegee-db},DB_USER=${DB_USER},DB_PASSWORD=${DB_PASSWORD},DB_NAME=${DB_NAME}"
   },
   "engines": {
     "node": ">=20.0.0"
