@@ -1,0 +1,8 @@
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+
+.nav-item { transition: background-color 150ms ease, color 150ms ease; }
+
+.summary-card { transition: box-shadow 150ms ease, transform 150ms ease; }
+.summary-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }

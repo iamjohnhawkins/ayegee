@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Investment Governance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body class="h-full bg-slate-100 font-sans antialiased">
+
+  <div class="flex h-full">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-10 flex w-64 flex-col overflow-y-auto bg-slate-900">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3 border-b border-slate-700/60 px-5 py-5">
+        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold tracking-tight select-none">IG</div>
+        <div>
+          <p class="text-sm font-semibold leading-tight text-white">IT Investment</p>
+          <p class="text-xs font-medium text-indigo-400">Governance</p>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 space-y-0.5 px-3 py-4">
+
+        <p class="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Main</p>
+
+        <a href="/" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm8-3a1 1 0 0 0-.867.5 1 1 0 1 1-1.731-1A3 3 0 0 1 13 10a3.001 3.001 0 0 1-2 2.83V13a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1 1 1 0 1 0 0-2 3 3 0 0 1-3-3zm1 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+          Dashboard
+        </a>
+
+        <p class="mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Manage</p>
+
+        <a href="/applications.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V4zM2 12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2z"/>
+          </svg>
+          Applications
+        </a>
+
+        <a href="/fte-requests" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
+          </svg>
+          Manage FTEs
+        </a>
+
+      </nav>
+
+      <!-- Footer -->
+      <div class="border-t border-slate-700/60 px-5 py-4">
+        <p class="text-xs text-slate-500">IT Division &middot; Internal Use Only</p>
+        <p class="mt-0.5 text-xs text-slate-600">v1.0</p>
+      </div>
+
+    </aside>
+
+    <!-- Main content -->
+    <main class="ml-64 flex flex-1 flex-col min-h-screen">
+
+      <!-- Top bar -->
+      <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
+        <div>
+          <h1 class="text-lg font-semibold text-slate-800">Dashboard</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Portfolio overview and request summary</p>
+        </div>
+        <div class="text-right">
+          <p class="text-sm font-semibold text-slate-700">FY2026 &middot; Q2</p>
+          <p class="text-xs text-slate-400">May 3, 2026</p>
+        </div>
+      </header>
+
+      <!-- Page body -->
+      <div class="flex-1 space-y-8 px-8 py-7">
+
+        <!-- Summary Cards -->
+        <section>
+          <h2 class="mb-4 text-[11px] font-semibold uppercase tracking-widest text-slate-400">Portfolio Overview</h2>
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+
+            <!-- Card: Total FTEs Requested -->
+            <div class="summary-card rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="rounded-lg bg-indigo-50 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
+                  </svg>
+                </div>
+                <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Q2 2026</span>
+              </div>
+              <p class="mt-4 text-3xl font-bold text-slate-900">47.5</p>
+              <p class="mt-1 text-sm font-medium text-slate-500">Total FTEs Requested</p>
+              <p class="mt-2 text-xs font-medium text-indigo-500">+5.5 since last quarter</p>
+            </div>
+
+            <!-- Card: Total FTEs Approved -->
+            <div class="summary-card rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="rounded-lg bg-emerald-50 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.293a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Q2 2026</span>
+              </div>
+              <p class="mt-4 text-3xl font-bold text-slate-900">31.0</p>
+              <p class="mt-1 text-sm font-medium text-slate-500">Total FTEs Approved</p>
+              <p class="mt-2 text-xs font-medium text-emerald-600">65% approval rate</p>
+            </div>
+
+            <!-- Card: Applications Tracked -->
+            <div class="summary-card rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="rounded-lg bg-slate-100 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V4zM2 12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2z"/>
+                  </svg>
+                </div>
+                <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Active</span>
+              </div>
+              <p class="mt-4 text-3xl font-bold text-slate-900">12</p>
+              <p class="mt-1 text-sm font-medium text-slate-500">Applications Tracked</p>
+              <p class="mt-2 text-xs font-medium text-slate-400">Across 4 application groups</p>
+            </div>
+
+            <!-- Card: Pending Requests -->
+            <div class="summary-card rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="rounded-lg bg-amber-50 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-12a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l2.828 2.829a1 1 0 1 0 1.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <span class="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-600">Action Needed</span>
+              </div>
+              <p class="mt-4 text-3xl font-bold text-slate-900">8</p>
+              <p class="mt-1 text-sm font-medium text-slate-500">Pending Requests</p>
+              <p class="mt-2 text-xs font-medium text-amber-500">3 awaiting review &gt;7 days</p>
+            </div>
+
+            <!-- Card: Requests This Quarter -->
+            <div class="summary-card rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="rounded-lg bg-indigo-50 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 0 0-1 1v1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1V3a1 1 0 1 0-2 0v1H7V3a1 1 0 0 0-1-1zm0 5a1 1 0 0 0 0 2h8a1 1 0 1 0 0-2H6z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Q2 2026</span>
+              </div>
+              <p class="mt-4 text-3xl font-bold text-slate-900">23</p>
+              <p class="mt-1 text-sm font-medium text-slate-500">Requests This Quarter</p>
+              <p class="mt-2 text-xs font-medium text-indigo-500">+4 vs Q1 2026</p>
+            </div>
+
+            <!-- Card: Rejected / On Hold -->
+            <div class="summary-card rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="rounded-lg bg-rose-50 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM8.707 7.293a1 1 0 0 0-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 1 0 1.414 1.414L10 11.414l1.293 1.293a1 1 0 0 0 1.414-1.414L11.414 10l1.293-1.293a1 1 0 0 0-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <span class="rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-rose-500">Review</span>
+              </div>
+              <p class="mt-4 text-3xl font-bold text-slate-900">4</p>
+              <p class="mt-1 text-sm font-medium text-slate-500">Rejected / On Hold</p>
+              <p class="mt-2 text-xs font-medium text-slate-400">2 on hold, 2 rejected</p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Recent FTE Requests -->
+        <section>
+          <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Recent FTE Requests</h2>
+            <a href="/fte-requests" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800">View all &rarr;</a>
+          </div>
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <table class="min-w-full divide-y divide-slate-100">
+              <thead>
+                <tr class="bg-slate-50">
+                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Application</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Request Type</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">FTEs</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Submitted</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+
+                <tr class="hover:bg-slate-50 transition-colors duration-100">
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-800">Customer Portal</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500">New Development</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">3.0</td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">Approved</span>
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-400">Apr 28, 2026</td>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition-colors duration-100">
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-800">ERP Modernization</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500">Enhancement</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">6.5</td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700">Pending</span>
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-400">Apr 30, 2026</td>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition-colors duration-100">
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-800">Data Warehouse</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500">Infrastructure</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">2.0</td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">Approved</span>
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-400">Apr 25, 2026</td>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition-colors duration-100">
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-800">HR Self-Service</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500">New Development</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">4.0</td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700">Pending</span>
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-400">May 1, 2026</td>
+                </tr>
+
+                <tr class="hover:bg-slate-50 transition-colors duration-100">
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-800">Legacy Migration</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500">Maintenance</td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">1.5</td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    <span class="inline-flex items-center rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-semibold text-rose-700">Rejected</span>
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-400">Apr 22, 2026</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+</body>
+</html>
