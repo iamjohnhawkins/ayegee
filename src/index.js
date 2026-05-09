@@ -14,6 +14,15 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/api/applications', applicationsRouter);
 app.use('/api/application-groups', applicationGroupsRouter);
 
+app.get('/api/dashboard/summary', async (req, res) => {
+  const { rows } = await db.query(`
+    SELECT
+      (SELECT COUNT(*)::int FROM applications)       AS application_count,
+      (SELECT COUNT(*)::int FROM application_groups) AS group_count
+  `);
+  res.json(rows[0]);
+});
+
 app.get('/health', async (req, res) => {
   try {
     await db.query('SELECT 1');

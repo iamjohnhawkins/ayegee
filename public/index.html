@@ -131,9 +131,9 @@
                 </div>
                 <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Active</span>
               </div>
-              <p class="mt-4 text-3xl font-bold text-slate-900">12</p>
+              <p id="card-app-count" class="mt-4 text-3xl font-bold text-slate-900">—</p>
               <p class="mt-1 text-sm font-medium text-slate-500">Applications Tracked</p>
-              <p class="mt-2 text-xs font-medium text-slate-400">Across 4 application groups</p>
+              <p id="card-group-count" class="mt-2 text-xs font-medium text-slate-400">—</p>
             </div>
 
             <!-- Card: Pending Requests -->
@@ -262,6 +262,20 @@
     </main>
 
   </div>
+
+  <script>
+    async function loadSummary() {
+      try {
+        const res = await fetch('/api/dashboard/summary');
+        if (!res.ok) return;
+        const { application_count, group_count } = await res.json();
+        document.getElementById('card-app-count').textContent = application_count;
+        document.getElementById('card-group-count').textContent =
+          group_count === 1 ? 'Across 1 application group' : `Across ${group_count} application groups`;
+      } catch { /* leave placeholders */ }
+    }
+    loadSummary();
+  </script>
 
 </body>
 </html>
