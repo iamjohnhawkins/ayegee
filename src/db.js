@@ -11,7 +11,6 @@ const config = {
   ),
 };
 
-console.log('DB config:', { ...config, password: config.password ? '***' : undefined });
 const pool = new Pool(config);
 
 module.exports = {

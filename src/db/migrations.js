@@ -11,6 +11,22 @@ async function runMigrations() {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `);
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS application_groups (
+      id         SERIAL PRIMARY KEY,
+      name       VARCHAR(255) NOT NULL UNIQUE,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+  await db.query(`
+    ALTER TABLE applications
+      ADD COLUMN IF NOT EXISTS group_id INTEGER
+        REFERENCES application_groups(id) ON DELETE SET NULL
+  `);
+  await db.query(`
+    CREATE INDEX IF NOT EXISTS idx_applications_group_id ON applications(group_id)
+  `);
   console.log('Migrations complete');
 }
 

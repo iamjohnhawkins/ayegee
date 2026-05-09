@@ -4,6 +4,7 @@ const express = require('express');
 const db = require('./db');
 const { runMigrations } = require('./db/migrations');
 const applicationsRouter = require('./routes/applications');
+const applicationGroupsRouter = require('./routes/application-groups');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -11,6 +12,7 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/api/applications', applicationsRouter);
+app.use('/api/application-groups', applicationGroupsRouter);
 
 app.get('/health', async (req, res) => {
   try {

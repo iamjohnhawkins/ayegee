@@ -17,22 +17,27 @@ function validate(name, nar_id, status) {
   return errors;
 }
 
-// List all
+// List all (with group name)
 router.get('/', async (req, res) => {
-  const { rows } = await db.query('SELECT * FROM applications ORDER BY name ASC');
+  const { rows } = await db.query(`
+    SELECT a.*, g.name AS group_name
+    FROM applications a
+    LEFT JOIN application_groups g ON g.id = a.group_id
+    ORDER BY a.name ASC
+  `);
   res.json(rows);
 });
 
 // Create one
 router.post('/', async (req, res) => {
-  const { name, nar_id, status } = req.body;
+  const { name, nar_id, status, group_id = null } = req.body;
   const errors = validate(name, nar_id, status);
   if (errors.length) return res.status(422).json({ errors });
   try {
     const { rows } = await db.query(
-      `INSERT INTO applications (name, nar_id, status)
-       VALUES ($1, $2, $3) RETURNING *`,
-      [name.trim(), nar_id.trim(), status]
+      `INSERT INTO applications (name, nar_id, status, group_id)
+       VALUES ($1, $2, $3, $4) RETURNING *`,
+      [name.trim(), nar_id.trim(), status, group_id || null]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -43,15 +48,15 @@ router.post('/', async (req, res) => {
 
 // Update one
 router.put('/:id', async (req, res) => {
-  const { name, nar_id, status } = req.body;
+  const { name, nar_id, status, group_id = null } = req.body;
   const errors = validate(name, nar_id, status);
   if (errors.length) return res.status(422).json({ errors });
   try {
     const { rows } = await db.query(
       `UPDATE applications
-          SET name = $1, nar_id = $2, status = $3, updated_at = NOW()
-        WHERE id = $4 RETURNING *`,
-      [name.trim(), nar_id.trim(), status, req.params.id]
+          SET name = $1, nar_id = $2, status = $3, group_id = $4, updated_at = NOW()
+        WHERE id = $5 RETURNING *`,
+      [name.trim(), nar_id.trim(), status, group_id || null, req.params.id]
     );
     if (!rows.length) return res.status(404).json({ errors: ['Application not found'] });
     res.json(rows[0]);

@@ -35,6 +35,12 @@
           </svg>
           Applications
         </a>
+        <a href="/application-groups.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zM5 11a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H5zM11 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V5zM14 11a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1z"/>
+          </svg>
+          Application Groups
+        </a>
         <a href="/fte-requests" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
@@ -97,13 +103,14 @@
                 <tr class="bg-slate-50">
                   <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Name</th>
                   <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">NAR ID</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Group</th>
                   <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Status</th>
                   <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Last Updated</th>
                   <th class="px-6 py-3"></th>
                 </tr>
               </thead>
               <tbody id="app-table-body" class="divide-y divide-slate-100">
-                <tr><td colspan="5" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
+                <tr><td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
               </tbody>
             </table>
           </div>
@@ -144,6 +151,13 @@
             <option value="INVEST">INVEST</option>
             <option value="MAINTAIN">MAINTAIN</option>
             <option value="DISINVEST">DISINVEST</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Application Group <span class="normal-case font-normal text-slate-400">(optional)</span></label>
+          <select id="form-group"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition bg-white">
+            <option value="">No group</option>
           </select>
         </div>
         <div id="form-errors" class="hidden rounded-lg bg-rose-50 border border-rose-100 px-3 py-2 text-xs text-rose-700 space-y-0.5"></div>
@@ -208,6 +222,19 @@
     };
 
     let apps = [];
+    let groups = [];
+
+    async function loadGroups() {
+      try {
+        const res = await fetch('/api/application-groups');
+        groups = await res.json();
+        const sel = document.getElementById('form-group');
+        const current = sel.value;
+        sel.innerHTML = '<option value="">No group</option>' +
+          groups.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('');
+        sel.value = current;
+      } catch { /* groups remain empty */ }
+    }
 
     async function loadApps() {
       try {
@@ -216,7 +243,7 @@
         renderTable();
       } catch {
         document.getElementById('app-table-body').innerHTML =
-          '<tr><td colspan="5" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load applications.</td></tr>';
+          '<tr><td colspan="6" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load applications.</td></tr>';
       }
     }
 
@@ -226,13 +253,18 @@
 
       const tbody = document.getElementById('app-table-body');
       if (!apps.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-10 text-center text-sm text-slate-400">No applications yet. Add one to get started.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400">No applications yet. Add one to get started.</td></tr>';
         return;
       }
       tbody.innerHTML = apps.map(a => `
         <tr class="hover:bg-slate-50 transition-colors duration-100">
           <td class="px-6 py-4 text-sm font-medium text-slate-800">${esc(a.name)}</td>
           <td class="px-6 py-4 text-sm font-mono text-slate-600">${esc(a.nar_id)}</td>
+          <td class="px-6 py-4 text-sm text-slate-500">
+            ${a.group_name
+              ? `<span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">${esc(a.group_name)}</span>`
+              : '<span class="text-slate-300">—</span>'}
+          </td>
           <td class="px-6 py-4">
             <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLES[a.status] || 'bg-slate-100 text-slate-600'}">
               ${esc(a.status)}
@@ -263,6 +295,7 @@
       document.getElementById('form-name').value = '';
       document.getElementById('form-nar-id').value = '';
       document.getElementById('form-status').value = '';
+      document.getElementById('form-group').value = '';
       clearFormErrors();
       document.getElementById('app-modal').classList.remove('hidden');
     }
@@ -275,6 +308,7 @@
       document.getElementById('form-name').value = app.name;
       document.getElementById('form-nar-id').value = app.nar_id;
       document.getElementById('form-status').value = app.status;
+      document.getElementById('form-group').value = app.group_id || '';
       clearFormErrors();
       document.getElementById('app-modal').classList.remove('hidden');
     }
@@ -300,10 +334,12 @@
       clearFormErrors();
 
       const id = document.getElementById('form-id').value;
+      const groupVal = document.getElementById('form-group').value;
       const body = {
-        name:   document.getElementById('form-name').value,
-        nar_id: document.getElementById('form-nar-id').value,
-        status: document.getElementById('form-status').value,
+        name:     document.getElementById('form-name').value,
+        nar_id:   document.getElementById('form-nar-id').value,
+        status:   document.getElementById('form-status').value,
+        group_id: groupVal ? Number(groupVal) : null,
       };
 
       const btn = document.getElementById('form-submit');
@@ -419,6 +455,7 @@
     document.getElementById('app-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
     document.getElementById('upload-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeUploadModal(); });
 
+    loadGroups();
     loadApps();
   </script>
 
