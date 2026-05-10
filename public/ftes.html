@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Applications · IT Investment Governance</title>
+  <title>FTEs · IT Investment Governance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/app.css" />
 </head>
@@ -29,7 +29,7 @@
           Dashboard
         </a>
         <p class="mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Manage</p>
-        <a href="/applications.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
+        <a href="/applications.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V4zM2 12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2z"/>
           </svg>
@@ -41,7 +41,7 @@
           </svg>
           Application Groups
         </a>
-        <a href="/ftes.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+        <a href="/ftes.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
           </svg>
@@ -60,11 +60,11 @@
       <!-- Top bar -->
       <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
         <div>
-          <h1 class="text-lg font-semibold text-slate-800">Applications</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Manage registered applications and their investment status</p>
+          <h1 class="text-lg font-semibold text-slate-800">Manage FTEs</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Manage full-time employees, their regions and availability</p>
         </div>
         <div class="flex items-center gap-2">
-          <a href="/api/applications/sample" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+          <a href="/api/ftes/sample" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M3 17a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm3.293-7.707a1 1 0 0 1 1.414 0L9 10.586V3a1 1 0 1 1 2 0v7.586l1.293-1.293a1 1 0 1 1 1.414 1.414l-3 3a1 1 0 0 1-1.414 0l-3-3a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
             </svg>
@@ -80,7 +80,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z" clip-rule="evenodd"/>
             </svg>
-            Add Application
+            Add FTE
           </button>
         </div>
       </header>
@@ -88,80 +88,108 @@
       <!-- Page body -->
       <div class="flex-1 px-8 py-7">
 
-        <!-- Toast -->
         <div id="toast" class="hidden fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border px-4 py-3 shadow-lg text-sm font-medium max-w-sm"></div>
 
-        <!-- Table -->
         <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">All Applications</h2>
-            <span id="app-count" class="text-xs text-slate-400"></span>
+            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">All FTEs</h2>
+            <span id="fte-count" class="text-xs text-slate-400"></span>
           </div>
-          <div id="table-container">
-            <table class="min-w-full divide-y divide-slate-100">
-              <thead>
-                <tr class="bg-slate-50">
-                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Name</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">NAR ID</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Group</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Status</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Last Updated</th>
-                  <th class="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody id="app-table-body" class="divide-y divide-slate-100">
-                <tr><td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <table class="min-w-full divide-y divide-slate-100">
+            <thead>
+              <tr class="bg-slate-50">
+                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Email</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Title</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Region</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Availability</th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody id="fte-table-body" class="divide-y divide-slate-100">
+              <tr><td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </main>
   </div>
 
   <!-- Add / Edit Modal -->
-  <div id="app-modal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-    <div class="w-full max-w-md rounded-2xl bg-white shadow-2xl">
+  <div id="fte-modal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+    <div class="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-        <h3 id="modal-title" class="text-base font-semibold text-slate-800">Add Application</h3>
+        <h3 id="modal-title" class="text-base font-semibold text-slate-800">Add FTE</h3>
         <button onclick="closeModal()" class="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 0 1 1.414 0L10 8.586l4.293-4.293a1 1 0 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 0 1-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 0 1-1.414-1.414L8.586 10 4.293 5.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
           </svg>
         </button>
       </div>
-      <form id="app-form" onsubmit="submitAppForm(event)" class="px-6 py-5 space-y-4">
+      <form id="fte-form" onsubmit="submitFteForm(event)" class="px-6 py-5">
         <input type="hidden" id="form-id" />
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Application Name</label>
-          <input id="form-name" type="text" required placeholder="e.g. Customer Portal"
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">First Name</label>
+            <input id="form-first-name" type="text" required placeholder="Jane"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Last Name</label>
+            <input id="form-last-name" type="text" required placeholder="Smith"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Email Address</label>
+          <input id="form-email" type="email" required placeholder="jane.smith@example.com"
             class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition" />
         </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">NAR ID</label>
-          <input id="form-nar-id" type="text" required placeholder="e.g. 173062-1"
-            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition font-mono" />
-          <p class="mt-1 text-xs text-slate-400">Format: 6-digit number, hyphen, sequence number</p>
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Title</label>
+            <select id="form-title" required
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition bg-white">
+              <option value="" disabled selected>Select…</option>
+              <option>Associate</option>
+              <option>AVP</option>
+              <option>VP</option>
+              <option>D</option>
+              <option>MD</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Region</label>
+            <select id="form-region" required
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition bg-white">
+              <option value="" disabled selected>Select…</option>
+              <option>London</option>
+              <option>Birmingham</option>
+              <option>Pune</option>
+              <option>Bangalore</option>
+              <option>Cary</option>
+              <option>New York</option>
+              <option>Frankfurt</option>
+              <option>Berlin</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Status</label>
-          <select id="form-status" required
-            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition bg-white">
-            <option value="" disabled selected>Select a status…</option>
-            <option value="INVEST">INVEST</option>
-            <option value="MAINTAIN">MAINTAIN</option>
-            <option value="DISINVEST">DISINVEST</option>
-          </select>
+        <div class="mt-4">
+          <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">
+            Availability
+            <span class="normal-case font-normal text-slate-400 ml-1">— <span id="avail-display">100</span>%</span>
+          </label>
+          <input id="form-availability" type="range" min="1" max="100" step="1" value="100"
+            oninput="document.getElementById('avail-display').textContent = this.value"
+            class="w-full accent-indigo-600" />
+          <div class="flex justify-between text-xs text-slate-400 mt-1">
+            <span>1%</span>
+            <span class="text-slate-500 font-medium">5 days = 100% &nbsp;·&nbsp; 4 days = 80%</span>
+            <span>100%</span>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Application Group <span class="normal-case font-normal text-slate-400">(optional)</span></label>
-          <select id="form-group"
-            class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition bg-white">
-            <option value="">No group</option>
-          </select>
-        </div>
-        <div id="form-errors" class="hidden rounded-lg bg-rose-50 border border-rose-100 px-3 py-2 text-xs text-rose-700 space-y-0.5"></div>
-        <div class="flex justify-end gap-2 pt-2">
+        <div id="form-errors" class="hidden mt-4 rounded-lg bg-rose-50 border border-rose-100 px-3 py-2 text-xs text-rose-700 space-y-0.5"></div>
+        <div class="mt-5 flex justify-end gap-2">
           <button type="button" onclick="closeModal()" class="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
           <button type="submit" id="form-submit" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors">Save</button>
         </div>
@@ -173,7 +201,7 @@
   <div id="upload-modal" class="hidden fixed inset-0 z-40 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
     <div class="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-        <h3 class="text-base font-semibold text-slate-800">Bulk Upload Applications</h3>
+        <h3 class="text-base font-semibold text-slate-800">Bulk Upload FTEs</h3>
         <button onclick="closeUploadModal()" class="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 0 1 1.414 0L10 8.586l4.293-4.293a1 1 0 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 0 1-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 0 1-1.414-1.414L8.586 10 4.293 5.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
@@ -181,15 +209,13 @@
         </button>
       </div>
       <div class="px-6 py-5 space-y-4">
-        <p class="text-sm text-slate-500">Upload an Excel file (.xlsx) with columns: <span class="font-mono font-semibold text-slate-700">Name, NAR ID, Status</span>. Existing NAR IDs will be updated.</p>
-        <a href="/api/applications/sample" class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800">
+        <p class="text-sm text-slate-500">Upload an Excel file (.xlsx) with columns: <span class="font-mono font-semibold text-slate-700">First Name, Last Name, Email, Region, Title, Availability %</span>. Existing emails will be updated.</p>
+        <a href="/api/ftes/sample" class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3 17a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1zm3.293-7.707a1 1 0 0 1 1.414 0L9 10.586V3a1 1 0 1 1 2 0v7.586l1.293-1.293a1 1 0 1 1 1.414 1.414l-3 3a1 1 0 0 1-1.414 0l-3-3a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
           </svg>
           Download sample Excel template
         </a>
-
-        <!-- Drop zone -->
         <label id="drop-zone" for="file-input"
           class="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 px-6 py-10 cursor-pointer hover:border-indigo-300 hover:bg-indigo-50/30 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-300" viewBox="0 0 20 20" fill="currentColor">
@@ -199,10 +225,8 @@
           <span class="text-xs text-slate-400">.xlsx files only</span>
           <input id="file-input" type="file" accept=".xlsx" class="hidden" onchange="onFileSelected(this)" />
         </label>
-
         <div id="upload-errors" class="hidden rounded-lg bg-rose-50 border border-rose-100 px-3 py-2 text-xs text-rose-700 space-y-0.5"></div>
         <div id="upload-results" class="hidden rounded-lg bg-emerald-50 border border-emerald-100 px-3 py-2 text-xs text-emerald-700"></div>
-
         <div class="flex justify-end gap-2 pt-1">
           <button onclick="closeUploadModal()" class="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
           <button id="upload-submit" onclick="submitUpload()" disabled
@@ -215,64 +239,55 @@
   </div>
 
   <script>
-    const STATUS_STYLES = {
-      INVEST:     'bg-emerald-50 text-emerald-700',
-      MAINTAIN:   'bg-blue-50 text-blue-700',
-      DISINVEST:  'bg-rose-50 text-rose-700',
+    const TITLE_STYLES = {
+      MD:        'bg-violet-50 text-violet-700',
+      D:         'bg-indigo-50 text-indigo-700',
+      VP:        'bg-blue-50 text-blue-700',
+      AVP:       'bg-sky-50 text-sky-700',
+      Associate: 'bg-slate-100 text-slate-600',
     };
 
-    let apps = [];
-    let groups = [];
+    let ftes = [];
 
-    async function loadGroups() {
+    async function loadFtes() {
       try {
-        const res = await fetch('/api/application-groups');
-        groups = await res.json();
-        const sel = document.getElementById('form-group');
-        const current = sel.value;
-        sel.innerHTML = '<option value="">No group</option>' +
-          groups.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('');
-        sel.value = current;
-      } catch { /* groups remain empty */ }
-    }
-
-    async function loadApps() {
-      try {
-        const res = await fetch('/api/applications');
-        apps = await res.json();
+        const res = await fetch('/api/ftes');
+        ftes = await res.json();
         renderTable();
       } catch {
-        document.getElementById('app-table-body').innerHTML =
-          '<tr><td colspan="6" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load applications.</td></tr>';
+        document.getElementById('fte-table-body').innerHTML =
+          '<tr><td colspan="6" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load FTEs.</td></tr>';
       }
     }
 
     function renderTable() {
-      const count = document.getElementById('app-count');
-      count.textContent = `${apps.length} application${apps.length !== 1 ? 's' : ''}`;
-
-      const tbody = document.getElementById('app-table-body');
-      if (!apps.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400">No applications yet. Add one to get started.</td></tr>';
+      document.getElementById('fte-count').textContent = `${ftes.length} FTE${ftes.length !== 1 ? 's' : ''}`;
+      const tbody = document.getElementById('fte-table-body');
+      if (!ftes.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400">No FTEs yet. Add one to get started.</td></tr>';
         return;
       }
-      tbody.innerHTML = apps.map(a => `
+      tbody.innerHTML = ftes.map(f => `
         <tr class="hover:bg-slate-50 transition-colors duration-100">
-          <td class="px-6 py-4 text-sm font-medium text-slate-800">${esc(a.name)}</td>
-          <td class="px-6 py-4 text-sm font-mono text-slate-600">${esc(a.nar_id)}</td>
-          <td class="px-6 py-4 text-sm text-slate-500">
-            ${a.group_name
-              ? `<span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">${esc(a.group_name)}</span>`
-              : '<span class="text-slate-300">—</span>'}
-          </td>
+          <td class="px-6 py-4 text-sm font-medium text-slate-800">${esc(f.first_name)} ${esc(f.last_name)}</td>
+          <td class="px-6 py-4 text-sm text-slate-500">${esc(f.email)}</td>
           <td class="px-6 py-4">
-            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLES[a.status] || 'bg-slate-100 text-slate-600'}">
-              ${esc(a.status)}
+            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${TITLE_STYLES[f.title] || 'bg-slate-100 text-slate-600'}">
+              ${esc(f.title)}
             </span>
           </td>
-          <td class="px-6 py-4 text-sm text-slate-400">${formatDate(a.updated_at)}</td>
+          <td class="px-6 py-4 text-sm text-slate-600">${esc(f.region)}</td>
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-2">
+              <div class="h-1.5 w-16 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full rounded-full ${f.availability >= 100 ? 'bg-emerald-400' : f.availability >= 60 ? 'bg-amber-400' : 'bg-rose-400'}"
+                     style="width:${f.availability}%"></div>
+              </div>
+              <span class="text-xs font-semibold text-slate-600">${f.availability}%</span>
+            </div>
+          </td>
           <td class="px-6 py-4 text-right">
-            <button onclick="openEditModal(${a.id})" class="rounded-lg px-3 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
+            <button onclick="openEditModal(${f.id})" class="rounded-lg px-3 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
           </td>
         </tr>
       `).join('');
@@ -282,39 +297,40 @@
       return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    function formatDate(iso) {
-      if (!iso) return '—';
-      return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    }
-
     // --- Add / Edit Modal ---
 
     function openAddModal() {
-      document.getElementById('modal-title').textContent = 'Add Application';
+      document.getElementById('modal-title').textContent = 'Add FTE';
       document.getElementById('form-id').value = '';
-      document.getElementById('form-name').value = '';
-      document.getElementById('form-nar-id').value = '';
-      document.getElementById('form-status').value = '';
-      document.getElementById('form-group').value = '';
+      document.getElementById('form-first-name').value = '';
+      document.getElementById('form-last-name').value = '';
+      document.getElementById('form-email').value = '';
+      document.getElementById('form-title').value = '';
+      document.getElementById('form-region').value = '';
+      document.getElementById('form-availability').value = 100;
+      document.getElementById('avail-display').textContent = '100';
       clearFormErrors();
-      document.getElementById('app-modal').classList.remove('hidden');
+      document.getElementById('fte-modal').classList.remove('hidden');
     }
 
     function openEditModal(id) {
-      const app = apps.find(a => a.id === id);
-      if (!app) return;
-      document.getElementById('modal-title').textContent = 'Edit Application';
-      document.getElementById('form-id').value = app.id;
-      document.getElementById('form-name').value = app.name;
-      document.getElementById('form-nar-id').value = app.nar_id;
-      document.getElementById('form-status').value = app.status;
-      document.getElementById('form-group').value = app.group_id || '';
+      const f = ftes.find(f => f.id === id);
+      if (!f) return;
+      document.getElementById('modal-title').textContent = 'Edit FTE';
+      document.getElementById('form-id').value = f.id;
+      document.getElementById('form-first-name').value = f.first_name;
+      document.getElementById('form-last-name').value = f.last_name;
+      document.getElementById('form-email').value = f.email;
+      document.getElementById('form-title').value = f.title;
+      document.getElementById('form-region').value = f.region;
+      document.getElementById('form-availability').value = f.availability;
+      document.getElementById('avail-display').textContent = f.availability;
       clearFormErrors();
-      document.getElementById('app-modal').classList.remove('hidden');
+      document.getElementById('fte-modal').classList.remove('hidden');
     }
 
     function closeModal() {
-      document.getElementById('app-modal').classList.add('hidden');
+      document.getElementById('fte-modal').classList.add('hidden');
     }
 
     function clearFormErrors() {
@@ -323,49 +339,48 @@
       el.innerHTML = '';
     }
 
-    function showFormErrors(errors) {
-      const el = document.getElementById('form-errors');
-      el.innerHTML = errors.map(e => `<div>${esc(e)}</div>`).join('');
-      el.classList.remove('hidden');
-    }
-
-    async function submitAppForm(e) {
+    async function submitFteForm(e) {
       e.preventDefault();
       clearFormErrors();
-
       const id = document.getElementById('form-id').value;
-      const groupVal = document.getElementById('form-group').value;
       const body = {
-        name:     document.getElementById('form-name').value,
-        nar_id:   document.getElementById('form-nar-id').value,
-        status:   document.getElementById('form-status').value,
-        group_id: groupVal ? Number(groupVal) : null,
+        first_name:   document.getElementById('form-first-name').value,
+        last_name:    document.getElementById('form-last-name').value,
+        email:        document.getElementById('form-email').value,
+        title:        document.getElementById('form-title').value,
+        region:       document.getElementById('form-region').value,
+        availability: Number(document.getElementById('form-availability').value),
       };
-
       const btn = document.getElementById('form-submit');
       btn.disabled = true;
       btn.textContent = 'Saving…';
-
       try {
-        const res = await fetch(id ? `/api/applications/${id}` : '/api/applications', {
+        const res = await fetch(id ? `/api/ftes/${id}` : '/api/ftes', {
           method: id ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
         const data = await res.json();
-        if (!res.ok) { showFormErrors(data.errors || ['An error occurred']); return; }
+        if (!res.ok) {
+          const el = document.getElementById('form-errors');
+          el.innerHTML = (data.errors || ['An error occurred']).map(e => `<div>${esc(e)}</div>`).join('');
+          el.classList.remove('hidden');
+          return;
+        }
         closeModal();
-        showToast(id ? 'Application updated.' : 'Application added.', 'success');
-        await loadApps();
+        showToast(id ? 'FTE updated.' : 'FTE added.', 'success');
+        await loadFtes();
       } catch {
-        showFormErrors(['Network error — please try again.']);
+        const el = document.getElementById('form-errors');
+        el.innerHTML = '<div>Network error — please try again.</div>';
+        el.classList.remove('hidden');
       } finally {
         btn.disabled = false;
         btn.textContent = 'Save';
       }
     }
 
-    // --- Bulk Upload Modal ---
+    // --- Bulk Upload ---
 
     let selectedFile = null;
 
@@ -395,26 +410,23 @@
       const resEl = document.getElementById('upload-results');
       errEl.classList.add('hidden');
       resEl.classList.add('hidden');
-
       const btn = document.getElementById('upload-submit');
       btn.disabled = true;
       btn.textContent = 'Uploading…';
-
       const form = new FormData();
       form.append('file', selectedFile);
-
       try {
-        const res = await fetch('/api/applications/bulk-upload', { method: 'POST', body: form });
+        const res = await fetch('/api/ftes/bulk-upload', { method: 'POST', body: form });
         const data = await res.json();
         if (!res.ok) {
           errEl.innerHTML = (data.errors || ['Upload failed']).map(e => `<div>${esc(e)}</div>`).join('');
           errEl.classList.remove('hidden');
           return;
         }
-        resEl.innerHTML = `<strong>${data.inserted} application${data.inserted !== 1 ? 's' : ''} imported.</strong>` +
+        resEl.innerHTML = `<strong>${data.inserted} FTE${data.inserted !== 1 ? 's' : ''} imported.</strong>` +
           (data.failed.length ? `<div class="mt-1 text-rose-600">${data.failed.length} row${data.failed.length !== 1 ? 's' : ''} skipped: ${data.failed.map(f => `Row ${f.row}: ${f.errors.join(', ')}`).join(' | ')}</div>` : '');
         resEl.classList.remove('hidden');
-        await loadApps();
+        await loadFtes();
       } catch {
         errEl.innerHTML = '<div>Network error — please try again.</div>';
         errEl.classList.remove('hidden');
@@ -424,7 +436,6 @@
       }
     }
 
-    // drag-and-drop support
     const dropZone = document.getElementById('drop-zone');
     dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('border-indigo-400', 'bg-indigo-50/50'); });
     dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-indigo-400', 'bg-indigo-50/50'); });
@@ -451,12 +462,10 @@
       setTimeout(() => t.classList.add('hidden'), 3500);
     }
 
-    // close modals on backdrop click
-    document.getElementById('app-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+    document.getElementById('fte-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
     document.getElementById('upload-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeUploadModal(); });
 
-    loadGroups();
-    loadApps();
+    loadFtes();
   </script>
 
 </body>
