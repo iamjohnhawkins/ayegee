@@ -71,9 +71,14 @@ router.put('/:id', async (req, res) => {
 
 // Delete one
 router.delete('/:id', async (req, res) => {
-  const { rowCount } = await db.query('DELETE FROM ftes WHERE id = $1', [req.params.id]);
-  if (!rowCount) return res.status(404).json({ errors: ['FTE not found'] });
-  res.status(204).end();
+  try {
+    const { rowCount } = await db.query('DELETE FROM ftes WHERE id = $1', [req.params.id]);
+    if (!rowCount) return res.status(404).json({ errors: ['FTE not found'] });
+    res.status(204).end();
+  } catch (err) {
+    if (err.code === '23503') return res.status(409).json({ errors: ['This FTE owns one or more portfolios and cannot be deleted'] });
+    throw err;
+  }
 });
 
 // Download sample Excel
