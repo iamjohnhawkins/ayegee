@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADC · IT Investment Governance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css" />
+  <style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { opacity: 1; }
+    .ac-popup {
+      position: fixed; z-index: 9999; background: #fff;
+      border: 1px solid #e2e8f0; border-radius: 0.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      max-height: 220px; overflow-y: auto; min-width: 220px;
+    }
+    .ac-item { padding: 6px 12px; cursor: pointer; font-size: .8rem; display: flex; align-items: center; gap: 6px; }
+    .ac-item:hover { background: #eef2ff; }
+    .ac-item.create { color: #4f46e5; font-style: italic; }
+    .chevron { transition: transform 0.15s ease; }
+    .chevron.collapsed { transform: rotate(-90deg); }
+  </style>
+</head>
+<body class="h-full bg-slate-100 font-sans antialiased">
+
+  <div class="flex h-full">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-10 flex w-64 flex-col overflow-y-auto bg-slate-900">
+      <div class="flex items-center gap-3 border-b border-slate-700/60 px-5 py-5">
+        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold tracking-tight select-none">IG</div>
+        <div>
+          <p class="text-sm font-semibold leading-tight text-white">IT Investment</p>
+          <p class="text-xs font-medium text-indigo-400">Governance</p>
+        </div>
+      </div>
+      <nav class="flex-1 space-y-0.5 px-3 py-4">
+        <p class="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Main</p>
+        <a href="/" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm8-3a1 1 0 0 0-.867.5 1 1 0 1 1-1.731-1A3 3 0 0 1 13 10a3.001 3.001 0 0 1-2 2.83V13a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1 1 1 0 1 0 0-2 3 3 0 0 1-3-3zm1 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+          Dashboard
+        </a>
+        <p class="mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Manage</p>
+        <a href="/applications.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V4zM2 12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2z"/>
+          </svg>
+          Applications
+        </a>
+        <a href="/application-groups.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zM5 11a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H5zM11 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V5zM14 11a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1z"/>
+          </svg>
+          Application Groups
+        </a>
+        <a href="/ftes.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
+          </svg>
+          FTEs
+        </a>
+        <a href="/portfolios.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 6V5a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v3.57A22.952 22.952 0 0 1 10 13a22.95 22.95 0 0 1-8-1.43V8a2 2 0 0 1 2-2h2zm2-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1H8V5zm1 5a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H10a1 1 0 0 1-1-1z" clip-rule="evenodd"/>
+            <path d="M2 13.692V16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.308A24.974 24.974 0 0 1 10 15c-2.796 0-5.487-.46-8-1.308z"/>
+          </svg>
+          Portfolios
+        </a>
+        <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0 0 10 1.944 11.954 11.954 0 0 0 17.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          ADC
+        </a>
+      </nav>
+      <div class="border-t border-slate-700/60 px-5 py-4">
+        <p class="text-xs text-slate-500">IT Division &middot; Internal Use Only</p>
+        <p class="mt-0.5 text-xs text-slate-600">v1.0</p>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="ml-64 flex flex-1 flex-col min-h-screen">
+      <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
+        <div>
+          <h1 id="page-title" class="text-lg font-semibold text-slate-800">ADC</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Application Development Compliance — monthly FTE requirements by person</p>
+        </div>
+        <button onclick="addNewAdcRow()" class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z" clip-rule="evenodd"/>
+          </svg>
+          Add ADC
+        </button>
+      </header>
+
+      <div class="flex-1 px-8 py-7">
+        <div id="toast" class="hidden fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border px-4 py-3 shadow-lg text-sm font-medium max-w-sm"></div>
+
+        <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">ADC Entries</h2>
+            <span id="adc-count" class="text-xs text-slate-400"></span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm" id="adc-table">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[200px]">Name / Target</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[140px]">Title / Description</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[150px]">Info</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Mar</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Apr</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">May</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jun</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jul</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Aug</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Sep</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Oct</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Nov</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Dec</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-16">Total</th>
+                  <th class="px-4 py-3 w-36"></th>
+                </tr>
+              </thead>
+              <tbody id="adc-table-body">
+                <tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    const currentYear = new Date().getFullYear();
+    document.getElementById('page-title').textContent = `ADC — ${currentYear}`;
+
+    let adcs      = [];
+    let targets   = [];
+    let ftes      = [];
+    let tbhSlots  = [];
+
+    let collapsedSections = new Set();
+    let collapsedTargets  = new Set();
+    let collapsedAdcs     = new Set();
+
+    // ---- Data loading ----
+
+    async function loadAdcs() {
+      try {
+        const res = await fetch('/api/adcs');
+        adcs = await res.json();
+        renderTable();
+      } catch {
+        document.getElementById('adc-table-body').innerHTML =
+          '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load ADC entries.</td></tr>';
+      }
+    }
+
+    async function loadTargets() {
+      try { targets  = await (await fetch('/api/adcs/targets')).json(); } catch { }
+    }
+    async function loadFtes() {
+      try { ftes     = await (await fetch('/api/ftes')).json(); } catch { }
+    }
+    async function loadTbhSlots() {
+      try { tbhSlots = await (await fetch('/api/tbh')).json(); } catch { }
+    }
+
+    // ---- Grouping ----
+
+    function buildGrouped() {
+      const apps = {}, groups = {};
+      adcs.forEach(adc => {
+        if (adc.target_type === 'application') {
+          const k = adc.application_id;
+          if (!apps[k]) apps[k] = { id: k, name: adc.target_name, entries: [] };
+          apps[k].entries.push(adc);
+        } else {
+          const k = adc.application_group_id;
+          if (!groups[k]) groups[k] = { id: k, name: adc.target_name, entries: [] };
+          groups[k].entries.push(adc);
+        }
+      });
+      return {
+        application: Object.values(apps).sort((a, b) => a.name.localeCompare(b.name)),
+        group: Object.values(groups).sort((a, b) => a.name.localeCompare(b.name)),
+      };
+    }
+
+    function monthTotals(entries) {
+      const t = {};
+      MONTHS.forEach(m => t[m] = entries.reduce((s, e) => s + (Number(e[m]) || 0), 0));
+      t.grand = MONTHS.reduce((s, m) => s + t[m], 0);
+      return t;
+    }
+
+    // ---- Visibility ----
+
+    function updateRowVisibility(row) {
+      const st  = row.dataset.sectionType;
+      const tid = row.dataset.grpTargetId;
+      const aid = row.dataset.adcId;
+      const hidden =
+        collapsedSections.has(st) ||
+        (tid && collapsedTargets.has(`${st}:${tid}`)) ||
+        (aid && collapsedAdcs.has(aid));
+      row.style.display = hidden ? 'none' : '';
+    }
+
+    // ---- Rendering ----
+
+    function fmtNum(v) {
+      const n = Number(v);
+      if (n === 0) return '—';
+      return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.?0+$/, '');
+    }
+
+    const CHEVRON = `<svg xmlns="http://www.w3.org/2000/svg" class="chevron h-3.5 w-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+    </svg>`;
+
+    function renderTable() {
+      const tbody = document.getElementById('adc-table-body');
+      document.getElementById('adc-count').textContent = `${adcs.length} entr${adcs.length !== 1 ? 'ies' : 'y'}`;
+
+      if (!adcs.length) {
+        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No ADC entries yet. Click "+ Add ADC" to get started.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      const grouped = buildGrouped();
+      [{ type: 'application', label: 'Applications' }, { type: 'group', label: 'Application Groups' }].forEach(section => {
+        const tList = grouped[section.type];
+        if (!tList.length) return;
+
+        const allEntries = tList.flatMap(t => t.entries);
+        const secTotals  = monthTotals(allEntries);
+        const secCol     = collapsedSections.has(section.type);
+
+        tbody.appendChild(makeSectionRow(section, allEntries.length, secTotals, secCol));
+
+        tList.forEach(target => {
+          const tKey    = `${section.type}:${target.id}`;
+          const tCol    = collapsedTargets.has(tKey);
+          const tTotals = monthTotals(target.entries);
+
+          tbody.appendChild(makeTargetRow(target, section.type, tTotals, tCol, secCol));
+
+          target.entries.forEach(adc => {
+            const adcKey  = String(adc.id);
+            const adcCol  = collapsedAdcs.has(adcKey);
+            const adcHide = secCol || tCol;
+
+            tbody.appendChild(makeAdcRow(adc, section.type, target.id, adcHide));
+
+            const allocs = Array.isArray(adc.allocations) ? adc.allocations : [];
+            allocs.forEach(alloc => {
+              tbody.appendChild(makeAllocationRow(alloc, section.type, target.id, adc.id, adcHide || adcCol));
+            });
+          });
+        });
+      });
+    }
+
+    function makeSectionRow(section, count, totals, collapsed) {
+      const tr = document.createElement('tr');
+      tr.dataset.rowType    = 'section';
+      tr.dataset.sectionType = section.type;
+      tr.className = 'bg-slate-800 cursor-pointer select-none';
+
+      const months = MONTHS.map(m =>
+        `<td class="px-3 py-2.5 text-right text-xs tabular-nums text-slate-400">${fmtNum(totals[m])}</td>`
+      ).join('');
+
+      tr.innerHTML = `
+        <td colspan="3" class="px-4 py-2.5">
+          <div class="flex items-center gap-2 text-slate-100">${CHEVRON}
+            <span class="text-[11px] font-bold uppercase tracking-widest">${section.label}</span>
+            <span class="text-[11px] text-slate-500">${count} entr${count !== 1 ? 'ies' : 'y'}</span>
+          </div>
+        </td>
+        ${months}
+        <td class="px-3 py-2.5 text-right text-xs font-bold tabular-nums text-slate-100 bg-slate-700">${fmtNum(totals.grand)}</td>
+        <td class="px-4 py-2.5"></td>`;
+
+      if (collapsed) tr.querySelector('.chevron').classList.add('collapsed');
+      tr.addEventListener('click', () => toggleSection(section.type));
+      return tr;
+    }
+
+    function makeTargetRow(target, sectionType, totals, collapsed, sectionCollapsed) {
+      const tr = document.createElement('tr');
+      tr.dataset.rowType     = 'target';
+      tr.dataset.sectionType = sectionType;
+      tr.dataset.grpTargetId = target.id;
+      tr.className = 'bg-slate-50 border-b border-slate-200 cursor-pointer select-none';
+      if (sectionCollapsed) tr.style.display = 'none';
+
+      const badge = sectionType === 'application'
+        ? '<span class="inline-flex items-center rounded-full bg-sky-100 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700">App</span>'
+        : '<span class="inline-flex items-center rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-700">Group</span>';
+
+      const months = MONTHS.map(m =>
+        `<td class="px-3 py-2 text-right text-xs tabular-nums text-slate-500">${fmtNum(totals[m])}</td>`
+      ).join('');
+
+      tr.innerHTML = `
+        <td colspan="3" class="px-4 py-2">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">${CHEVRON}</span>
+            ${badge}
+            <span class="text-xs font-semibold text-slate-700">${esc(target.name)}</span>
+            <span class="text-xs text-slate-400">${target.entries.length} entr${target.entries.length !== 1 ? 'ies' : 'y'}</span>
+            <button class="add-adc-btn ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
+              data-tid="${target.id}" data-stype="${sectionType}" data-tname="${esc(target.name)}">+ Add ADC</button>
+          </div>
+        </td>
+        ${months}
+        <td class="px-3 py-2 text-right text-xs font-semibold tabular-nums text-slate-700 bg-slate-100">${fmtNum(totals.grand)}</td>
+        <td class="px-4 py-2"></td>`;
+
+      if (collapsed) tr.querySelector('.chevron').classList.add('collapsed');
+
+      tr.querySelector('.add-adc-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        const b = e.currentTarget;
+        addAdcRowForTarget(b.dataset.stype, Number(b.dataset.tid), b.dataset.tname);
+      });
+      tr.addEventListener('click', () => toggleTarget(sectionType, target.id));
+      return tr;
+    }
+
+    function makeAdcRow(adc, sectionType, targetId, hidden) {
+      const tr = document.createElement('tr');
+      tr.dataset.rowType     = 'adc';
+      tr.dataset.sectionType = sectionType;
+      tr.dataset.grpTargetId = targetId;
+      tr.dataset.id          = adc.id;
+      tr.className = 'bg-white border-b border-slate-100 hover:bg-slate-50/40 transition-colors';
+      if (hidden) tr.style.display = 'none';
+
+      const allocs = Array.isArray(adc.allocations) ? adc.allocations : [];
+      const adcCol = collapsedAdcs.has(String(adc.id));
+      const allocCount = allocs.length;
+      const months = MONTHS.map(m =>
+        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(adc[m])}</td>`
+      ).join('');
+      const total = MONTHS.reduce((s, m) => s + (Number(adc[m]) || 0), 0);
+
+      tr.innerHTML = `
+        <td class="px-4 py-2.5 pl-8">
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-400">${CHEVRON}</span>
+            <span class="text-sm font-semibold text-slate-800">${esc(adc.title)}</span>
+          </div>
+        </td>
+        <td class="px-4 py-2.5 text-xs text-slate-500 max-w-[140px] truncate" title="${esc(adc.description || '')}">${esc(adc.description || '—')}</td>
+        <td class="px-4 py-2.5">
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] text-slate-400">${allocCount} alloc${allocCount !== 1 ? 's' : ''}</span>
+            <button class="alloc-btn inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors"
+              data-adc-id="${adc.id}">+ Allocate</button>
+          </div>
+        </td>
+        ${months}
+        <td class="px-3 py-2.5 text-right font-semibold text-slate-800 tabular-nums text-xs bg-slate-50">${fmtNum(total)}</td>
+        <td class="px-4 py-2.5 text-right whitespace-nowrap">
+          <button onclick="enterAdcEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
+          <button data-delete-id="${adc.id}" data-delete-title="${esc(adc.title)}" onclick="handleAdcDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
+        </td>`;
+
+      if (adcCol) tr.querySelector('.chevron').classList.add('collapsed');
+      tr.querySelector('.alloc-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        addAllocationRow(Number(e.currentTarget.dataset.adcId));
+      });
+      tr.querySelector('.chevron').parentElement.addEventListener('click', e => {
+        e.stopPropagation();
+        toggleAdc(adc.id);
+      });
+      return tr;
+    }
+
+    function makeAllocationRow(alloc, sectionType, targetId, adcId, hidden) {
+      const tr = document.createElement('tr');
+      tr.dataset.rowType     = 'allocation';
+      tr.dataset.sectionType = sectionType;
+      tr.dataset.grpTargetId = targetId;
+      tr.dataset.adcId       = adcId;
+      tr.dataset.id          = alloc.id;
+      const isTbh = alloc.is_tbh;
+      tr.className = isTbh
+        ? 'border-b border-slate-100 bg-amber-50/40 hover:bg-amber-50/70 transition-colors'
+        : 'border-b border-slate-100 bg-sky-50/30 hover:bg-sky-50/60 transition-colors';
+      if (hidden) tr.style.display = 'none';
+
+      const badge = isTbh
+        ? '<span class="inline-flex items-center rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">TBH</span>'
+        : '<span class="inline-flex items-center rounded-full bg-sky-100 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700">FTE</span>';
+
+      const col2 = isTbh
+        ? '<span class="text-xs text-amber-700 font-medium">To Be Hired</span>'
+        : `<span class="inline-flex items-center rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">${esc(alloc.fte_title || '')}</span> <span class="text-xs text-slate-400">${esc(alloc.fte_region || '')}</span>`;
+
+      const col3 = isTbh ? '' : `<span class="text-xs text-slate-400">${esc(alloc.fte_email || '')}</span>`;
+
+      const total = MONTHS.reduce((s, m) => s + (Number(alloc[m]) || 0), 0);
+      const months = MONTHS.map(m =>
+        `<td class="px-3 py-2 text-right tabular-nums text-xs text-slate-600">${fmtNum(alloc[m])}</td>`
+      ).join('');
+
+      tr.innerHTML = `
+        <td class="px-4 py-2 pl-14">
+          <div class="flex items-center gap-1.5">${badge} <span class="text-xs font-medium text-slate-700">${esc(alloc.person_name || '')}</span></div>
+        </td>
+        <td class="px-4 py-2">${col2}</td>
+        <td class="px-4 py-2">${col3}</td>
+        ${months}
+        <td class="px-3 py-2 text-right font-semibold tabular-nums text-xs text-slate-800 bg-slate-50/50">${fmtNum(total)}</td>
+        <td class="px-4 py-2 text-right whitespace-nowrap">
+          <button onclick="enterAllocationEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
+          <button data-delete-id="${alloc.id}" data-adc-id="${adcId}" onclick="handleAllocDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
+        </td>`;
+      return tr;
+    }
+
+    // ---- Toggle functions ----
+
+    function toggleSection(sectionType) {
+      if (collapsedSections.has(sectionType)) collapsedSections.delete(sectionType);
+      else collapsedSections.add(sectionType);
+      document.querySelectorAll(`[data-section-type="${sectionType}"]:not([data-row-type="section"])`).forEach(updateRowVisibility);
+      const ch = document.querySelector(`[data-row-type="section"][data-section-type="${sectionType}"] .chevron`);
+      if (ch) ch.classList.toggle('collapsed', collapsedSections.has(sectionType));
+    }
+
+    function toggleTarget(sectionType, targetId) {
+      const key = `${sectionType}:${targetId}`;
+      if (collapsedTargets.has(key)) collapsedTargets.delete(key);
+      else collapsedTargets.add(key);
+      document.querySelectorAll(`[data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]:not([data-row-type="target"])`).forEach(updateRowVisibility);
+      const ch = document.querySelector(`[data-row-type="target"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"] .chevron`);
+      if (ch) ch.classList.toggle('collapsed', collapsedTargets.has(key));
+    }
+
+    function toggleAdc(adcId) {
+      const key = String(adcId);
+      if (collapsedAdcs.has(key)) collapsedAdcs.delete(key);
+      else collapsedAdcs.add(key);
+      document.querySelectorAll(`[data-adc-id="${adcId}"]`).forEach(updateRowVisibility);
+      const ch = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"] .chevron`);
+      if (ch) ch.classList.toggle('collapsed', collapsedAdcs.has(key));
+    }
+
+    // ---- ADC edit mode ----
+
+    function enterAdcEditMode(tr) {
+      const id  = tr.dataset.id;
+      const adc = id ? adcs.find(a => a.id === Number(id)) : null;
+      tr.innerHTML = buildAdcEditCells(adc);
+      tr.dataset.rowType = 'edit-adc';
+      tr.className = 'bg-indigo-50/40';
+      if (adc) {
+        tr.querySelector('.target-input').value = adc.target_name || '';
+        tr.dataset.targetType    = adc.application_id ? 'application' : 'group';
+        tr.dataset.targetId      = adc.application_id || '';
+        tr.dataset.targetGroupId = adc.application_group_id || '';
+      }
+      setupTargetAutocomplete(tr);
+    }
+
+    function buildAdcEditCells(adc) {
+      return `
+        <td class="px-2 py-2">
+          <input type="text" placeholder="Search apps & groups…" class="target-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100" autocomplete="off" />
+        </td>
+        <td class="px-2 py-2">
+          <input type="text" class="title-input w-32 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
+            placeholder="Title" value="${esc(adc ? adc.title : '')}" />
+        </td>
+        <td class="px-2 py-2">
+          <input type="text" class="desc-input w-36 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
+            placeholder="Description (optional)" value="${esc(adc ? (adc.description || '') : '')}" />
+        </td>
+        <td colspan="13" class="px-3 py-2 text-xs text-slate-400 italic">Month totals come from allocations</td>
+        <td class="px-2 py-2 text-right whitespace-nowrap">
+          <button onclick="saveAdcRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
+          <button onclick="cancelAdcEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+        </td>`;
+    }
+
+    async function saveAdcRow(tr) {
+      removeInlineError(tr);
+      const id             = tr.dataset.id || null;
+      const targetType     = tr.dataset.targetType || '';
+      const targetId       = tr.dataset.targetId || '';
+      const targetGroupId  = tr.dataset.targetGroupId || '';
+
+      const body = {
+        title:                tr.querySelector('.title-input').value,
+        description:          tr.querySelector('.desc-input').value || null,
+        application_id:       targetType === 'application' ? Number(targetId)      : null,
+        application_group_id: targetType === 'group'       ? Number(targetGroupId) : null,
+      };
+
+      const btn = tr.querySelector('button[onclick^="saveAdcRow"]');
+      btn.disabled = true; btn.textContent = 'Saving…';
+
+      try {
+        const res = await fetch(id ? `/api/adcs/${id}` : '/api/adcs', {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showInlineError(tr, (data.errors || ['Error']).join('; '));
+          btn.disabled = false; btn.textContent = 'Save';
+          return;
+        }
+        await loadAdcs();
+        showToast(id ? 'ADC updated.' : 'ADC added.', 'success');
+      } catch {
+        showInlineError(tr, 'Network error — please try again.');
+        btn.disabled = false; btn.textContent = 'Save';
+      }
+    }
+
+    function cancelAdcEdit(tr) {
+      removeInlineError(tr);
+      const id = tr.dataset.id;
+      if (!id) { tr.remove(); if (adcs.length === 0) renderTable(); return; }
+      const adc = adcs.find(a => a.id === Number(id));
+      if (adc) {
+        const st  = tr.dataset.sectionType;
+        const tid = Number(tr.dataset.grpTargetId);
+        tr.replaceWith(makeAdcRow(adc, st, tid, false));
+      }
+    }
+
+    // ---- Allocation edit mode ----
+
+    function enterAllocationEditMode(tr) {
+      const id    = tr.dataset.id;
+      const adcId = tr.dataset.adcId;
+      const adc   = adcs.find(a => a.id === Number(adcId));
+      const alloc = adc ? (adc.allocations || []).find(al => al.id === Number(id)) : null;
+
+      tr.innerHTML = buildAllocationEditCells(alloc);
+      tr.dataset.rowType = 'edit-allocation';
+      tr.className = 'bg-indigo-50/40';
+
+      if (alloc) {
+        if (alloc.is_tbh) {
+          tr.dataset.personType = 'tbh';
+          tr.dataset.tbhId = alloc.tbh_id || '';
+          tr.querySelector('.person-input').value = alloc.person_name || '';
+          setPersonMode(tr, 'tbh');
+        } else {
+          tr.dataset.personType = 'fte';
+          tr.dataset.fteId = alloc.fte_id || '';
+          tr.querySelector('.person-input').value = alloc.person_name || '';
+          setPersonMode(tr, 'fte');
+        }
+      }
+      setupPersonPicker(tr);
+      setupMonthInputs(tr);
+    }
+
+    function buildAllocationEditCells(alloc) {
+      const mv    = alloc ? MONTHS.map(m => Number(alloc[m]) || 0) : MONTHS.map(() => 0);
+      const total = mv.reduce((s, v) => s + v, 0);
+      const monthInputs = mv.map((v, i) => `
+        <td class="px-1 py-2">
+          <input type="number" data-month="${MONTHS[i]}" step="0.5" min="0" value="${v}"
+            class="w-14 rounded border border-slate-200 px-1 py-1 text-xs text-right text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100 month-input" />
+        </td>`).join('');
+
+      return `
+        <td class="px-2 py-2" colspan="1">
+          <div class="flex items-center gap-1">
+            <div class="flex rounded border border-slate-200 overflow-hidden text-[10px] font-semibold shrink-0">
+              <button class="person-type-btn px-1.5 py-1 bg-sky-500 text-white" data-type="fte">FTE</button>
+              <button class="person-type-btn px-1.5 py-1 text-slate-500 hover:bg-slate-50" data-type="tbh">TBH</button>
+            </div>
+            <input type="text" class="person-input flex-1 min-w-0 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
+              placeholder="Search FTEs…" autocomplete="off" />
+          </div>
+        </td>
+        <td class="px-3 py-2">
+          <span class="person-info text-xs text-slate-400"></span>
+        </td>
+        <td class="px-2 py-2"></td>
+        ${monthInputs}
+        <td class="px-3 py-2 text-right font-semibold text-slate-800 tabular-nums bg-slate-50 w-16 text-xs">
+          <span class="total-display">${fmtNum(total)}</span>
+        </td>
+        <td class="px-2 py-2 text-right whitespace-nowrap">
+          <button onclick="saveAllocationRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
+          <button onclick="cancelAllocationEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+        </td>`;
+    }
+
+    function setPersonMode(tr, mode) {
+      tr.dataset.personType = mode;
+      const isFte = mode === 'fte';
+      tr.querySelectorAll('.person-type-btn').forEach(b => {
+        const active = b.dataset.type === mode;
+        b.className = active
+          ? `person-type-btn px-1.5 py-1 text-[10px] font-semibold ${isFte ? 'bg-sky-500 text-white' : 'bg-amber-500 text-white'}`
+          : 'person-type-btn px-1.5 py-1 text-[10px] font-semibold text-slate-500 hover:bg-slate-50';
+      });
+      const input = tr.querySelector('.person-input');
+      input.placeholder = isFte ? 'Search FTEs…' : 'Search or create TBH…';
+      input.value = '';
+      tr.dataset.fteId  = '';
+      tr.dataset.tbhId  = '';
+      tr.querySelector('.person-info').textContent = '';
+    }
+
+    async function saveAllocationRow(tr) {
+      removeInlineError(tr);
+      const id          = tr.dataset.id || null;
+      const adcId       = tr.dataset.adcId;
+      const personType  = tr.dataset.personType || '';
+      const fteId       = tr.dataset.fteId || '';
+      const tbhId       = tr.dataset.tbhId || '';
+
+      const body = {
+        fte_id: personType === 'fte' ? Number(fteId) : null,
+        tbh_id: personType === 'tbh' ? Number(tbhId) : null,
+      };
+      MONTHS.forEach(m => {
+        const el = tr.querySelector(`[data-month="${m}"]`);
+        body[m] = el ? Number(el.value) || 0 : 0;
+      });
+
+      const btn = tr.querySelector('button[onclick^="saveAllocationRow"]');
+      btn.disabled = true; btn.textContent = 'Saving…';
+
+      try {
+        const url = id
+          ? `/api/adcs/${adcId}/allocations/${id}`
+          : `/api/adcs/${adcId}/allocations`;
+        const res = await fetch(url, {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showInlineError(tr, (data.errors || ['Error']).join('; '));
+          btn.disabled = false; btn.textContent = 'Save';
+          return;
+        }
+        await loadAdcs();
+        showToast(id ? 'Allocation updated.' : 'Allocation added.', 'success');
+      } catch {
+        showInlineError(tr, 'Network error — please try again.');
+        btn.disabled = false; btn.textContent = 'Save';
+      }
+    }
+
+    function cancelAllocationEdit(tr) {
+      removeInlineError(tr);
+      const id    = tr.dataset.id;
+      const adcId = tr.dataset.adcId;
+      if (!id) { tr.remove(); return; }
+      const adc   = adcs.find(a => a.id === Number(adcId));
+      const alloc = adc ? (adc.allocations || []).find(al => al.id === Number(id)) : null;
+      if (alloc) {
+        const st  = tr.dataset.sectionType;
+        const tid = Number(tr.dataset.grpTargetId);
+        tr.replaceWith(makeAllocationRow(alloc, st, tid, Number(adcId), false));
+      }
+    }
+
+    function setupMonthInputs(tr) {
+      tr.querySelectorAll('.month-input').forEach(inp => {
+        inp.addEventListener('input', () => {
+          const total = MONTHS.reduce((s, m) => {
+            const el = tr.querySelector(`[data-month="${m}"]`);
+            return s + (Number(el ? el.value : 0) || 0);
+          }, 0);
+          const td = tr.querySelector('.total-display');
+          if (td) td.textContent = fmtNum(total);
+        });
+      });
+    }
+
+    // ---- Add new rows ----
+
+    function addNewAdcRow() {
+      document.querySelectorAll('[data-row-type="new-adc-global"]').forEach(r => r.remove());
+      const tbody = document.getElementById('adc-table-body');
+      const tr    = document.createElement('tr');
+      tr.dataset.rowType = 'new-adc-global';
+      tr.className = 'bg-indigo-50/40';
+      tr.innerHTML = buildAdcEditCells(null);
+      tbody.prepend(tr);
+      setupTargetAutocomplete(tr);
+      tr.querySelector('.target-input').focus();
+    }
+
+    function addAdcRowForTarget(sectionType, targetId, targetName) {
+      document.querySelectorAll('[data-row-type="new-adc-global"], [data-row-type="new-adc"]').forEach(r => r.remove());
+
+      if (collapsedSections.has(sectionType)) toggleSection(sectionType);
+      const tKey = `${sectionType}:${targetId}`;
+      if (collapsedTargets.has(tKey)) toggleTarget(sectionType, targetId);
+
+      const adcRows = Array.from(document.querySelectorAll(
+        `[data-row-type="adc"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`
+      ));
+      // Find the last row belonging to this target (could be adc or allocation rows)
+      const allTargetRows = Array.from(document.querySelectorAll(
+        `[data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]:not([data-row-type="target"])`
+      ));
+      const insertAfter = allTargetRows.length > 0
+        ? allTargetRows[allTargetRows.length - 1]
+        : document.querySelector(`[data-row-type="target"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`);
+
+      const tr = document.createElement('tr');
+      tr.dataset.rowType     = 'new-adc';
+      tr.dataset.sectionType = sectionType;
+      tr.dataset.grpTargetId = targetId;
+      tr.className = 'bg-indigo-50/40';
+      tr.innerHTML = buildAdcEditCells(null);
+      insertAfter.after(tr);
+
+      tr.querySelector('.target-input').value = targetName;
+      tr.dataset.targetType = sectionType;
+      if (sectionType === 'application') { tr.dataset.targetId = targetId; tr.dataset.targetGroupId = ''; }
+      else { tr.dataset.targetId = ''; tr.dataset.targetGroupId = targetId; }
+
+      setupTargetAutocomplete(tr);
+      tr.querySelector('.title-input').focus();
+    }
+
+    function addAllocationRow(adcId) {
+      document.querySelectorAll('[data-row-type="new-allocation"]').forEach(r => r.remove());
+
+      // Expand ADC if collapsed
+      if (collapsedAdcs.has(String(adcId))) toggleAdc(adcId);
+
+      const allocRows = Array.from(document.querySelectorAll(`[data-adc-id="${adcId}"]`));
+      const adcHeaderRow = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"]`);
+      const insertAfter = allocRows.length > 0 ? allocRows[allocRows.length - 1] : adcHeaderRow;
+
+      const tr = document.createElement('tr');
+      tr.dataset.rowType = 'new-allocation';
+      tr.dataset.adcId   = adcId;
+      // Inherit section/target from ADC header row
+      if (adcHeaderRow) {
+        tr.dataset.sectionType = adcHeaderRow.dataset.sectionType;
+        tr.dataset.grpTargetId = adcHeaderRow.dataset.grpTargetId;
+      }
+      tr.className = 'bg-indigo-50/40';
+      tr.innerHTML = buildAllocationEditCells(null);
+      insertAfter.after(tr);
+
+      tr.dataset.personType = 'fte';
+      setupPersonPicker(tr);
+      setupMonthInputs(tr);
+      tr.querySelector('.person-input').focus();
+    }
+
+    // ---- Target autocomplete (body-attached) ----
+
+    const acDropdown = document.createElement('div');
+    acDropdown.id = 'ac-dropdown';
+    acDropdown.className = 'ac-popup';
+    acDropdown.style.display = 'none';
+    document.body.appendChild(acDropdown);
+
+    let acInput = null, acTr = null;
+
+    function setupTargetAutocomplete(tr) {
+      const input = tr.querySelector('.target-input');
+      input.addEventListener('input',  () => showTargetAc(tr, input));
+      input.addEventListener('focus',  () => showTargetAc(tr, input));
+      input.addEventListener('blur',   () => setTimeout(() => { if (acInput === input) hideTargetAc(); }, 150));
+    }
+
+    function showTargetAc(tr, input) {
+      const q = input.value.trim().toLowerCase();
+      const matches = q ? targets.filter(t => t.name.toLowerCase().includes(q)) : targets;
+      if (!matches.length) { hideTargetAc(); return; }
+      acInput = input; acTr = tr;
+
+      acDropdown.innerHTML = matches.map(t => {
+        const badge = t.type === 'application'
+          ? '<span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">App</span>'
+          : '<span style="font-size:10px;background:#e0e7ff;color:#4338ca;border-radius:4px;padding:1px 4px;font-weight:600">Group</span>';
+        return `<div class="ac-item" data-id="${t.id}" data-type="${t.type}" data-name="${esc(t.name)}">${badge} ${esc(t.name)}</div>`;
+      }).join('');
+
+      positionDropdown(acDropdown, input);
+      acDropdown.style.display = 'block';
+
+      acDropdown.querySelectorAll('.ac-item').forEach(item => {
+        item.addEventListener('mousedown', e => {
+          e.preventDefault();
+          const { id, type, name } = item.dataset;
+          input.value = name;
+          if (type === 'application') { acTr.dataset.targetType = 'application'; acTr.dataset.targetId = id; acTr.dataset.targetGroupId = ''; }
+          else { acTr.dataset.targetType = 'group'; acTr.dataset.targetId = ''; acTr.dataset.targetGroupId = id; }
+          hideTargetAc();
+        });
+      });
+    }
+
+    function hideTargetAc() { acDropdown.style.display = 'none'; acInput = null; acTr = null; }
+
+    // ---- Person picker (FTE / TBH autocomplete) ----
+
+    const personDropdown = document.createElement('div');
+    personDropdown.id = 'person-dropdown';
+    personDropdown.className = 'ac-popup';
+    personDropdown.style.display = 'none';
+    document.body.appendChild(personDropdown);
+
+    let personInput = null, personTr = null;
+
+    function setupPersonPicker(tr) {
+      const input = tr.querySelector('.person-input');
+      tr.querySelectorAll('.person-type-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          setPersonMode(tr, btn.dataset.type);
+          input.focus();
+        });
+      });
+      input.addEventListener('input',  () => showPersonAc(tr, input));
+      input.addEventListener('focus',  () => showPersonAc(tr, input));
+      input.addEventListener('blur',   () => setTimeout(() => { if (personInput === input) hidePersonAc(); }, 150));
+    }
+
+    function showPersonAc(tr, input) {
+      const mode = tr.dataset.personType || 'fte';
+      const q    = input.value.trim().toLowerCase();
+      personInput = input; personTr = tr;
+
+      let items = [];
+      if (mode === 'fte') {
+        const matched = q ? ftes.filter(f => (f.first_name + ' ' + f.last_name).toLowerCase().includes(q)) : ftes;
+        items = matched.map(f => ({
+          html: `<div class="ac-item" data-kind="fte" data-id="${f.id}" data-name="${esc(f.first_name + ' ' + f.last_name)}" data-info="${esc(f.title + ' · ' + f.region)}">
+            <span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">FTE</span>
+            ${esc(f.first_name + ' ' + f.last_name)}
+            <span style="font-size:10px;color:#94a3b8">${esc(f.title)} · ${esc(f.region)}</span>
+          </div>`
+        }));
+      } else {
+        const matched = q ? tbhSlots.filter(t => t.label.toLowerCase().includes(q)) : tbhSlots;
+        items = matched.map(t => ({
+          html: `<div class="ac-item" data-kind="tbh" data-id="${t.id}" data-name="${esc(t.label)}">
+            <span style="font-size:10px;background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 4px;font-weight:600">TBH</span>
+            ${esc(t.label)}
+          </div>`
+        }));
+        // Offer to create if typed text doesn't exactly match an existing slot
+        const exactMatch = tbhSlots.find(t => t.label.toLowerCase() === q);
+        if (q && !exactMatch) {
+          items.push({ html: `<div class="ac-item create" data-kind="create-tbh" data-name="${esc(input.value.trim())}">+ Create "${esc(input.value.trim())}" as new TBH</div>` });
+        }
+      }
+
+      if (!items.length) { hidePersonAc(); return; }
+
+      personDropdown.innerHTML = items.map(i => i.html).join('');
+      positionDropdown(personDropdown, input);
+      personDropdown.style.display = 'block';
+
+      personDropdown.querySelectorAll('.ac-item').forEach(item => {
+        item.addEventListener('mousedown', async e => {
+          e.preventDefault();
+          const { kind, id, name, info } = item.dataset;
+          if (kind === 'fte') {
+            input.value = name;
+            personTr.dataset.fteId = id;
+            personTr.dataset.tbhId = '';
+            personTr.querySelector('.person-info').textContent = info || '';
+          } else if (kind === 'tbh') {
+            input.value = name;
+            personTr.dataset.tbhId = id;
+            personTr.dataset.fteId = '';
+            personTr.querySelector('.person-info').textContent = 'TBH slot #' + id;
+          } else if (kind === 'create-tbh') {
+            // Create TBH slot on the fly
+            try {
+              const res = await fetch('/api/tbh', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ label: name }),
+              });
+              const slot = await res.json();
+              if (!res.ok) { showToast((slot.errors || ['Failed to create TBH']).join('; '), 'error'); return; }
+              tbhSlots.push(slot);
+              tbhSlots.sort((a, b) => a.label.localeCompare(b.label));
+              input.value = slot.label;
+              personTr.dataset.tbhId = slot.id;
+              personTr.dataset.fteId = '';
+              personTr.querySelector('.person-info').textContent = 'New TBH slot #' + slot.id;
+              showToast('TBH slot created.', 'success');
+            } catch {
+              showToast('Failed to create TBH slot.', 'error');
+            }
+          }
+          hidePersonAc();
+        });
+      });
+    }
+
+    function hidePersonAc() { personDropdown.style.display = 'none'; personInput = null; personTr = null; }
+
+    function positionDropdown(dropdown, input) {
+      const r = input.getBoundingClientRect();
+      dropdown.style.top   = (r.bottom + 2) + 'px';
+      dropdown.style.left  = r.left + 'px';
+      dropdown.style.width = Math.max(220, r.width) + 'px';
+    }
+
+    // ---- Delete ----
+
+    const deleteTimers = {};
+
+    function twoStepDelete(btn, onConfirm) {
+      const id = btn.dataset.deleteId;
+      if (btn.dataset.confirming) {
+        clearTimeout(deleteTimers[id]);
+        delete deleteTimers[id];
+        onConfirm();
+      } else {
+        btn.dataset.confirming = '1';
+        btn.textContent = 'Sure?';
+        btn.classList.add('bg-rose-600', 'text-white');
+        deleteTimers[id] = setTimeout(() => {
+          btn.dataset.confirming = '';
+          btn.textContent = 'Delete';
+          btn.classList.remove('bg-rose-600', 'text-white');
+        }, 4000);
+      }
+    }
+
+    function handleAdcDelete(btn) {
+      twoStepDelete(btn, async () => {
+        const tr = btn.closest('tr');
+        const id = btn.dataset.deleteId;
+        try {
+          const res = await fetch(`/api/adcs/${id}`, { method: 'DELETE' });
+          if (!res.ok) { showToast('Delete failed.', 'error'); return; }
+          await loadAdcs();
+          showToast('ADC deleted.', 'success');
+        } catch { showToast('Network error.', 'error'); }
+      });
+    }
+
+    function handleAllocDelete(btn) {
+      twoStepDelete(btn, async () => {
+        const tr    = btn.closest('tr');
+        const id    = btn.dataset.deleteId;
+        const adcId = btn.dataset.adcId;
+        try {
+          const res = await fetch(`/api/adcs/${adcId}/allocations/${id}`, { method: 'DELETE' });
+          if (!res.ok) { showToast('Delete failed.', 'error'); return; }
+          await loadAdcs();
+          showToast('Allocation deleted.', 'success');
+        } catch { showToast('Network error.', 'error'); }
+      });
+    }
+
+    // ---- Inline error ----
+
+    function showInlineError(tr, msg) {
+      removeInlineError(tr);
+      const errTr = document.createElement('tr');
+      errTr.className = 'inline-error-row';
+      errTr.innerHTML = `<td colspan="17" class="px-4 py-1.5 text-xs text-rose-600 bg-rose-50">${esc(msg)}</td>`;
+      tr.after(errTr);
+    }
+
+    function removeInlineError(tr) {
+      const next = tr.nextElementSibling;
+      if (next && next.classList.contains('inline-error-row')) next.remove();
+    }
+
+    // ---- Toast ----
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.className = type === 'success'
+        ? 'fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 shadow-lg text-sm font-medium text-emerald-700 max-w-sm'
+        : 'fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 shadow-lg text-sm font-medium text-rose-700 max-w-sm';
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3500);
+    }
+
+    function esc(str) {
+      return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ---- Init ----
+    Promise.all([loadTargets(), loadFtes(), loadTbhSlots()]).then(() => loadAdcs());
+  </script>
+
+</body>
+</html>

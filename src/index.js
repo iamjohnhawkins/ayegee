@@ -7,6 +7,8 @@ const applicationsRouter = require('./routes/applications');
 const applicationGroupsRouter = require('./routes/application-groups');
 const ftesRouter = require('./routes/ftes');
 const portfoliosRouter = require('./routes/portfolios');
+const adcsRouter = require('./routes/adcs');
+const tbhRouter  = require('./routes/tbh');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -17,6 +19,8 @@ app.use('/api/applications', applicationsRouter);
 app.use('/api/application-groups', applicationGroupsRouter);
 app.use('/api/ftes', ftesRouter);
 app.use('/api/portfolios', portfoliosRouter);
+app.use('/api/adcs', adcsRouter);
+app.use('/api/tbh',  tbhRouter);
 
 app.get('/api/dashboard/summary', async (req, res) => {
   const { rows } = await db.query(`
