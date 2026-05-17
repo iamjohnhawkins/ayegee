@@ -231,7 +231,7 @@
       const aid = row.dataset.adcId;
       const hidden =
         collapsedSections.has(st) ||
-        (tid && collapsedTargets.has(`${st}:${tid}`)) ||
+        (tid && row.dataset.rowType !== 'target' && collapsedTargets.has(`${st}:${tid}`)) ||
         (aid && collapsedAdcs.has(aid));
       row.style.display = hidden ? 'none' : '';
     }
@@ -477,7 +477,7 @@
       const key = String(adcId);
       if (collapsedAdcs.has(key)) collapsedAdcs.delete(key);
       else collapsedAdcs.add(key);
-      document.querySelectorAll(`[data-adc-id="${adcId}"]`).forEach(updateRowVisibility);
+      document.querySelectorAll(`tr[data-adc-id="${adcId}"]`).forEach(updateRowVisibility);
       const ch = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"] .chevron`);
       if (ch) ch.classList.toggle('collapsed', collapsedAdcs.has(key));
     }
@@ -773,7 +773,7 @@
       // Expand ADC if collapsed
       if (collapsedAdcs.has(String(adcId))) toggleAdc(adcId);
 
-      const allocRows = Array.from(document.querySelectorAll(`[data-adc-id="${adcId}"]`));
+      const allocRows = Array.from(document.querySelectorAll(`tr[data-adc-id="${adcId}"]`));
       const adcHeaderRow = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"]`);
       const insertAfter = allocRows.length > 0 ? allocRows[allocRows.length - 1] : adcHeaderRow;
 
