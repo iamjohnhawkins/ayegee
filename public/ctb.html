@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ADC · IT Investment Governance</title>
+  <title>Baseline CTB · IT Investment Governance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/app.css" />
   <style>
@@ -82,13 +82,13 @@
           </svg>
           <span class="nav-label">Portfolios</span>
         </a>
-        <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
+        <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0 0 10 1.944 11.954 11.954 0 0 0 17.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/>
           </svg>
           <span class="nav-label">ADC</span>
         </a>
-        <a href="/ctb.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+        <a href="/ctb.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"/>
           </svg>
@@ -112,15 +112,9 @@
     <main class="ml-64 flex flex-1 flex-col min-h-screen">
       <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
         <div>
-          <h1 id="page-title" class="text-lg font-semibold text-slate-800">ADC</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Application Development Compliance — monthly FTE requirements by person</p>
+          <h1 id="page-title" class="text-lg font-semibold text-slate-800">Baseline CTB</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Change The Bank — monthly FTE baseline by application</p>
         </div>
-        <button onclick="addNewAdcRow()" class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z" clip-rule="evenodd"/>
-          </svg>
-          Add ADC
-        </button>
       </header>
 
       <div class="flex-1 px-8 py-7">
@@ -128,14 +122,14 @@
 
         <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">ADC Entries</h2>
-            <span id="adc-count" class="text-xs text-slate-400"></span>
+            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Baseline CTB</h2>
+            <span id="ctb-count" class="text-xs text-slate-400"></span>
           </div>
           <div class="overflow-x-auto">
-            <table class="min-w-full text-sm" id="adc-table">
+            <table class="min-w-full text-sm" id="ctb-table">
               <thead>
                 <tr class="bg-slate-50 border-b border-slate-200">
-                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[200px]">Name / Target</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[200px]">Target</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[140px]">Title / Description</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[150px]">Info</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
@@ -154,7 +148,7 @@
                   <th class="px-4 py-3 w-36"></th>
                 </tr>
               </thead>
-              <tbody id="adc-table-body">
+              <tbody id="ctb-table-body">
                 <tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
               </tbody>
             </table>
@@ -167,35 +161,35 @@
   <script>
     const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
     const currentYear = new Date().getFullYear();
-    document.getElementById('page-title').textContent = `ADC — ${currentYear}`;
+    document.getElementById('page-title').textContent = `Baseline CTB — ${currentYear}`;
 
-    let adcs      = [];
+    let ctbs      = [];
     let targets   = [];
     let ftes      = [];
     let tbhSlots  = [];
 
     let collapsedSections = new Set();
     let collapsedTargets  = new Set();
-    let collapsedAdcs     = new Set();
+    let collapsedCtbs     = new Set();
 
     // ---- Data loading ----
 
-    async function loadAdcs() {
+    async function loadCtbs() {
       try {
-        const res = await fetch('/api/adcs');
-        adcs = await res.json();
+        const res = await fetch('/api/ctb');
+        ctbs = await res.json();
         renderTable();
       } catch {
-        document.getElementById('adc-table-body').innerHTML =
-          '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load ADC entries.</td></tr>';
+        document.getElementById('ctb-table-body').innerHTML =
+          '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load CTB entries.</td></tr>';
       }
     }
 
     async function loadTargets() {
-      try { targets  = await (await fetch('/api/adcs/targets')).json(); } catch { }
+      try { targets = await (await fetch('/api/ctb/targets')).json(); } catch { }
     }
     async function loadFtes() {
-      try { ftes     = await (await fetch('/api/ftes')).json(); } catch { }
+      try { ftes = await (await fetch('/api/ftes')).json(); } catch { }
     }
     async function loadTbhSlots() {
       try { tbhSlots = await (await fetch('/api/tbh')).json(); } catch { }
@@ -204,42 +198,26 @@
     // ---- Grouping ----
 
     function buildGrouped() {
-      const apps = {}, groups = {};
-      adcs.forEach(adc => {
-        if (adc.target_type === 'application') {
-          const k = adc.application_id;
-          if (!apps[k]) apps[k] = { id: k, name: adc.target_name, entries: [] };
-          apps[k].entries.push(adc);
-        } else {
-          const k = adc.application_group_id;
-          if (!groups[k]) groups[k] = { id: k, name: adc.target_name, entries: [] };
-          groups[k].entries.push(adc);
-        }
-      });
       return {
-        application: Object.values(apps).sort((a, b) => a.name.localeCompare(b.name)),
-        group: Object.values(groups).sort((a, b) => a.name.localeCompare(b.name)),
+        application: targets
+          .filter(t => t.type === 'application')
+          .map(t => ({ id: t.id, name: t.name, ctb: ctbs.find(c => c.application_id === t.id) || null }))
+          .sort((a, b) => a.name.localeCompare(b.name)),
+        group: targets
+          .filter(t => t.type === 'group')
+          .map(t => ({ id: t.id, name: t.name, ctb: ctbs.find(c => c.application_group_id === t.id) || null }))
+          .sort((a, b) => a.name.localeCompare(b.name))
       };
     }
 
-    function monthTotals(entries) {
-      const t = {};
-      MONTHS.forEach(m => t[m] = entries.reduce((s, e) => s + (Number(e[m]) || 0), 0));
-      t.grand = MONTHS.reduce((s, m) => s + t[m], 0);
-      return t;
-    }
-
-    // ---- Visibility ----
-
-    function updateRowVisibility(row) {
-      const st  = row.dataset.sectionType;
-      const tid = row.dataset.grpTargetId;
-      const aid = row.dataset.adcId;
-      const hidden =
-        collapsedSections.has(st) ||
-        (tid && row.dataset.rowType !== 'target' && collapsedTargets.has(`${st}:${tid}`)) ||
-        (aid && collapsedAdcs.has(aid));
-      row.style.display = hidden ? 'none' : '';
+    function monthTotals(items) {
+      const totals = Object.fromEntries(MONTHS.map(m => [m, 0]));
+      items.forEach(item => {
+        if (!item) return;
+        MONTHS.forEach(m => { totals[m] += Number(item[m]) || 0; });
+      });
+      totals.grand = MONTHS.reduce((s, m) => s + totals[m], 0);
+      return totals;
     }
 
     // ---- Rendering ----
@@ -250,57 +228,63 @@
       return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.?0+$/, '');
     }
 
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
     const CHEVRON = `<svg xmlns="http://www.w3.org/2000/svg" class="chevron h-3.5 w-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
       <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
     </svg>`;
 
     function renderTable() {
-      const tbody = document.getElementById('adc-table-body');
-      document.getElementById('adc-count').textContent = `${adcs.length} entr${adcs.length !== 1 ? 'ies' : 'y'}`;
-
-      if (!adcs.length) {
-        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No ADC entries yet. Click "+ Add ADC" to get started.</td></tr>';
-        return;
-      }
+      const tbody = document.getElementById('ctb-table-body');
+      const grouped = buildGrouped();
+      const allTargets = [...grouped.application, ...grouped.group];
+      const definedCount = allTargets.filter(t => t.ctb).length;
+      document.getElementById('ctb-count').textContent =
+        `${definedCount} of ${allTargets.length} target${allTargets.length !== 1 ? 's' : ''} defined`;
 
       tbody.innerHTML = '';
-      const grouped = buildGrouped();
+
       [{ type: 'application', label: 'Applications' }, { type: 'group', label: 'Application Groups' }].forEach(section => {
         const tList = grouped[section.type];
         if (!tList.length) return;
 
-        const allEntries = tList.flatMap(t => t.entries);
-        const secTotals  = monthTotals(allEntries);
-        const secCol     = collapsedSections.has(section.type);
+        const ctbItems = tList.map(t => t.ctb).filter(Boolean);
+        const secTotals = monthTotals(ctbItems);
+        const secCol    = collapsedSections.has(section.type);
 
-        tbody.appendChild(makeSectionRow(section, allEntries.length, secTotals, secCol));
+        tbody.appendChild(makeSectionRow(section, tList.length, definedCount, secTotals, secCol));
 
         tList.forEach(target => {
-          const tKey    = `${section.type}:${target.id}`;
-          const tCol    = collapsedTargets.has(tKey);
-          const tTotals = monthTotals(target.entries);
+          const tKey   = `${section.type}:${target.id}`;
+          const tCol   = collapsedTargets.has(tKey);
+          const ctb    = target.ctb;
+          const tTotals = ctb ? monthTotals([ctb]) : monthTotals([]);
 
           tbody.appendChild(makeTargetRow(target, section.type, tTotals, tCol, secCol));
 
-          target.entries.forEach(adc => {
-            const adcKey  = String(adc.id);
-            const adcCol  = collapsedAdcs.has(adcKey);
-            const adcHide = secCol || tCol;
-
-            tbody.appendChild(makeAdcRow(adc, section.type, target.id, adcHide));
-
-            const allocs = Array.isArray(adc.allocations) ? adc.allocations : [];
+          if (ctb) {
+            const ctbKey  = String(ctb.id);
+            const ctbCol  = collapsedCtbs.has(ctbKey);
+            const ctbHide = secCol || tCol;
+            tbody.appendChild(makeCtbRow(ctb, section.type, target.id, ctbHide));
+            const allocs = Array.isArray(ctb.allocations) ? ctb.allocations : [];
             allocs.forEach(alloc => {
-              tbody.appendChild(makeAllocationRow(alloc, section.type, target.id, adc.id, adcHide || adcCol));
+              tbody.appendChild(makeAllocationRow(alloc, section.type, target.id, ctb.id, ctbHide || ctbCol));
             });
-          });
+          }
         });
       });
+
+      if (!tbody.children.length) {
+        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No applications or groups found. Add them first.</td></tr>';
+      }
     }
 
-    function makeSectionRow(section, count, totals, collapsed) {
+    function makeSectionRow(section, targetCount, definedCount, totals, collapsed) {
       const tr = document.createElement('tr');
-      tr.dataset.rowType    = 'section';
+      tr.dataset.rowType     = 'section';
       tr.dataset.sectionType = section.type;
       tr.className = 'bg-slate-800 cursor-pointer select-none';
 
@@ -312,7 +296,7 @@
         <td colspan="3" class="px-4 py-2.5">
           <div class="flex items-center gap-2 text-slate-100">${CHEVRON}
             <span class="text-[11px] font-bold uppercase tracking-widest">${section.label}</span>
-            <span class="text-[11px] text-slate-500">${count} entr${count !== 1 ? 'ies' : 'y'}</span>
+            <span class="text-[11px] text-slate-500">${targetCount} target${targetCount !== 1 ? 's' : ''}</span>
           </div>
         </td>
         ${months}
@@ -340,15 +324,23 @@
         `<td class="px-3 py-2 text-right text-xs tabular-nums text-slate-500">${fmtNum(totals[m])}</td>`
       ).join('');
 
+      const addBtn = !target.ctb
+        ? `<button class="define-ctb-btn ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
+             data-tid="${target.id}" data-stype="${sectionType}" data-tname="${esc(target.name)}">+ Define CTB</button>`
+        : '';
+
+      const statusLabel = target.ctb
+        ? '<span class="text-[10px] text-emerald-600 font-semibold">✓ Defined</span>'
+        : '<span class="text-[10px] text-slate-400">Not defined</span>';
+
       tr.innerHTML = `
         <td colspan="3" class="px-4 py-2">
           <div class="flex items-center gap-2">
             <span class="text-slate-400">${CHEVRON}</span>
             ${badge}
             <span class="text-xs font-semibold text-slate-700">${esc(target.name)}</span>
-            <span class="text-xs text-slate-400">${target.entries.length} entr${target.entries.length !== 1 ? 'ies' : 'y'}</span>
-            <button class="add-adc-btn ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
-              data-tid="${target.id}" data-stype="${sectionType}" data-tname="${esc(target.name)}">+ Add ADC</button>
+            ${statusLabel}
+            ${addBtn}
           </div>
         </td>
         ${months}
@@ -357,72 +349,74 @@
 
       if (collapsed) tr.querySelector('.chevron').classList.add('collapsed');
 
-      tr.querySelector('.add-adc-btn').addEventListener('click', e => {
-        e.stopPropagation();
-        const b = e.currentTarget;
-        addAdcRowForTarget(b.dataset.stype, Number(b.dataset.tid), b.dataset.tname);
-      });
+      if (!target.ctb) {
+        tr.querySelector('.define-ctb-btn').addEventListener('click', e => {
+          e.stopPropagation();
+          const b = e.currentTarget;
+          addCtbRowForTarget(b.dataset.stype, Number(b.dataset.tid), b.dataset.tname);
+        });
+      }
       tr.addEventListener('click', () => toggleTarget(sectionType, target.id));
       return tr;
     }
 
-    function makeAdcRow(adc, sectionType, targetId, hidden) {
+    function makeCtbRow(ctb, sectionType, targetId, hidden) {
       const tr = document.createElement('tr');
-      tr.dataset.rowType     = 'adc';
+      tr.dataset.rowType     = 'ctb';
       tr.dataset.sectionType = sectionType;
       tr.dataset.grpTargetId = targetId;
-      tr.dataset.id          = adc.id;
+      tr.dataset.id          = ctb.id;
       tr.className = 'bg-white border-b border-slate-100 hover:bg-slate-50/40 transition-colors';
       if (hidden) tr.style.display = 'none';
 
-      const allocs = Array.isArray(adc.allocations) ? adc.allocations : [];
-      const adcCol = collapsedAdcs.has(String(adc.id));
+      const allocs     = Array.isArray(ctb.allocations) ? ctb.allocations : [];
+      const ctbCol     = collapsedCtbs.has(String(ctb.id));
       const allocCount = allocs.length;
-      const months = MONTHS.map(m =>
-        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(adc[m])}</td>`
+      const months     = MONTHS.map(m =>
+        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(ctb[m])}</td>`
       ).join('');
-      const total = MONTHS.reduce((s, m) => s + (Number(adc[m]) || 0), 0);
+      const total = MONTHS.reduce((s, m) => s + (Number(ctb[m]) || 0), 0);
 
       tr.innerHTML = `
         <td class="px-4 py-2.5 pl-8">
           <div class="flex items-center gap-1.5">
             <span class="text-slate-400">${CHEVRON}</span>
-            <span class="text-sm font-semibold text-slate-800">${esc(adc.title)}</span>
+            <span class="text-sm font-semibold text-slate-800">${esc(ctb.title)}</span>
           </div>
         </td>
-        <td class="px-4 py-2.5 text-xs text-slate-500 max-w-[140px] truncate" title="${esc(adc.description || '')}">${esc(adc.description || '—')}</td>
+        <td class="px-4 py-2.5 text-xs text-slate-500 max-w-[140px] truncate" title="${esc(ctb.description || '')}">${esc(ctb.description || '—')}</td>
         <td class="px-4 py-2.5">
           <div class="flex items-center gap-1.5">
             <span class="text-[10px] text-slate-400">${allocCount} alloc${allocCount !== 1 ? 's' : ''}</span>
             <button class="alloc-btn inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors"
-              data-adc-id="${adc.id}">+ Allocate</button>
+              data-ctb-id="${ctb.id}">+ Allocate</button>
           </div>
         </td>
         ${months}
         <td class="px-3 py-2.5 text-right font-semibold text-slate-800 tabular-nums text-xs bg-slate-50">${fmtNum(total)}</td>
         <td class="px-4 py-2.5 text-right whitespace-nowrap">
-          <button onclick="enterAdcEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
-          <button data-delete-id="${adc.id}" data-delete-title="${esc(adc.title)}" onclick="handleAdcDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
+          <button onclick="enterCtbEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
+          <button data-delete-id="${ctb.id}" data-delete-title="${esc(ctb.title)}" onclick="handleCtbDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
         </td>`;
 
-      if (adcCol) tr.querySelector('.chevron').classList.add('collapsed');
+      if (ctbCol) tr.querySelector('.chevron').classList.add('collapsed');
       tr.querySelector('.alloc-btn').addEventListener('click', e => {
         e.stopPropagation();
-        addAllocationRow(Number(e.currentTarget.dataset.adcId));
+        addAllocationRow(Number(e.currentTarget.dataset.ctbId));
       });
       tr.querySelector('.chevron').parentElement.addEventListener('click', e => {
         e.stopPropagation();
-        toggleAdc(adc.id);
+        toggleCtb(ctb.id);
       });
       return tr;
     }
 
-    function makeAllocationRow(alloc, sectionType, targetId, adcId, hidden) {
+    function makeAllocationRow(alloc, sectionType, targetId, ctbId, hidden) {
       const tr = document.createElement('tr');
       tr.dataset.rowType     = 'allocation';
       tr.dataset.sectionType = sectionType;
       tr.dataset.grpTargetId = targetId;
-      tr.dataset.adcId       = adcId;
+      tr.dataset.ctbId       = ctbId;
       tr.dataset.id          = alloc.id;
       const isTbh = alloc.is_tbh;
       tr.className = isTbh
@@ -440,7 +434,7 @@
 
       const col3 = isTbh ? '' : `<span class="text-xs text-slate-400">${esc(alloc.fte_email || '')}</span>`;
 
-      const total = MONTHS.reduce((s, m) => s + (Number(alloc[m]) || 0), 0);
+      const total  = MONTHS.reduce((s, m) => s + (Number(alloc[m]) || 0), 0);
       const months = MONTHS.map(m =>
         `<td class="px-3 py-2 text-right tabular-nums text-xs text-slate-600">${fmtNum(alloc[m])}</td>`
       ).join('');
@@ -455,12 +449,23 @@
         <td class="px-3 py-2 text-right font-semibold tabular-nums text-xs text-slate-800 bg-slate-50/50">${fmtNum(total)}</td>
         <td class="px-4 py-2 text-right whitespace-nowrap">
           <button onclick="enterAllocationEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
-          <button data-delete-id="${alloc.id}" data-adc-id="${adcId}" onclick="handleAllocDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
+          <button data-delete-id="${alloc.id}" data-ctb-id="${ctbId}" onclick="handleAllocDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
         </td>`;
       return tr;
     }
 
     // ---- Toggle functions ----
+
+    function updateRowVisibility(row) {
+      const st  = row.dataset.sectionType;
+      const tid = row.dataset.grpTargetId;
+      const cid = row.dataset.ctbId;
+      const hidden =
+        collapsedSections.has(st) ||
+        (tid && row.dataset.rowType !== 'target' && collapsedTargets.has(`${st}:${tid}`)) ||
+        (cid && collapsedCtbs.has(cid));
+      row.style.display = hidden ? 'none' : '';
+    }
 
     function toggleSection(sectionType) {
       if (collapsedSections.has(sectionType)) collapsedSections.delete(sectionType);
@@ -479,53 +484,58 @@
       if (ch) ch.classList.toggle('collapsed', collapsedTargets.has(key));
     }
 
-    function toggleAdc(adcId) {
-      const key = String(adcId);
-      if (collapsedAdcs.has(key)) collapsedAdcs.delete(key);
-      else collapsedAdcs.add(key);
-      document.querySelectorAll(`tr[data-adc-id="${adcId}"]`).forEach(updateRowVisibility);
-      const ch = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"] .chevron`);
-      if (ch) ch.classList.toggle('collapsed', collapsedAdcs.has(key));
+    function toggleCtb(ctbId) {
+      const key = String(ctbId);
+      if (collapsedCtbs.has(key)) collapsedCtbs.delete(key);
+      else collapsedCtbs.add(key);
+      document.querySelectorAll(`tr[data-ctb-id="${ctbId}"]`).forEach(updateRowVisibility);
+      const ch = document.querySelector(`[data-row-type="ctb"][data-id="${ctbId}"] .chevron`);
+      if (ch) ch.classList.toggle('collapsed', collapsedCtbs.has(key));
     }
 
-    // ---- ADC edit mode ----
+    // ---- CTB edit mode ----
 
-    function enterAdcEditMode(tr) {
+    function enterCtbEditMode(tr) {
       const id  = tr.dataset.id;
-      const adc = id ? adcs.find(a => a.id === Number(id)) : null;
-      tr.innerHTML = buildAdcEditCells(adc);
-      tr.dataset.rowType = 'edit-adc';
+      const ctb = id ? ctbs.find(c => c.id === Number(id)) : null;
+      tr.innerHTML = buildCtbEditCells(ctb);
+      tr.dataset.rowType = 'edit-ctb';
       tr.className = 'bg-indigo-50/40';
-      if (adc) {
-        tr.querySelector('.target-input').value = adc.target_name || '';
-        tr.dataset.targetType    = adc.application_id ? 'application' : 'group';
-        tr.dataset.targetId      = adc.application_id || '';
-        tr.dataset.targetGroupId = adc.application_group_id || '';
+      if (ctb) {
+        const targetName = ctb.target_name || '';
+        tr.dataset.targetType    = ctb.target_type || '';
+        tr.dataset.targetId      = ctb.application_id       || '';
+        tr.dataset.targetGroupId = ctb.application_group_id || '';
+        tr.querySelector('.target-input').value = targetName;
+        setupTargetAutocomplete(tr);
+        tr.querySelector('.title-input').focus();
+      } else {
+        setupTargetAutocomplete(tr);
+        tr.querySelector('.target-input').focus();
       }
-      setupTargetAutocomplete(tr);
     }
 
-    function buildAdcEditCells(adc) {
+    function buildCtbEditCells(ctb) {
       return `
         <td class="px-2 py-2">
-          <input type="text" placeholder="Search apps & groups…" class="target-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100" autocomplete="off" />
+          <input type="text" placeholder="Search apps &amp; groups…" class="target-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100" autocomplete="off" />
         </td>
         <td class="px-2 py-2">
           <input type="text" class="title-input w-32 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
-            placeholder="Title" value="${esc(adc ? adc.title : '')}" />
+            placeholder="Title" value="${esc(ctb ? ctb.title : '')}" />
         </td>
         <td class="px-2 py-2">
           <input type="text" class="desc-input w-36 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
-            placeholder="Description (optional)" value="${esc(adc ? (adc.description || '') : '')}" />
+            placeholder="Description (optional)" value="${esc(ctb ? (ctb.description || '') : '')}" />
         </td>
         <td colspan="13" class="px-3 py-2 text-xs text-slate-400 italic">Month totals come from allocations</td>
         <td class="px-2 py-2 text-right whitespace-nowrap">
-          <button onclick="saveAdcRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
-          <button onclick="cancelAdcEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+          <button onclick="saveCtbRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
+          <button onclick="cancelCtbEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
         </td>`;
     }
 
-    async function saveAdcRow(tr) {
+    async function saveCtbRow(tr) {
       removeInlineError(tr);
       const id             = tr.dataset.id || null;
       const targetType     = tr.dataset.targetType || '';
@@ -539,11 +549,11 @@
         application_group_id: targetType === 'group'       ? Number(targetGroupId) : null,
       };
 
-      const btn = tr.querySelector('button[onclick^="saveAdcRow"]');
+      const btn = tr.querySelector('button[onclick^="saveCtbRow"]');
       btn.disabled = true; btn.textContent = 'Saving…';
 
       try {
-        const res = await fetch(id ? `/api/adcs/${id}` : '/api/adcs', {
+        const res = await fetch(id ? `/api/ctb/${id}` : '/api/ctb', {
           method: id ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
@@ -554,33 +564,49 @@
           btn.disabled = false; btn.textContent = 'Save';
           return;
         }
-        await loadAdcs();
-        showToast(id ? 'ADC updated.' : 'ADC added.', 'success');
+        await loadCtbs();
+        showToast(id ? 'CTB updated.' : 'CTB defined.', 'success');
       } catch {
         showInlineError(tr, 'Network error — please try again.');
         btn.disabled = false; btn.textContent = 'Save';
       }
     }
 
-    function cancelAdcEdit(tr) {
+    function cancelCtbEdit(tr) {
       removeInlineError(tr);
       const id = tr.dataset.id;
-      if (!id) { tr.remove(); if (adcs.length === 0) renderTable(); return; }
-      const adc = adcs.find(a => a.id === Number(id));
-      if (adc) {
+      if (!id) { tr.remove(); return; }
+      const ctb = ctbs.find(c => c.id === Number(id));
+      if (ctb) {
         const st  = tr.dataset.sectionType;
         const tid = Number(tr.dataset.grpTargetId);
-        tr.replaceWith(makeAdcRow(adc, st, tid, false));
+        tr.replaceWith(makeCtbRow(ctb, st, tid, false));
       }
+    }
+
+    async function handleCtbDelete(btn) {
+      if (btn.dataset.confirm !== 'yes') {
+        btn.dataset.confirm = 'yes';
+        btn.textContent = 'Sure?';
+        setTimeout(() => { btn.dataset.confirm = ''; btn.textContent = 'Delete'; }, 3000);
+        return;
+      }
+      btn.disabled = true; btn.textContent = 'Deleting…';
+      try {
+        const res = await fetch(`/api/ctb/${btn.dataset.deleteId}`, { method: 'DELETE' });
+        if (!res.ok) { showToast('Failed to delete CTB.', 'error'); btn.disabled = false; btn.textContent = 'Delete'; return; }
+        await loadCtbs();
+        showToast('CTB deleted.', 'success');
+      } catch { showToast('Network error.', 'error'); btn.disabled = false; btn.textContent = 'Delete'; }
     }
 
     // ---- Allocation edit mode ----
 
     function enterAllocationEditMode(tr) {
       const id    = tr.dataset.id;
-      const adcId = tr.dataset.adcId;
-      const adc   = adcs.find(a => a.id === Number(adcId));
-      const alloc = adc ? (adc.allocations || []).find(al => al.id === Number(id)) : null;
+      const ctbId = tr.dataset.ctbId;
+      const ctb   = ctbs.find(c => c.id === Number(ctbId));
+      const alloc = ctb ? (ctb.allocations || []).find(al => al.id === Number(id)) : null;
 
       tr.innerHTML = buildAllocationEditCells(alloc);
       tr.dataset.rowType = 'edit-allocation';
@@ -649,18 +675,18 @@
       const input = tr.querySelector('.person-input');
       input.placeholder = isFte ? 'Search FTEs…' : 'Search or create TBH…';
       input.value = '';
-      tr.dataset.fteId  = '';
-      tr.dataset.tbhId  = '';
+      tr.dataset.fteId = '';
+      tr.dataset.tbhId = '';
       tr.querySelector('.person-info').textContent = '';
     }
 
     async function saveAllocationRow(tr) {
       removeInlineError(tr);
-      const id          = tr.dataset.id || null;
-      const adcId       = tr.dataset.adcId;
-      const personType  = tr.dataset.personType || '';
-      const fteId       = tr.dataset.fteId || '';
-      const tbhId       = tr.dataset.tbhId || '';
+      const id         = tr.dataset.id || null;
+      const ctbId      = tr.dataset.ctbId;
+      const personType = tr.dataset.personType || '';
+      const fteId      = tr.dataset.fteId || '';
+      const tbhId      = tr.dataset.tbhId || '';
 
       const body = {
         fte_id: personType === 'fte' ? Number(fteId) : null,
@@ -676,8 +702,8 @@
 
       try {
         const url = id
-          ? `/api/adcs/${adcId}/allocations/${id}`
-          : `/api/adcs/${adcId}/allocations`;
+          ? `/api/ctb/${ctbId}/allocations/${id}`
+          : `/api/ctb/${ctbId}/allocations`;
         const res = await fetch(url, {
           method: id ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -689,7 +715,7 @@
           btn.disabled = false; btn.textContent = 'Save';
           return;
         }
-        await loadAdcs();
+        await loadCtbs();
         showToast(id ? 'Allocation updated.' : 'Allocation added.', 'success');
       } catch {
         showInlineError(tr, 'Network error — please try again.');
@@ -700,96 +726,74 @@
     function cancelAllocationEdit(tr) {
       removeInlineError(tr);
       const id    = tr.dataset.id;
-      const adcId = tr.dataset.adcId;
+      const ctbId = tr.dataset.ctbId;
       if (!id) { tr.remove(); return; }
-      const adc   = adcs.find(a => a.id === Number(adcId));
-      const alloc = adc ? (adc.allocations || []).find(al => al.id === Number(id)) : null;
+      const ctb   = ctbs.find(c => c.id === Number(ctbId));
+      const alloc = ctb ? (ctb.allocations || []).find(al => al.id === Number(id)) : null;
       if (alloc) {
         const st  = tr.dataset.sectionType;
         const tid = Number(tr.dataset.grpTargetId);
-        tr.replaceWith(makeAllocationRow(alloc, st, tid, Number(adcId), false));
+        tr.replaceWith(makeAllocationRow(alloc, st, tid, Number(ctbId), false));
       }
     }
 
-    function setupMonthInputs(tr) {
-      tr.querySelectorAll('.month-input').forEach(inp => {
-        inp.addEventListener('input', () => {
-          const total = MONTHS.reduce((s, m) => {
-            const el = tr.querySelector(`[data-month="${m}"]`);
-            return s + (Number(el ? el.value : 0) || 0);
-          }, 0);
-          const td = tr.querySelector('.total-display');
-          if (td) td.textContent = fmtNum(total);
-        });
-      });
+    async function handleAllocDelete(btn) {
+      if (btn.dataset.confirm !== 'yes') {
+        btn.dataset.confirm = 'yes';
+        btn.textContent = 'Sure?';
+        setTimeout(() => { btn.dataset.confirm = ''; btn.textContent = 'Delete'; }, 3000);
+        return;
+      }
+      btn.disabled = true; btn.textContent = 'Deleting…';
+      try {
+        const res = await fetch(`/api/ctb/${btn.dataset.ctbId}/allocations/${btn.dataset.deleteId}`, { method: 'DELETE' });
+        if (!res.ok) { showToast('Failed to delete allocation.', 'error'); btn.disabled = false; btn.textContent = 'Delete'; return; }
+        await loadCtbs();
+        showToast('Allocation deleted.', 'success');
+      } catch { showToast('Network error.', 'error'); btn.disabled = false; btn.textContent = 'Delete'; }
     }
 
-    // ---- Add new rows ----
+    // ---- Add CTB row for target ----
 
-    function addNewAdcRow() {
-      document.querySelectorAll('[data-row-type="new-adc-global"]').forEach(r => r.remove());
-      const tbody = document.getElementById('adc-table-body');
-      const tr    = document.createElement('tr');
-      tr.dataset.rowType = 'new-adc-global';
-      tr.className = 'bg-indigo-50/40';
-      tr.innerHTML = buildAdcEditCells(null);
-      tbody.prepend(tr);
-      setupTargetAutocomplete(tr);
-      tr.querySelector('.target-input').focus();
-    }
+    function addCtbRowForTarget(sectionType, targetId, targetName) {
+      document.querySelectorAll('[data-row-type="new-ctb"]').forEach(r => r.remove());
 
-    function addAdcRowForTarget(sectionType, targetId, targetName) {
-      document.querySelectorAll('[data-row-type="new-adc-global"], [data-row-type="new-adc"]').forEach(r => r.remove());
-
-      if (collapsedSections.has(sectionType)) toggleSection(sectionType);
-      const tKey = `${sectionType}:${targetId}`;
-      if (collapsedTargets.has(tKey)) toggleTarget(sectionType, targetId);
-
-      const adcRows = Array.from(document.querySelectorAll(
-        `[data-row-type="adc"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`
-      ));
-      // Find the last row belonging to this target (could be adc or allocation rows)
-      const allTargetRows = Array.from(document.querySelectorAll(
-        `[data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]:not([data-row-type="target"])`
-      ));
-      const insertAfter = allTargetRows.length > 0
-        ? allTargetRows[allTargetRows.length - 1]
-        : document.querySelector(`[data-row-type="target"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`);
+      const targetRow = document.querySelector(`[data-row-type="target"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`);
+      if (!targetRow) return;
 
       const tr = document.createElement('tr');
-      tr.dataset.rowType     = 'new-adc';
+      tr.dataset.rowType     = 'new-ctb';
       tr.dataset.sectionType = sectionType;
       tr.dataset.grpTargetId = targetId;
       tr.className = 'bg-indigo-50/40';
-      tr.innerHTML = buildAdcEditCells(null);
-      insertAfter.after(tr);
+      tr.innerHTML = buildCtbEditCells(null);
+      targetRow.after(tr);
+
+      if (sectionType === 'application') { tr.dataset.targetType = 'application'; tr.dataset.targetId = targetId; tr.dataset.targetGroupId = ''; }
+      else { tr.dataset.targetType = 'group'; tr.dataset.targetId = ''; tr.dataset.targetGroupId = targetId; }
 
       tr.querySelector('.target-input').value = targetName;
-      tr.dataset.targetType = sectionType;
-      if (sectionType === 'application') { tr.dataset.targetId = targetId; tr.dataset.targetGroupId = ''; }
-      else { tr.dataset.targetId = ''; tr.dataset.targetGroupId = targetId; }
-
       setupTargetAutocomplete(tr);
       tr.querySelector('.title-input').focus();
     }
 
-    function addAllocationRow(adcId) {
+    // ---- Add allocation row ----
+
+    function addAllocationRow(ctbId) {
       document.querySelectorAll('[data-row-type="new-allocation"]').forEach(r => r.remove());
 
-      // Expand ADC if collapsed
-      if (collapsedAdcs.has(String(adcId))) toggleAdc(adcId);
+      if (collapsedCtbs.has(String(ctbId))) toggleCtb(ctbId);
 
-      const allocRows = Array.from(document.querySelectorAll(`tr[data-adc-id="${adcId}"]`));
-      const adcHeaderRow = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"]`);
-      const insertAfter = allocRows.length > 0 ? allocRows[allocRows.length - 1] : adcHeaderRow;
+      const allocRows   = Array.from(document.querySelectorAll(`tr[data-ctb-id="${ctbId}"]`));
+      const ctbHeaderRow = document.querySelector(`[data-row-type="ctb"][data-id="${ctbId}"]`);
+      const insertAfter  = allocRows.length > 0 ? allocRows[allocRows.length - 1] : ctbHeaderRow;
 
       const tr = document.createElement('tr');
       tr.dataset.rowType = 'new-allocation';
-      tr.dataset.adcId   = adcId;
-      // Inherit section/target from ADC header row
-      if (adcHeaderRow) {
-        tr.dataset.sectionType = adcHeaderRow.dataset.sectionType;
-        tr.dataset.grpTargetId = adcHeaderRow.dataset.grpTargetId;
+      tr.dataset.ctbId   = ctbId;
+      if (ctbHeaderRow) {
+        tr.dataset.sectionType = ctbHeaderRow.dataset.sectionType;
+        tr.dataset.grpTargetId = ctbHeaderRow.dataset.grpTargetId;
       }
       tr.className = 'bg-indigo-50/40';
       tr.innerHTML = buildAllocationEditCells(null);
@@ -801,7 +805,7 @@
       tr.querySelector('.person-input').focus();
     }
 
-    // ---- Target autocomplete (body-attached) ----
+    // ---- Target autocomplete ----
 
     const acDropdown = document.createElement('div');
     acDropdown.id = 'ac-dropdown';
@@ -826,29 +830,33 @@
 
       acDropdown.innerHTML = matches.map(t => {
         const badge = t.type === 'application'
-          ? '<span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">App</span>'
-          : '<span style="font-size:10px;background:#e0e7ff;color:#4338ca;border-radius:4px;padding:1px 4px;font-weight:600">Group</span>';
+          ? '<span class="text-sky-600 text-[9px] font-bold uppercase">App</span>'
+          : '<span class="text-indigo-600 text-[9px] font-bold uppercase">Grp</span>';
         return `<div class="ac-item" data-id="${t.id}" data-type="${t.type}" data-name="${esc(t.name)}">${badge} ${esc(t.name)}</div>`;
       }).join('');
-
-      positionDropdown(acDropdown, input);
-      acDropdown.style.display = 'block';
 
       acDropdown.querySelectorAll('.ac-item').forEach(item => {
         item.addEventListener('mousedown', e => {
           e.preventDefault();
           const { id, type, name } = item.dataset;
-          input.value = name;
-          if (type === 'application') { acTr.dataset.targetType = 'application'; acTr.dataset.targetId = id; acTr.dataset.targetGroupId = ''; }
-          else { acTr.dataset.targetType = 'group'; acTr.dataset.targetId = ''; acTr.dataset.targetGroupId = id; }
+          acTr.querySelector('.target-input').value = name;
+          acTr.dataset.targetType    = type;
+          acTr.dataset.targetId      = type === 'application' ? id : '';
+          acTr.dataset.targetGroupId = type === 'group'       ? id : '';
           hideTargetAc();
         });
       });
+
+      const rect = input.getBoundingClientRect();
+      acDropdown.style.display = 'block';
+      acDropdown.style.top  = `${rect.bottom + 2}px`;
+      acDropdown.style.left = `${rect.left}px`;
+      acDropdown.style.width = `${Math.max(rect.width, 220)}px`;
     }
 
     function hideTargetAc() { acDropdown.style.display = 'none'; acInput = null; acTr = null; }
 
-    // ---- Person picker (FTE / TBH autocomplete) ----
+    // ---- Person autocomplete ----
 
     const personDropdown = document.createElement('div');
     personDropdown.id = 'person-dropdown';
@@ -859,71 +867,61 @@
     let personInput = null, personTr = null;
 
     function setupPersonPicker(tr) {
-      const input = tr.querySelector('.person-input');
       tr.querySelectorAll('.person-type-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.preventDefault();
-          setPersonMode(tr, btn.dataset.type);
-          input.focus();
-        });
+        btn.addEventListener('click', () => setPersonMode(tr, btn.dataset.type));
       });
+      const input = tr.querySelector('.person-input');
       input.addEventListener('input',  () => showPersonAc(tr, input));
       input.addEventListener('focus',  () => showPersonAc(tr, input));
       input.addEventListener('blur',   () => setTimeout(() => { if (personInput === input) hidePersonAc(); }, 150));
     }
 
     function showPersonAc(tr, input) {
-      const mode = tr.dataset.personType || 'fte';
-      const q    = input.value.trim().toLowerCase();
+      const q     = input.value.trim().toLowerCase();
+      const isFte = (tr.dataset.personType || 'fte') === 'fte';
       personInput = input; personTr = tr;
 
       let items = [];
-      if (mode === 'fte') {
-        const matched = q ? ftes.filter(f => (f.first_name + ' ' + f.last_name).toLowerCase().includes(q)) : ftes;
-        items = matched.map(f => ({
-          html: `<div class="ac-item" data-kind="fte" data-id="${f.id}" data-name="${esc(f.first_name + ' ' + f.last_name)}" data-info="${esc(f.title + ' · ' + f.region)}">
-            <span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">FTE</span>
-            ${esc(f.first_name + ' ' + f.last_name)}
-            <span style="font-size:10px;color:#94a3b8">${esc(f.title)} · ${esc(f.region)}</span>
-          </div>`
-        }));
+      if (isFte) {
+        const matches = q ? ftes.filter(f => `${f.first_name} ${f.last_name}`.toLowerCase().includes(q)) : ftes;
+        items = matches.map(f => {
+          const name = `${f.first_name} ${f.last_name}`;
+          return `<div class="ac-item" data-kind="fte" data-id="${f.id}" data-name="${esc(name)}" data-title="${esc(f.title)}" data-region="${esc(f.region)}" data-email="${esc(f.email)}">
+            <span class="text-sky-600 text-[9px] font-bold uppercase">FTE</span> ${esc(name)}
+            <span class="text-slate-400 text-[10px]">${esc(f.title)} · ${esc(f.region)}</span>
+          </div>`;
+        });
       } else {
-        const matched = q ? tbhSlots.filter(t => t.label.toLowerCase().includes(q)) : tbhSlots;
-        items = matched.map(t => ({
-          html: `<div class="ac-item" data-kind="tbh" data-id="${t.id}" data-name="${esc(t.label)}">
-            <span style="font-size:10px;background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 4px;font-weight:600">TBH</span>
-            ${esc(t.label)}
+        const matches = q ? tbhSlots.filter(t => t.label.toLowerCase().includes(q)) : tbhSlots;
+        const exactMatch = tbhSlots.some(t => t.label.toLowerCase() === q);
+        items = matches.map(t =>
+          `<div class="ac-item" data-kind="tbh" data-id="${t.id}" data-name="${esc(t.label)}">
+            <span class="text-amber-600 text-[9px] font-bold uppercase">TBH</span> ${esc(t.label)}
           </div>`
-        }));
-        // Offer to create if typed text doesn't exactly match an existing slot
-        const exactMatch = tbhSlots.find(t => t.label.toLowerCase() === q);
+        );
         if (q && !exactMatch) {
-          items.push({ html: `<div class="ac-item create" data-kind="create-tbh" data-name="${esc(input.value.trim())}">+ Create "${esc(input.value.trim())}" as new TBH</div>` });
+          items.push(`<div class="ac-item create" data-kind="create-tbh" data-name="${esc(input.value.trim())}">+ Create &ldquo;${esc(input.value.trim())}&rdquo; as new TBH</div>`);
         }
       }
 
       if (!items.length) { hidePersonAc(); return; }
-
-      personDropdown.innerHTML = items.map(i => i.html).join('');
-      positionDropdown(personDropdown, input);
-      personDropdown.style.display = 'block';
+      personDropdown.innerHTML = items.join('');
 
       personDropdown.querySelectorAll('.ac-item').forEach(item => {
         item.addEventListener('mousedown', async e => {
           e.preventDefault();
-          const { kind, id, name, info } = item.dataset;
+          const { kind, id, name, title, region, email } = item.dataset;
           if (kind === 'fte') {
-            input.value = name;
             personTr.dataset.fteId = id;
             personTr.dataset.tbhId = '';
-            personTr.querySelector('.person-info').textContent = info || '';
+            personTr.querySelector('.person-input').value = name;
+            personTr.querySelector('.person-info').textContent = `${title} · ${region}`;
           } else if (kind === 'tbh') {
-            input.value = name;
             personTr.dataset.tbhId = id;
             personTr.dataset.fteId = '';
-            personTr.querySelector('.person-info').textContent = 'TBH slot #' + id;
+            personTr.querySelector('.person-input').value = name;
+            personTr.querySelector('.person-info').textContent = 'To Be Hired';
           } else if (kind === 'create-tbh') {
-            // Create TBH slot on the fly
             try {
               const res = await fetch('/api/tbh', {
                 method: 'POST',
@@ -931,114 +929,72 @@
                 body: JSON.stringify({ label: name }),
               });
               const slot = await res.json();
-              if (!res.ok) { showToast((slot.errors || ['Failed to create TBH']).join('; '), 'error'); return; }
-              tbhSlots.push(slot);
-              tbhSlots.sort((a, b) => a.label.localeCompare(b.label));
-              input.value = slot.label;
-              personTr.dataset.tbhId = slot.id;
-              personTr.dataset.fteId = '';
-              personTr.querySelector('.person-info').textContent = 'New TBH slot #' + slot.id;
-              showToast('TBH slot created.', 'success');
-            } catch {
-              showToast('Failed to create TBH slot.', 'error');
-            }
+              if (res.ok) {
+                tbhSlots.push(slot);
+                personTr.dataset.tbhId = slot.id;
+                personTr.dataset.fteId = '';
+                personTr.querySelector('.person-input').value = slot.label;
+                personTr.querySelector('.person-info').textContent = 'To Be Hired';
+              }
+            } catch { /* ignore */ }
           }
           hidePersonAc();
         });
       });
+
+      const rect = input.getBoundingClientRect();
+      personDropdown.style.display = 'block';
+      personDropdown.style.top  = `${rect.bottom + 2}px`;
+      personDropdown.style.left = `${rect.left}px`;
+      personDropdown.style.width = `${Math.max(rect.width, 260)}px`;
     }
 
     function hidePersonAc() { personDropdown.style.display = 'none'; personInput = null; personTr = null; }
 
-    function positionDropdown(dropdown, input) {
-      const r = input.getBoundingClientRect();
-      dropdown.style.top   = (r.bottom + 2) + 'px';
-      dropdown.style.left  = r.left + 'px';
-      dropdown.style.width = Math.max(220, r.width) + 'px';
-    }
+    // ---- Month input live total ----
 
-    // ---- Delete ----
-
-    const deleteTimers = {};
-
-    function twoStepDelete(btn, onConfirm) {
-      const id = btn.dataset.deleteId;
-      if (btn.dataset.confirming) {
-        clearTimeout(deleteTimers[id]);
-        delete deleteTimers[id];
-        onConfirm();
-      } else {
-        btn.dataset.confirming = '1';
-        btn.textContent = 'Sure?';
-        btn.classList.add('bg-rose-600', 'text-white');
-        deleteTimers[id] = setTimeout(() => {
-          btn.dataset.confirming = '';
-          btn.textContent = 'Delete';
-          btn.classList.remove('bg-rose-600', 'text-white');
-        }, 4000);
-      }
-    }
-
-    function handleAdcDelete(btn) {
-      twoStepDelete(btn, async () => {
-        const tr = btn.closest('tr');
-        const id = btn.dataset.deleteId;
-        try {
-          const res = await fetch(`/api/adcs/${id}`, { method: 'DELETE' });
-          if (!res.ok) { showToast('Delete failed.', 'error'); return; }
-          await loadAdcs();
-          showToast('ADC deleted.', 'success');
-        } catch { showToast('Network error.', 'error'); }
+    function setupMonthInputs(tr) {
+      tr.querySelectorAll('.month-input').forEach(input => {
+        input.addEventListener('input', () => {
+          const total = MONTHS.reduce((s, m) => {
+            const el = tr.querySelector(`[data-month="${m}"]`);
+            return s + (el ? Number(el.value) || 0 : 0);
+          }, 0);
+          const disp = tr.querySelector('.total-display');
+          if (disp) disp.textContent = fmtNum(total);
+        });
       });
     }
 
-    function handleAllocDelete(btn) {
-      twoStepDelete(btn, async () => {
-        const tr    = btn.closest('tr');
-        const id    = btn.dataset.deleteId;
-        const adcId = btn.dataset.adcId;
-        try {
-          const res = await fetch(`/api/adcs/${adcId}/allocations/${id}`, { method: 'DELETE' });
-          if (!res.ok) { showToast('Delete failed.', 'error'); return; }
-          await loadAdcs();
-          showToast('Allocation deleted.', 'success');
-        } catch { showToast('Network error.', 'error'); }
-      });
-    }
-
-    // ---- Inline error ----
+    // ---- Inline errors & toasts ----
 
     function showInlineError(tr, msg) {
       removeInlineError(tr);
       const errTr = document.createElement('tr');
-      errTr.className = 'inline-error-row';
-      errTr.innerHTML = `<td colspan="17" class="px-4 py-1.5 text-xs text-rose-600 bg-rose-50">${esc(msg)}</td>`;
+      errTr.dataset.errorFor = tr.dataset.id || 'new';
+      errTr.className = 'bg-rose-50';
+      errTr.innerHTML = `<td colspan="17" class="px-4 py-2 text-xs text-rose-600">${esc(msg)}</td>`;
       tr.after(errTr);
     }
 
     function removeInlineError(tr) {
-      const next = tr.nextElementSibling;
-      if (next && next.classList.contains('inline-error-row')) next.remove();
+      const key = tr.dataset.id || 'new';
+      document.querySelectorAll(`[data-error-for="${key}"]`).forEach(r => r.remove());
     }
 
-    // ---- Toast ----
-
-    function showToast(msg, type = 'success') {
-      const t = document.getElementById('toast');
-      t.className = type === 'success'
+    let toastTimer;
+    function showToast(msg, type) {
+      const el = document.getElementById('toast');
+      el.className = type === 'success'
         ? 'fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 shadow-lg text-sm font-medium text-emerald-700 max-w-sm'
         : 'fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 shadow-lg text-sm font-medium text-rose-700 max-w-sm';
-      t.textContent = msg;
-      t.classList.remove('hidden');
-      setTimeout(() => t.classList.add('hidden'), 3500);
-    }
-
-    function esc(str) {
-      return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      el.textContent = msg;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.add('hidden'), 3000);
     }
 
     // ---- Init ----
-    Promise.all([loadTargets(), loadFtes(), loadTbhSlots()]).then(() => loadAdcs());
+    Promise.all([loadTargets(), loadFtes(), loadTbhSlots()]).then(() => loadCtbs());
   </script>
 
   <script>
