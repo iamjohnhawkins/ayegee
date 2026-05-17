@@ -6,6 +6,21 @@
   <title>IT Investment Governance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/app.css" />
+  <style>
+    #sidebar { transition: width 0.2s ease; }
+    #sidebar-toggle { left: 15.25rem; transition: left 0.2s ease; }
+    main { transition: margin-left 0.2s ease; }
+    body.sidebar-collapsed #sidebar { width: 4rem; }
+    body.sidebar-collapsed main { margin-left: 4rem; }
+    body.sidebar-collapsed #sidebar-toggle { left: 3.25rem; }
+    body.sidebar-collapsed #toggle-icon { transform: rotate(180deg); }
+    body.sidebar-collapsed .nav-label,
+    body.sidebar-collapsed .nav-section,
+    body.sidebar-collapsed .sidebar-footer,
+    body.sidebar-collapsed .logo-text { display: none; }
+    body.sidebar-collapsed .nav-item { justify-content: center; padding-left: 0.25rem; padding-right: 0.25rem; }
+    body.sidebar-collapsed .logo-area { justify-content: center; padding-left: 0.5rem; padding-right: 0.5rem; }
+  </style>
 </head>
 <body class="h-full bg-slate-100 font-sans antialiased">
 
@@ -15,9 +30,9 @@
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-10 flex w-64 flex-col overflow-y-auto bg-slate-900">
 
       <!-- Logo -->
-      <div class="flex items-center gap-3 border-b border-slate-700/60 px-5 py-5">
-        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold tracking-tight select-none">IG</div>
-        <div>
+      <div class="logo-area flex items-center gap-3 border-b border-slate-700/60 px-5 py-5">
+        <div class="shrink-0 flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold tracking-tight select-none">IG</div>
+        <div class="logo-text">
           <p class="text-sm font-semibold leading-tight text-white">IT Investment</p>
           <p class="text-xs font-medium text-indigo-400">Governance</p>
         </div>
@@ -26,60 +41,67 @@
       <!-- Nav -->
       <nav class="flex-1 space-y-0.5 px-3 py-4">
 
-        <p class="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Main</p>
+        <p class="nav-section mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Main</p>
 
         <a href="/" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm8-3a1 1 0 0 0-.867.5 1 1 0 1 1-1.731-1A3 3 0 0 1 13 10a3.001 3.001 0 0 1-2 2.83V13a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1 1 1 0 1 0 0-2 3 3 0 0 1-3-3zm1 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
           </svg>
-          Dashboard
+          <span class="nav-label">Dashboard</span>
         </a>
 
-        <p class="mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Manage</p>
+        <p class="nav-section mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Manage</p>
 
         <a href="/applications.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V4zM2 12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2z"/>
           </svg>
-          Applications
+          <span class="nav-label">Applications</span>
         </a>
 
         <a href="/application-groups.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zM5 11a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H5zM11 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V5zM14 11a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1z"/>
           </svg>
-          Application Groups
+          <span class="nav-label">Application Groups</span>
         </a>
 
         <a href="/ftes.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
           </svg>
-          FTEs
+          <span class="nav-label">FTEs</span>
         </a>
         <a href="/portfolios.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M6 6V5a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v3.57A22.952 22.952 0 0 1 10 13a22.95 22.95 0 0 1-8-1.43V8a2 2 0 0 1 2-2h2zm2-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1H8V5zm1 5a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H10a1 1 0 0 1-1-1z" clip-rule="evenodd"/>
             <path d="M2 13.692V16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.308A24.974 24.974 0 0 1 10 15c-2.796 0-5.487-.46-8-1.308z"/>
           </svg>
-          Portfolios
+          <span class="nav-label">Portfolios</span>
         </a>
         <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0 0 10 1.944 11.954 11.954 0 0 0 17.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/>
           </svg>
-          ADC
+          <span class="nav-label">ADC</span>
         </a>
 
       </nav>
 
       <!-- Footer -->
-      <div class="border-t border-slate-700/60 px-5 py-4">
+      <div class="sidebar-footer border-t border-slate-700/60 px-5 py-4">
         <p class="text-xs text-slate-500">IT Division &middot; Internal Use Only</p>
         <p class="mt-0.5 text-xs text-slate-600">v1.0</p>
       </div>
 
     </aside>
+
+    <button id="sidebar-toggle" title="Toggle sidebar"
+      class="fixed top-16 z-20 flex h-6 w-6 items-center justify-center rounded-full border border-slate-600 bg-slate-700 text-slate-300 shadow hover:bg-slate-600 transition-colors">
+      <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+      </svg>
+    </button>
 
     <!-- Main content -->
     <main class="ml-64 flex flex-1 flex-col min-h-screen">
@@ -288,6 +310,16 @@
       } catch { /* leave placeholders */ }
     }
     loadSummary();
+  </script>
+
+  <script>
+    (function() {
+      if (localStorage.getItem('sidebarCollapsed') === 'true') document.body.classList.add('sidebar-collapsed');
+      document.getElementById('sidebar-toggle').addEventListener('click', function() {
+        var c = document.body.classList.toggle('sidebar-collapsed');
+        localStorage.setItem('sidebarCollapsed', c);
+      });
+    })();
   </script>
 
 </body>
