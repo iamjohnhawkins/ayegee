@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CTB Project · IT Investment Governance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css" />
+  <style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { opacity: 1; }
+    .ac-popup {
+      position: fixed; z-index: 9999; background: #fff;
+      border: 1px solid #e2e8f0; border-radius: 0.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      max-height: 220px; overflow-y: auto; min-width: 220px;
+    }
+    .ac-item { padding: 6px 12px; cursor: pointer; font-size: .8rem; display: flex; align-items: center; gap: 6px; }
+    .ac-item:hover { background: #eef2ff; }
+    #sidebar { transition: width 0.2s ease; }
+    #sidebar-toggle { left: 15.25rem; transition: left 0.2s ease; }
+    main { transition: margin-left 0.2s ease; }
+    body.sidebar-collapsed #sidebar { width: 4rem; }
+    body.sidebar-collapsed main { margin-left: 4rem; }
+    body.sidebar-collapsed #sidebar-toggle { left: 3.25rem; }
+    body.sidebar-collapsed #toggle-icon { transform: rotate(180deg); }
+    body.sidebar-collapsed .nav-label,
+    body.sidebar-collapsed .nav-section,
+    body.sidebar-collapsed .sidebar-footer,
+    body.sidebar-collapsed .logo-text { display: none; }
+    body.sidebar-collapsed .nav-item { justify-content: center; padding-left: 0.25rem; padding-right: 0.25rem; }
+    body.sidebar-collapsed .logo-area { justify-content: center; padding-left: 0.5rem; padding-right: 0.5rem; }
+  </style>
+</head>
+<body class="h-full bg-slate-100 font-sans antialiased">
+
+  <div class="flex h-full">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-10 flex w-64 flex-col overflow-y-auto bg-slate-900">
+      <div class="logo-area flex items-center gap-3 border-b border-slate-700/60 px-5 py-5">
+        <div class="shrink-0 flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold tracking-tight select-none">IG</div>
+        <div class="logo-text">
+          <p class="text-sm font-semibold leading-tight text-white">IT Investment</p>
+          <p class="text-xs font-medium text-indigo-400">Governance</p>
+        </div>
+      </div>
+      <nav class="flex-1 space-y-0.5 px-3 py-4">
+        <p class="nav-section mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Main</p>
+        <a href="/" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm8-3a1 1 0 0 0-.867.5 1 1 0 1 1-1.731-1A3 3 0 0 1 13 10a3.001 3.001 0 0 1-2 2.83V13a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1 1 1 0 1 0 0-2 3 3 0 0 1-3-3zm1 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <p class="nav-section mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Manage</p>
+        <a href="/applications.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V4zM2 12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2z"/>
+          </svg>
+          <span class="nav-label">Applications</span>
+        </a>
+        <a href="/application-groups.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zM5 11a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H5zM11 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V5zM14 11a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1z"/>
+          </svg>
+          <span class="nav-label">Application Groups</span>
+        </a>
+        <a href="/ftes.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
+          </svg>
+          <span class="nav-label">FTEs</span>
+        </a>
+        <a href="/portfolios.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 6V5a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v3.57A22.952 22.952 0 0 1 10 13a22.95 22.95 0 0 1-8-1.43V8a2 2 0 0 1 2-2h2zm2-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1H8V5zm1 5a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H10a1 1 0 0 1-1-1z" clip-rule="evenodd"/>
+            <path d="M2 13.692V16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.308A24.974 24.974 0 0 1 10 15c-2.796 0-5.487-.46-8-1.308z"/>
+          </svg>
+          <span class="nav-label">Portfolios</span>
+        </a>
+        <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0 0 10 1.944 11.954 11.954 0 0 0 17.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span class="nav-label">ADC</span>
+        </a>
+        <a href="/ctb.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"/>
+          </svg>
+          <span class="nav-label">Baseline CTB</span>
+        </a>
+        <a href="/ctb-projects.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+          </svg>
+          <span class="nav-label">CTB Projects</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer border-t border-slate-700/60 px-5 py-4">
+        <p class="text-xs text-slate-500">IT Division &middot; Internal Use Only</p>
+        <p class="mt-0.5 text-xs text-slate-600">v1.0</p>
+      </div>
+    </aside>
+
+    <button id="sidebar-toggle" title="Toggle sidebar"
+      class="fixed top-16 z-20 flex h-6 w-6 items-center justify-center rounded-full border border-slate-600 bg-slate-700 text-slate-300 shadow hover:bg-slate-600 transition-colors">
+      <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+
+    <!-- Main -->
+    <main class="ml-64 flex flex-1 flex-col min-h-screen">
+      <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
+        <div class="flex items-center gap-4">
+          <a href="/ctb-projects.html" class="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+            </svg>
+            CTB Projects
+          </a>
+          <span class="text-slate-300">/</span>
+          <div>
+            <h1 id="page-title" class="text-lg font-semibold text-slate-800">Project Detail</h1>
+          </div>
+        </div>
+      </header>
+
+      <div class="flex-1 px-8 py-7 space-y-6">
+        <div id="toast" class="hidden fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border px-4 py-3 shadow-lg text-sm font-medium max-w-sm"></div>
+
+        <!-- Metadata card -->
+        <div id="meta-card" class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div class="border-b border-slate-100 px-6 py-4">
+            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Project Details</h2>
+          </div>
+          <div id="meta-form" class="px-6 py-5">
+            <p class="text-sm text-slate-400">Loading…</p>
+          </div>
+        </div>
+
+        <!-- Allocations card -->
+        <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Allocations</h2>
+            <button id="add-alloc-btn" onclick="addAllocationRow()" class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z" clip-rule="evenodd"/>
+              </svg>
+              + Allocate
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm" id="alloc-table">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[180px]">Person</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[160px]">Info</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Mar</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Apr</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">May</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jun</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jul</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Aug</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Sep</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Oct</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Nov</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Dec</th>
+                  <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-16">Total</th>
+                  <th class="px-4 py-3 w-32"></th>
+                </tr>
+              </thead>
+              <tbody id="alloc-table-body">
+                <tr><td colspan="16" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get('id');
+
+    let project  = null;
+    let ftes     = [];
+    let tbhSlots = [];
+
+    // ---- Load ----
+
+    async function loadProject() {
+      if (!projectId) {
+        document.getElementById('meta-form').innerHTML = '<p class="text-sm text-rose-500">No project ID specified.</p>';
+        return;
+      }
+      try {
+        const res = await fetch(`/api/ctb-projects/${projectId}`);
+        if (!res.ok) throw new Error('Not found');
+        project = await res.json();
+        renderMeta();
+        renderAllocations();
+        document.getElementById('page-title').textContent = project.title;
+        document.title = `${project.title} · IT Investment Governance`;
+      } catch {
+        document.getElementById('meta-form').innerHTML = '<p class="text-sm text-rose-500">Failed to load project.</p>';
+      }
+    }
+
+    async function loadFtes() {
+      try { ftes     = await (await fetch('/api/ftes')).json(); } catch { }
+    }
+    async function loadTbhSlots() {
+      try { tbhSlots = await (await fetch('/api/tbh')).json(); } catch { }
+    }
+
+    // ---- Metadata form ----
+
+    function targetBadgeHtml(type) {
+      if (type === 'application') return '<span class="inline-flex items-center rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-700">App</span>';
+      if (type === 'group')       return '<span class="inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">Group</span>';
+      return '<span class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-700">Portfolio</span>';
+    }
+
+    function renderMeta() {
+      const p = project;
+      const reasonOpts   = ['Regulatory','Revenue Protection','Revenue Generation','Cost Reduction'];
+      const statusOpts   = ['Proposed','Approved','Rejected','Cut'];
+      const priorityOpts = ['High','Medium','Low'];
+
+      const reasonSel = `<select id="f-reason" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100">
+        ${reasonOpts.map(r => `<option value="${r}" ${p.reason === r ? 'selected' : ''}>${r}</option>`).join('')}
+      </select>`;
+      const statusSel = `<select id="f-status" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100">
+        ${statusOpts.map(s => `<option value="${s}" ${p.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+      </select>`;
+      const prioritySel = `<select id="f-priority" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100">
+        ${priorityOpts.map(pr => `<option value="${pr}" ${p.priority === pr ? 'selected' : ''}>${pr}</option>`).join('')}
+      </select>`;
+
+      const leadName = p.delivery_lead_name || '';
+      const leadId   = p.delivery_lead_id   || '';
+
+      document.getElementById('meta-form').innerHTML = `
+        <div class="space-y-5">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Title</label>
+            <input id="f-title" type="text" value="${esc(p.title)}"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Description</label>
+            <textarea id="f-desc" rows="3"
+              class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 resize-none">${esc(p.description || '')}</textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Target</label>
+              <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                ${targetBadgeHtml(p.target_type)}
+                <span class="text-sm text-slate-700">${esc(p.target_name || '')}</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Year</label>
+              <div class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">${esc(String(p.year))}</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Reason</label>
+              ${reasonSel}
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Status</label>
+              ${statusSel}
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Priority</label>
+              ${prioritySel}
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Benefit (€)</label>
+              <input id="f-benefit" type="number" step="0.01" min="0" value="${Number(p.benefit_eur) || 0}"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">External Cost (€)</label>
+              <input id="f-ext-cost" type="number" step="0.01" min="0" value="${Number(p.external_cost_eur) || 0}"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Delivery Lead</label>
+            <div class="relative">
+              <input id="f-lead-input" type="text" value="${esc(leadName)}" placeholder="Search FTEs…"
+                class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                autocomplete="off" data-lead-id="${leadId}" />
+            </div>
+          </div>
+          <div id="meta-error" class="hidden text-sm text-rose-600 bg-rose-50 rounded-lg px-3 py-2"></div>
+          <div class="flex gap-2">
+            <button onclick="saveProject()" id="save-btn" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors">Save Changes</button>
+            <button onclick="renderMeta()" class="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors">Reset</button>
+          </div>
+        </div>`;
+
+      setupLeadPicker();
+    }
+
+    async function saveProject() {
+      const btn = document.getElementById('save-btn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      document.getElementById('meta-error').classList.add('hidden');
+
+      const body = {
+        title:                document.getElementById('f-title').value,
+        description:          document.getElementById('f-desc').value || null,
+        reason:               document.getElementById('f-reason').value,
+        status:               document.getElementById('f-status').value,
+        priority:             document.getElementById('f-priority').value,
+        benefit_eur:          Number(document.getElementById('f-benefit').value) || 0,
+        external_cost_eur:    Number(document.getElementById('f-ext-cost').value) || 0,
+        delivery_lead_id:     Number(document.getElementById('f-lead-input').dataset.leadId) || null,
+        application_id:       project.application_id       || null,
+        application_group_id: project.application_group_id || null,
+        portfolio_id:         project.portfolio_id         || null,
+      };
+
+      try {
+        const res = await fetch(`/api/ctb-projects/${projectId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          const errEl = document.getElementById('meta-error');
+          errEl.textContent = (data.errors || ['Error']).join('; ');
+          errEl.classList.remove('hidden');
+          btn.disabled = false; btn.textContent = 'Save Changes';
+          return;
+        }
+        project = { ...project, ...data };
+        document.getElementById('page-title').textContent = project.title;
+        document.title = `${project.title} · IT Investment Governance`;
+        renderMeta();
+        showToast('Project saved.', 'success');
+      } catch {
+        const errEl = document.getElementById('meta-error');
+        errEl.textContent = 'Network error — please try again.';
+        errEl.classList.remove('hidden');
+        btn.disabled = false; btn.textContent = 'Save Changes';
+      }
+    }
+
+    // ---- Delivery Lead picker (FTE-only) ----
+
+    const leadDropdown = document.createElement('div');
+    leadDropdown.className = 'ac-popup';
+    leadDropdown.style.display = 'none';
+    document.body.appendChild(leadDropdown);
+    let leadInput = null;
+
+    function setupLeadPicker() {
+      const input = document.getElementById('f-lead-input');
+      if (!input) return;
+      leadInput = input;
+      input.addEventListener('input',  showLeadAc);
+      input.addEventListener('focus',  showLeadAc);
+      input.addEventListener('blur',   () => setTimeout(hideLeadAc, 150));
+    }
+
+    function showLeadAc() {
+      const input = document.getElementById('f-lead-input');
+      if (!input) return;
+      const q = input.value.trim().toLowerCase();
+      const matched = q ? ftes.filter(f => (f.first_name + ' ' + f.last_name).toLowerCase().includes(q)) : ftes;
+
+      // Add clear option if there is a current lead
+      const items = [];
+      if (input.dataset.leadId) {
+        items.push(`<div class="ac-item" data-kind="clear" style="color:#ef4444">✕ Clear delivery lead</div>`);
+      }
+      matched.forEach(f => {
+        items.push(`<div class="ac-item" data-kind="fte" data-id="${f.id}" data-name="${esc(f.first_name + ' ' + f.last_name)}" data-info="${esc(f.title + ' · ' + f.region)}">
+          <span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">FTE</span>
+          ${esc(f.first_name + ' ' + f.last_name)}
+          <span style="font-size:10px;color:#94a3b8">${esc(f.title)} · ${esc(f.region)}</span>
+        </div>`);
+      });
+
+      if (!items.length) { hideLeadAc(); return; }
+
+      leadDropdown.innerHTML = items.join('');
+      const r = input.getBoundingClientRect();
+      leadDropdown.style.top   = (r.bottom + 2) + 'px';
+      leadDropdown.style.left  = r.left + 'px';
+      leadDropdown.style.width = Math.max(280, r.width) + 'px';
+      leadDropdown.style.display = 'block';
+
+      leadDropdown.querySelectorAll('.ac-item').forEach(item => {
+        item.addEventListener('mousedown', e => {
+          e.preventDefault();
+          if (item.dataset.kind === 'clear') {
+            input.value = '';
+            input.dataset.leadId = '';
+          } else {
+            input.value = item.dataset.name;
+            input.dataset.leadId = item.dataset.id;
+          }
+          hideLeadAc();
+        });
+      });
+    }
+
+    function hideLeadAc() { leadDropdown.style.display = 'none'; }
+
+    // ---- Allocations ----
+
+    function renderAllocations() {
+      const tbody = document.getElementById('alloc-table-body');
+      const allocs = Array.isArray(project.allocations) ? project.allocations : [];
+      if (!allocs.length) {
+        tbody.innerHTML = '<tr><td colspan="16" class="px-6 py-10 text-center text-sm text-slate-400">No allocations yet. Click "+ Allocate" to add people.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = '';
+      allocs.forEach(alloc => tbody.appendChild(makeAllocRow(alloc)));
+    }
+
+    function fmtNum(v) {
+      const n = Number(v);
+      if (n === 0) return '—';
+      return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.?0+$/, '');
+    }
+
+    function makeAllocRow(alloc) {
+      const tr = document.createElement('tr');
+      tr.dataset.id = alloc.id;
+      tr.dataset.rowType = 'allocation';
+      const isTbh = alloc.is_tbh;
+      tr.className = isTbh
+        ? 'border-b border-slate-100 bg-amber-50/40 hover:bg-amber-50/70 transition-colors'
+        : 'border-b border-slate-100 bg-sky-50/30 hover:bg-sky-50/60 transition-colors';
+
+      const badge = isTbh
+        ? '<span class="inline-flex items-center rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">TBH</span>'
+        : '<span class="inline-flex items-center rounded-full bg-sky-100 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700">FTE</span>';
+
+      const info = isTbh
+        ? '<span class="text-xs text-amber-700 font-medium">To Be Hired</span>'
+        : `<span class="inline-flex items-center rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">${esc(alloc.fte_title || '')}</span> <span class="text-xs text-slate-400">${esc(alloc.fte_region || '')}</span> <span class="text-xs text-slate-400">${esc(alloc.fte_email || '')}</span>`;
+
+      const total = MONTHS.reduce((s, m) => s + (Number(alloc[m]) || 0), 0);
+      const months = MONTHS.map(m =>
+        `<td class="px-3 py-2 text-right tabular-nums text-xs text-slate-600">${fmtNum(alloc[m])}</td>`
+      ).join('');
+
+      tr.innerHTML = `
+        <td class="px-4 py-2">
+          <div class="flex items-center gap-1.5">${badge} <span class="text-xs font-medium text-slate-700">${esc(alloc.person_name || '')}</span></div>
+        </td>
+        <td class="px-4 py-2">${info}</td>
+        ${months}
+        <td class="px-3 py-2 text-right font-semibold tabular-nums text-xs text-slate-800 bg-slate-50/50">${fmtNum(total)}</td>
+        <td class="px-4 py-2 text-right whitespace-nowrap">
+          <button onclick="enterAllocEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
+          <button class="delete-alloc-btn ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors" data-delete-id="${alloc.id}">Delete</button>
+        </td>`;
+
+      tr.querySelector('.delete-alloc-btn').addEventListener('click', e => handleAllocDelete(e.currentTarget));
+      return tr;
+    }
+
+    function addAllocationRow() {
+      document.querySelectorAll('[data-row-type="new-allocation"]').forEach(r => r.remove());
+      const tbody = document.getElementById('alloc-table-body');
+      const tr    = document.createElement('tr');
+      tr.dataset.rowType = 'new-allocation';
+      tr.className = 'bg-indigo-50/40';
+      tr.innerHTML = buildAllocEditCells(null);
+      tbody.appendChild(tr);
+      tr.dataset.personType = 'fte';
+      setupPersonPicker(tr);
+      setupMonthInputs(tr);
+      tr.querySelector('.person-input').focus();
+    }
+
+    function enterAllocEditMode(tr) {
+      const id    = tr.dataset.id;
+      const alloc = (project.allocations || []).find(al => al.id === Number(id));
+      tr.innerHTML = buildAllocEditCells(alloc);
+      tr.dataset.rowType = 'edit-allocation';
+      tr.className = 'bg-indigo-50/40';
+      if (alloc) {
+        if (alloc.is_tbh) {
+          tr.dataset.personType = 'tbh';
+          tr.dataset.tbhId = alloc.tbh_id || '';
+          tr.querySelector('.person-input').value = alloc.person_name || '';
+          setPersonMode(tr, 'tbh');
+        } else {
+          tr.dataset.personType = 'fte';
+          tr.dataset.fteId = alloc.fte_id || '';
+          tr.querySelector('.person-input').value = alloc.person_name || '';
+          setPersonMode(tr, 'fte');
+        }
+      }
+      setupPersonPicker(tr);
+      setupMonthInputs(tr);
+    }
+
+    function buildAllocEditCells(alloc) {
+      const mv    = alloc ? MONTHS.map(m => Number(alloc[m]) || 0) : MONTHS.map(() => 0);
+      const total = mv.reduce((s, v) => s + v, 0);
+      const monthInputs = mv.map((v, i) => `
+        <td class="px-1 py-2">
+          <input type="number" data-month="${MONTHS[i]}" step="0.5" min="0" value="${v}"
+            class="w-14 rounded border border-slate-200 px-1 py-1 text-xs text-right text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100 month-input" />
+        </td>`).join('');
+
+      return `
+        <td class="px-2 py-2" colspan="1">
+          <div class="flex items-center gap-1">
+            <div class="flex rounded border border-slate-200 overflow-hidden text-[10px] font-semibold shrink-0">
+              <button class="person-type-btn px-1.5 py-1 bg-sky-500 text-white" data-type="fte">FTE</button>
+              <button class="person-type-btn px-1.5 py-1 text-slate-500 hover:bg-slate-50" data-type="tbh">TBH</button>
+            </div>
+            <input type="text" class="person-input flex-1 min-w-0 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
+              placeholder="Search FTEs…" autocomplete="off" />
+          </div>
+        </td>
+        <td class="px-3 py-2"><span class="person-info text-xs text-slate-400"></span></td>
+        ${monthInputs}
+        <td class="px-3 py-2 text-right font-semibold text-slate-800 tabular-nums bg-slate-50 w-16 text-xs">
+          <span class="total-display">${fmtNum(total)}</span>
+        </td>
+        <td class="px-2 py-2 text-right whitespace-nowrap">
+          <button onclick="saveAllocRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
+          <button onclick="cancelAllocEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+        </td>`;
+    }
+
+    function setPersonMode(tr, mode) {
+      tr.dataset.personType = mode;
+      const isFte = mode === 'fte';
+      tr.querySelectorAll('.person-type-btn').forEach(b => {
+        const active = b.dataset.type === mode;
+        b.className = active
+          ? `person-type-btn px-1.5 py-1 text-[10px] font-semibold ${isFte ? 'bg-sky-500 text-white' : 'bg-amber-500 text-white'}`
+          : 'person-type-btn px-1.5 py-1 text-[10px] font-semibold text-slate-500 hover:bg-slate-50';
+      });
+      const input = tr.querySelector('.person-input');
+      input.placeholder = isFte ? 'Search FTEs…' : 'Search or create TBH…';
+      input.value = '';
+      tr.dataset.fteId = '';
+      tr.dataset.tbhId = '';
+      tr.querySelector('.person-info').textContent = '';
+    }
+
+    async function saveAllocRow(tr) {
+      removeInlineError(tr);
+      const id         = tr.dataset.id || null;
+      const personType = tr.dataset.personType || '';
+      const fteId      = tr.dataset.fteId || '';
+      const tbhId      = tr.dataset.tbhId || '';
+
+      const body = {
+        fte_id: personType === 'fte' ? Number(fteId) : null,
+        tbh_id: personType === 'tbh' ? Number(tbhId) : null,
+      };
+      MONTHS.forEach(m => {
+        const el = tr.querySelector(`[data-month="${m}"]`);
+        body[m] = el ? Number(el.value) || 0 : 0;
+      });
+
+      const btn = tr.querySelector('button[onclick^="saveAllocRow"]');
+      btn.disabled = true; btn.textContent = 'Saving…';
+
+      try {
+        const url = id
+          ? `/api/ctb-projects/${projectId}/allocations/${id}`
+          : `/api/ctb-projects/${projectId}/allocations`;
+        const res = await fetch(url, {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showInlineError(tr, (data.errors || ['Error']).join('; '));
+          btn.disabled = false; btn.textContent = 'Save';
+          return;
+        }
+        await reloadAllocations();
+        showToast(id ? 'Allocation updated.' : 'Allocation added.', 'success');
+      } catch {
+        showInlineError(tr, 'Network error — please try again.');
+        btn.disabled = false; btn.textContent = 'Save';
+      }
+    }
+
+    function cancelAllocEdit(tr) {
+      removeInlineError(tr);
+      const id = tr.dataset.id;
+      if (!id) { tr.remove(); return; }
+      const alloc = (project.allocations || []).find(al => al.id === Number(id));
+      if (alloc) tr.replaceWith(makeAllocRow(alloc));
+    }
+
+    async function reloadAllocations() {
+      try {
+        const res = await fetch(`/api/ctb-projects/${projectId}`);
+        if (res.ok) project = await res.json();
+      } catch {}
+      renderAllocations();
+    }
+
+    const deleteTimers = {};
+    function handleAllocDelete(btn) {
+      const id = btn.dataset.deleteId;
+      if (btn.dataset.confirming) {
+        clearTimeout(deleteTimers[id]);
+        delete deleteTimers[id];
+        (async () => {
+          try {
+            const res = await fetch(`/api/ctb-projects/${projectId}/allocations/${id}`, { method: 'DELETE' });
+            if (!res.ok) { showToast('Delete failed.', 'error'); return; }
+            await reloadAllocations();
+            showToast('Allocation deleted.', 'success');
+          } catch { showToast('Network error.', 'error'); }
+        })();
+      } else {
+        btn.dataset.confirming = '1';
+        btn.textContent = 'Sure?';
+        btn.classList.add('bg-rose-600', 'text-white');
+        deleteTimers[id] = setTimeout(() => {
+          btn.dataset.confirming = '';
+          btn.textContent = 'Delete';
+          btn.classList.remove('bg-rose-600', 'text-white');
+        }, 4000);
+      }
+    }
+
+    function setupMonthInputs(tr) {
+      tr.querySelectorAll('.month-input').forEach(inp => {
+        inp.addEventListener('input', () => {
+          const total = MONTHS.reduce((s, m) => {
+            const el = tr.querySelector(`[data-month="${m}"]`);
+            return s + (Number(el ? el.value : 0) || 0);
+          }, 0);
+          const td = tr.querySelector('.total-display');
+          if (td) td.textContent = fmtNum(total);
+        });
+      });
+    }
+
+    // ---- Person picker ----
+
+    const personDropdown = document.createElement('div');
+    personDropdown.className = 'ac-popup';
+    personDropdown.style.display = 'none';
+    document.body.appendChild(personDropdown);
+    let personInput = null, personTr = null;
+
+    function setupPersonPicker(tr) {
+      const input = tr.querySelector('.person-input');
+      tr.querySelectorAll('.person-type-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          setPersonMode(tr, btn.dataset.type);
+          input.focus();
+        });
+      });
+      input.addEventListener('input',  () => showPersonAc(tr, input));
+      input.addEventListener('focus',  () => showPersonAc(tr, input));
+      input.addEventListener('blur',   () => setTimeout(() => { if (personInput === input) hidePersonAc(); }, 150));
+    }
+
+    function showPersonAc(tr, input) {
+      const mode = tr.dataset.personType || 'fte';
+      const q    = input.value.trim().toLowerCase();
+      personInput = input; personTr = tr;
+      let items = [];
+      if (mode === 'fte') {
+        const matched = q ? ftes.filter(f => (f.first_name + ' ' + f.last_name).toLowerCase().includes(q)) : ftes;
+        items = matched.map(f => `<div class="ac-item" data-kind="fte" data-id="${f.id}" data-name="${esc(f.first_name + ' ' + f.last_name)}" data-info="${esc(f.title + ' · ' + f.region)}">
+          <span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">FTE</span>
+          ${esc(f.first_name + ' ' + f.last_name)} <span style="font-size:10px;color:#94a3b8">${esc(f.title)} · ${esc(f.region)}</span>
+        </div>`);
+      } else {
+        const matched = q ? tbhSlots.filter(t => t.label.toLowerCase().includes(q)) : tbhSlots;
+        items = matched.map(t => `<div class="ac-item" data-kind="tbh" data-id="${t.id}" data-name="${esc(t.label)}">
+          <span style="font-size:10px;background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 4px;font-weight:600">TBH</span>
+          ${esc(t.label)}
+        </div>`);
+        const exactMatch = tbhSlots.find(t => t.label.toLowerCase() === q);
+        if (q && !exactMatch) {
+          items.push(`<div class="ac-item create" data-kind="create-tbh" data-name="${esc(input.value.trim())}">+ Create "${esc(input.value.trim())}" as new TBH</div>`);
+        }
+      }
+      if (!items.length) { hidePersonAc(); return; }
+      personDropdown.innerHTML = items.join('');
+      const r = input.getBoundingClientRect();
+      personDropdown.style.top   = (r.bottom + 2) + 'px';
+      personDropdown.style.left  = r.left + 'px';
+      personDropdown.style.width = Math.max(220, r.width) + 'px';
+      personDropdown.style.display = 'block';
+      personDropdown.querySelectorAll('.ac-item').forEach(item => {
+        item.addEventListener('mousedown', async e => {
+          e.preventDefault();
+          const { kind, id, name, info } = item.dataset;
+          if (kind === 'fte') {
+            input.value = name;
+            personTr.dataset.fteId = id;
+            personTr.dataset.tbhId = '';
+            personTr.querySelector('.person-info').textContent = info || '';
+          } else if (kind === 'tbh') {
+            input.value = name;
+            personTr.dataset.tbhId = id;
+            personTr.dataset.fteId = '';
+            personTr.querySelector('.person-info').textContent = 'TBH slot #' + id;
+          } else if (kind === 'create-tbh') {
+            try {
+              const res = await fetch('/api/tbh', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ label: name }) });
+              const slot = await res.json();
+              if (!res.ok) { showToast((slot.errors || ['Failed']).join('; '), 'error'); return; }
+              tbhSlots.push(slot);
+              tbhSlots.sort((a, b) => a.label.localeCompare(b.label));
+              input.value = slot.label;
+              personTr.dataset.tbhId = slot.id;
+              personTr.dataset.fteId = '';
+              personTr.querySelector('.person-info').textContent = 'New TBH slot #' + slot.id;
+              showToast('TBH slot created.', 'success');
+            } catch { showToast('Failed to create TBH slot.', 'error'); }
+          }
+          hidePersonAc();
+        });
+      });
+    }
+
+    function hidePersonAc() { personDropdown.style.display = 'none'; personInput = null; personTr = null; }
+
+    // ---- Inline error ----
+    function showInlineError(tr, msg) {
+      removeInlineError(tr);
+      const errTr = document.createElement('tr');
+      errTr.className = 'inline-error-row';
+      errTr.innerHTML = `<td colspan="16" class="px-4 py-1.5 text-xs text-rose-600 bg-rose-50">${esc(msg)}</td>`;
+      tr.after(errTr);
+    }
+    function removeInlineError(tr) {
+      const next = tr.nextElementSibling;
+      if (next && next.classList.contains('inline-error-row')) next.remove();
+    }
+
+    // ---- Toast ----
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.className = type === 'success'
+        ? 'fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 shadow-lg text-sm font-medium text-emerald-700 max-w-sm'
+        : 'fixed top-5 right-5 z-50 flex items-center gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 shadow-lg text-sm font-medium text-rose-700 max-w-sm';
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3500);
+    }
+
+    function esc(str) {
+      return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ---- Init ----
+    Promise.all([loadFtes(), loadTbhSlots()]).then(() => loadProject());
+  </script>
+
+  <script>
+    (function() {
+      if (localStorage.getItem('sidebarCollapsed') === 'true') document.body.classList.add('sidebar-collapsed');
+      document.getElementById('sidebar-toggle').addEventListener('click', function() {
+        var c = document.body.classList.toggle('sidebar-collapsed');
+        localStorage.setItem('sidebarCollapsed', c);
+      });
+    })();
+  </script>
+
+</body>
+</html>

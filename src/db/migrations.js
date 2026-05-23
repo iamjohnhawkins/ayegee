@@ -170,6 +170,60 @@ async function runMigrations() {
   await db.query(`CREATE INDEX IF NOT EXISTS idx_ctb_alloc_ctb_id ON baseline_ctb_allocations(ctb_id)`);
   await db.query(`CREATE INDEX IF NOT EXISTS idx_ctb_alloc_fte_id ON baseline_ctb_allocations(fte_id) WHERE fte_id IS NOT NULL`);
   await db.query(`CREATE INDEX IF NOT EXISTS idx_ctb_alloc_tbh_id ON baseline_ctb_allocations(tbh_id) WHERE tbh_id IS NOT NULL`);
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS ctb_projects (
+      id                   SERIAL PRIMARY KEY,
+      title                VARCHAR(255) NOT NULL,
+      description          TEXT,
+      year                 INTEGER      NOT NULL,
+      status               VARCHAR(20)  NOT NULL DEFAULT 'Proposed'
+                             CHECK (status IN ('Proposed','Approved','Rejected','Cut')),
+      reason               VARCHAR(30)  NOT NULL
+                             CHECK (reason IN ('Regulatory','Revenue Protection','Revenue Generation','Cost Reduction')),
+      priority             VARCHAR(10)  NOT NULL DEFAULT 'Medium'
+                             CHECK (priority IN ('High','Medium','Low')),
+      benefit_eur          NUMERIC(14,2) NOT NULL DEFAULT 0,
+      external_cost_eur    NUMERIC(14,2) NOT NULL DEFAULT 0,
+      delivery_lead_id     INTEGER      REFERENCES ftes(id) ON DELETE SET NULL,
+      application_id       INTEGER      REFERENCES applications(id) ON DELETE CASCADE,
+      application_group_id INTEGER      REFERENCES application_groups(id) ON DELETE CASCADE,
+      portfolio_id         INTEGER      REFERENCES portfolios(id) ON DELETE CASCADE,
+      created_at           TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+      updated_at           TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+      CONSTRAINT chk_ctbp_target CHECK (
+        (application_id IS NOT NULL)::int +
+        (application_group_id IS NOT NULL)::int +
+        (portfolio_id IS NOT NULL)::int = 1
+      )
+    )
+  `);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_ctbp_app   ON ctb_projects(application_id)       WHERE application_id IS NOT NULL`);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_ctbp_grp   ON ctb_projects(application_group_id) WHERE application_group_id IS NOT NULL`);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_ctbp_port  ON ctb_projects(portfolio_id)         WHERE portfolio_id IS NOT NULL`);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_ctbp_lead  ON ctb_projects(delivery_lead_id)     WHERE delivery_lead_id IS NOT NULL`);
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS ctb_project_allocations (
+      id         SERIAL PRIMARY KEY,
+      project_id INTEGER NOT NULL REFERENCES ctb_projects(id) ON DELETE CASCADE,
+      fte_id     INTEGER REFERENCES ftes(id)      ON DELETE RESTRICT,
+      tbh_id     INTEGER REFERENCES tbh_slots(id) ON DELETE RESTRICT,
+      jan  NUMERIC(6,2) NOT NULL DEFAULT 0, feb  NUMERIC(6,2) NOT NULL DEFAULT 0,
+      mar  NUMERIC(6,2) NOT NULL DEFAULT 0, apr  NUMERIC(6,2) NOT NULL DEFAULT 0,
+      may  NUMERIC(6,2) NOT NULL DEFAULT 0, jun  NUMERIC(6,2) NOT NULL DEFAULT 0,
+      jul  NUMERIC(6,2) NOT NULL DEFAULT 0, aug  NUMERIC(6,2) NOT NULL DEFAULT 0,
+      sep  NUMERIC(6,2) NOT NULL DEFAULT 0, oct  NUMERIC(6,2) NOT NULL DEFAULT 0,
+      nov  NUMERIC(6,2) NOT NULL DEFAULT 0, dec  NUMERIC(6,2) NOT NULL DEFAULT 0,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      CONSTRAINT chk_ctbpa_person CHECK (
+        (fte_id IS NOT NULL AND tbh_id IS NULL) OR
+        (fte_id IS NULL     AND tbh_id IS NOT NULL)
+      )
+    )
+  `);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_ctbpa_project ON ctb_project_allocations(project_id)`);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_ctbpa_fte     ON ctb_project_allocations(fte_id)  WHERE fte_id IS NOT NULL`);
+  await db.query(`CREATE INDEX IF NOT EXISTS idx_ctbpa_tbh     ON ctb_project_allocations(tbh_id)  WHERE tbh_id IS NOT NULL`);
   console.log('Migrations complete');
 }
 

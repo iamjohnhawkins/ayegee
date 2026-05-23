@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ADC · IT Investment Governance</title>
+  <title>CTB Projects · IT Investment Governance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/app.css" />
   <style>
@@ -33,6 +33,7 @@
     body.sidebar-collapsed .logo-text { display: none; }
     body.sidebar-collapsed .nav-item { justify-content: center; padding-left: 0.25rem; padding-right: 0.25rem; }
     body.sidebar-collapsed .logo-area { justify-content: center; padding-left: 0.5rem; padding-right: 0.5rem; }
+    tr.project-row { cursor: pointer; }
   </style>
 </head>
 <body class="h-full bg-slate-100 font-sans antialiased">
@@ -82,7 +83,7 @@
           </svg>
           <span class="nav-label">Portfolios</span>
         </a>
-        <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
+        <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0 0 10 1.944 11.954 11.954 0 0 0 17.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/>
           </svg>
@@ -94,7 +95,7 @@
           </svg>
           <span class="nav-label">Baseline CTB</span>
         </a>
-        <a href="/ctb-projects.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+        <a href="/ctb-projects.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
           </svg>
@@ -118,14 +119,14 @@
     <main class="ml-64 flex flex-1 flex-col min-h-screen">
       <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
         <div>
-          <h1 id="page-title" class="text-lg font-semibold text-slate-800">ADC</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Application Development Compliance — monthly FTE requirements by person</p>
+          <h1 id="page-title" class="text-lg font-semibold text-slate-800">CTB Projects</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Change The Bank — discrete initiatives with monthly FTE/TBH allocations</p>
         </div>
-        <button onclick="addNewAdcRow()" class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors">
+        <button onclick="addNewProjectRow()" class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z" clip-rule="evenodd"/>
           </svg>
-          Add ADC
+          Add Project
         </button>
       </header>
 
@@ -134,16 +135,16 @@
 
         <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">ADC Entries</h2>
-            <span id="adc-count" class="text-xs text-slate-400"></span>
+            <h2 class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">CTB Projects</h2>
+            <span id="project-count" class="text-xs text-slate-400"></span>
           </div>
           <div class="overflow-x-auto">
-            <table class="min-w-full text-sm" id="adc-table">
+            <table class="min-w-full text-sm" id="project-table">
               <thead>
                 <tr class="bg-slate-50 border-b border-slate-200">
                   <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[200px]">Name / Target</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[140px]">Title / Description</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[150px]">Info</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[140px]">Status / Priority</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[120px]">Info</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Mar</th>
@@ -160,7 +161,7 @@
                   <th class="px-4 py-3 w-36"></th>
                 </tr>
               </thead>
-              <tbody id="adc-table-body">
+              <tbody id="project-table-body">
                 <tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
               </tbody>
             </table>
@@ -173,32 +174,32 @@
   <script>
     const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
     const currentYear = new Date().getFullYear();
-    document.getElementById('page-title').textContent = `ADC — ${currentYear}`;
+    document.getElementById('page-title').textContent = `CTB Projects — ${currentYear}`;
 
-    let adcs      = [];
+    let projects  = [];
     let targets   = [];
     let ftes      = [];
     let tbhSlots  = [];
 
     let collapsedSections = new Set();
     let collapsedTargets  = new Set();
-    let collapsedAdcs     = new Set();
+    let collapsedProjects = new Set();
 
     // ---- Data loading ----
 
-    async function loadAdcs() {
+    async function loadProjects() {
       try {
-        const res = await fetch('/api/adcs');
-        adcs = await res.json();
+        const res = await fetch('/api/ctb-projects');
+        projects = await res.json();
         renderTable();
       } catch {
-        document.getElementById('adc-table-body').innerHTML =
-          '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load ADC entries.</td></tr>';
+        document.getElementById('project-table-body').innerHTML =
+          '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load CTB projects.</td></tr>';
       }
     }
 
     async function loadTargets() {
-      try { targets  = await (await fetch('/api/adcs/targets')).json(); } catch { }
+      try { targets  = await (await fetch('/api/ctb-projects/targets')).json(); } catch { }
     }
     async function loadFtes() {
       try { ftes     = await (await fetch('/api/ftes')).json(); } catch { }
@@ -210,21 +211,25 @@
     // ---- Grouping ----
 
     function buildGrouped() {
-      const apps = {}, groups = {};
-      adcs.forEach(adc => {
-        if (adc.target_type === 'application') {
-          const k = adc.application_id;
-          if (!apps[k]) apps[k] = { id: k, name: adc.target_name, entries: [] };
-          apps[k].entries.push(adc);
-        } else {
-          const k = adc.application_group_id;
-          if (!groups[k]) groups[k] = { id: k, name: adc.target_name, entries: [] };
-          groups[k].entries.push(adc);
+      const sections = { application: {}, group: {}, portfolio: {} };
+      targets.forEach(t => {
+        if (sections[t.type]) {
+          sections[t.type][t.id] = { id: t.id, name: t.name, entries: [] };
+        }
+      });
+      projects.forEach(p => {
+        const type = p.target_type;
+        const tid  = type === 'application' ? p.application_id
+                   : type === 'group'       ? p.application_group_id
+                   : p.portfolio_id;
+        if (sections[type] && sections[type][tid]) {
+          sections[type][tid].entries.push(p);
         }
       });
       return {
-        application: Object.values(apps).sort((a, b) => a.name.localeCompare(b.name)),
-        group: Object.values(groups).sort((a, b) => a.name.localeCompare(b.name)),
+        application: Object.values(sections.application).sort((a, b) => a.name.localeCompare(b.name)),
+        group:       Object.values(sections.group).sort((a, b) => a.name.localeCompare(b.name)),
+        portfolio:   Object.values(sections.portfolio).sort((a, b) => a.name.localeCompare(b.name)),
       };
     }
 
@@ -240,11 +245,11 @@
     function updateRowVisibility(row) {
       const st  = row.dataset.sectionType;
       const tid = row.dataset.grpTargetId;
-      const aid = row.dataset.adcId;
+      const pid = row.dataset.projectId;
       const hidden =
         collapsedSections.has(st) ||
         (tid && row.dataset.rowType !== 'target' && collapsedTargets.has(`${st}:${tid}`)) ||
-        (aid && collapsedAdcs.has(aid));
+        (pid && collapsedProjects.has(String(pid)));
       row.style.display = hidden ? 'none' : '';
     }
 
@@ -260,20 +265,55 @@
       <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
     </svg>`;
 
-    function renderTable() {
-      const tbody = document.getElementById('adc-table-body');
-      document.getElementById('adc-count').textContent = `${adcs.length} entr${adcs.length !== 1 ? 'ies' : 'y'}`;
+    function targetBadge(type) {
+      if (type === 'application') return '<span class="inline-flex items-center rounded-full bg-sky-100 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700">App</span>';
+      if (type === 'group')       return '<span class="inline-flex items-center rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-700">Group</span>';
+      return '<span class="inline-flex items-center rounded-full bg-violet-100 px-1.5 py-0.5 text-[10px] font-semibold text-violet-700">Portfolio</span>';
+    }
 
-      if (!adcs.length) {
-        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No ADC entries yet. Click "+ Add ADC" to get started.</td></tr>';
+    function statusBadge(status) {
+      const map = {
+        'Proposed': 'bg-indigo-100 text-indigo-700',
+        'Approved': 'bg-emerald-100 text-emerald-700',
+        'Rejected': 'bg-rose-100 text-rose-700',
+        'Cut':      'bg-slate-100 text-slate-500',
+      };
+      const cls = map[status] || 'bg-slate-100 text-slate-500';
+      return `<span class="inline-flex items-center rounded-full ${cls} px-1.5 py-0.5 text-[10px] font-semibold">${esc(status)}</span>`;
+    }
+
+    function priorityBadge(priority) {
+      const map = {
+        'High':   'bg-rose-100 text-rose-700',
+        'Medium': 'bg-amber-100 text-amber-700',
+        'Low':    'bg-sky-100 text-sky-700',
+      };
+      const cls = map[priority] || 'bg-slate-100 text-slate-500';
+      return `<span class="inline-flex items-center rounded-full ${cls} px-1.5 py-0.5 text-[10px] font-semibold">${esc(priority)}</span>`;
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('project-table-body');
+      document.getElementById('project-count').textContent = `${projects.length} project${projects.length !== 1 ? 's' : ''}`;
+
+      if (!targets.length) {
+        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No applications, groups, or portfolios defined yet.</td></tr>';
         return;
       }
 
       tbody.innerHTML = '';
       const grouped = buildGrouped();
-      [{ type: 'application', label: 'Applications' }, { type: 'group', label: 'Application Groups' }].forEach(section => {
+      const SECTIONS = [
+        { type: 'application', label: 'Applications' },
+        { type: 'group',       label: 'Application Groups' },
+        { type: 'portfolio',   label: 'Portfolios' },
+      ];
+      let anyRendered = false;
+
+      SECTIONS.forEach(section => {
         const tList = grouped[section.type];
         if (!tList.length) return;
+        anyRendered = true;
 
         const allEntries = tList.flatMap(t => t.entries);
         const secTotals  = monthTotals(allEntries);
@@ -288,20 +328,24 @@
 
           tbody.appendChild(makeTargetRow(target, section.type, tTotals, tCol, secCol));
 
-          target.entries.forEach(adc => {
-            const adcKey  = String(adc.id);
-            const adcCol  = collapsedAdcs.has(adcKey);
-            const adcHide = secCol || tCol;
+          target.entries.forEach(project => {
+            const projKey = String(project.id);
+            const projCol = collapsedProjects.has(projKey);
+            const projHide = secCol || tCol;
 
-            tbody.appendChild(makeAdcRow(adc, section.type, target.id, adcHide));
+            tbody.appendChild(makeProjectRow(project, section.type, target.id, projHide));
 
-            const allocs = Array.isArray(adc.allocations) ? adc.allocations : [];
+            const allocs = Array.isArray(project.allocations) ? project.allocations : [];
             allocs.forEach(alloc => {
-              tbody.appendChild(makeAllocationRow(alloc, section.type, target.id, adc.id, adcHide || adcCol));
+              tbody.appendChild(makeAllocationRow(alloc, section.type, target.id, project.id, projHide || projCol));
             });
           });
         });
       });
+
+      if (!anyRendered) {
+        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No CTB projects yet. Click "+ Add Project" to get started.</td></tr>';
+      }
     }
 
     function makeSectionRow(section, count, totals, collapsed) {
@@ -318,7 +362,7 @@
         <td colspan="3" class="px-4 py-2.5">
           <div class="flex items-center gap-2 text-slate-100">${CHEVRON}
             <span class="text-[11px] font-bold uppercase tracking-widest">${section.label}</span>
-            <span class="text-[11px] text-slate-500">${count} entr${count !== 1 ? 'ies' : 'y'}</span>
+            <span class="text-[11px] text-slate-500">${count} project${count !== 1 ? 's' : ''}</span>
           </div>
         </td>
         ${months}
@@ -338,10 +382,6 @@
       tr.className = 'bg-slate-50 border-b border-slate-200 cursor-pointer select-none';
       if (sectionCollapsed) tr.style.display = 'none';
 
-      const badge = sectionType === 'application'
-        ? '<span class="inline-flex items-center rounded-full bg-sky-100 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700">App</span>'
-        : '<span class="inline-flex items-center rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-700">Group</span>';
-
       const months = MONTHS.map(m =>
         `<td class="px-3 py-2 text-right text-xs tabular-nums text-slate-500">${fmtNum(totals[m])}</td>`
       ).join('');
@@ -350,11 +390,11 @@
         <td colspan="3" class="px-4 py-2">
           <div class="flex items-center gap-2">
             <span class="text-slate-400">${CHEVRON}</span>
-            ${badge}
+            ${targetBadge(sectionType)}
             <span class="text-xs font-semibold text-slate-700">${esc(target.name)}</span>
-            <span class="text-xs text-slate-400">${target.entries.length} entr${target.entries.length !== 1 ? 'ies' : 'y'}</span>
-            <button class="add-adc-btn ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
-              data-tid="${target.id}" data-stype="${sectionType}" data-tname="${esc(target.name)}">+ Add ADC</button>
+            <span class="text-xs text-slate-400">${target.entries.length} project${target.entries.length !== 1 ? 's' : ''}</span>
+            <button class="add-project-btn ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
+              data-tid="${target.id}" data-stype="${sectionType}" data-tname="${esc(target.name)}">+ Add Project</button>
           </div>
         </td>
         ${months}
@@ -363,72 +403,87 @@
 
       if (collapsed) tr.querySelector('.chevron').classList.add('collapsed');
 
-      tr.querySelector('.add-adc-btn').addEventListener('click', e => {
+      tr.querySelector('.add-project-btn').addEventListener('click', e => {
         e.stopPropagation();
         const b = e.currentTarget;
-        addAdcRowForTarget(b.dataset.stype, Number(b.dataset.tid), b.dataset.tname);
+        addProjectRowForTarget(b.dataset.stype, Number(b.dataset.tid), b.dataset.tname);
       });
       tr.addEventListener('click', () => toggleTarget(sectionType, target.id));
       return tr;
     }
 
-    function makeAdcRow(adc, sectionType, targetId, hidden) {
+    function makeProjectRow(project, sectionType, targetId, hidden) {
       const tr = document.createElement('tr');
-      tr.dataset.rowType     = 'adc';
+      tr.dataset.rowType     = 'project';
       tr.dataset.sectionType = sectionType;
       tr.dataset.grpTargetId = targetId;
-      tr.dataset.id          = adc.id;
-      tr.className = 'bg-white border-b border-slate-100 hover:bg-slate-50/40 transition-colors';
+      tr.dataset.id          = project.id;
+      tr.className = 'project-row bg-white border-b border-slate-100 hover:bg-slate-50/40 transition-colors';
       if (hidden) tr.style.display = 'none';
 
-      const allocs = Array.isArray(adc.allocations) ? adc.allocations : [];
-      const adcCol = collapsedAdcs.has(String(adc.id));
+      const allocs = Array.isArray(project.allocations) ? project.allocations : [];
+      const projCol = collapsedProjects.has(String(project.id));
       const allocCount = allocs.length;
       const months = MONTHS.map(m =>
-        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(adc[m])}</td>`
+        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(project[m])}</td>`
       ).join('');
-      const total = MONTHS.reduce((s, m) => s + (Number(adc[m]) || 0), 0);
+      const total = MONTHS.reduce((s, m) => s + (Number(project[m]) || 0), 0);
 
       tr.innerHTML = `
         <td class="px-4 py-2.5 pl-8">
           <div class="flex items-center gap-1.5">
-            <span class="text-slate-400">${CHEVRON}</span>
-            <span class="text-sm font-semibold text-slate-800">${esc(adc.title)}</span>
+            <span class="text-slate-400 chevron-wrap">${CHEVRON}</span>
+            <a href="/ctb-project.html?id=${project.id}" class="text-sm font-semibold text-indigo-700 hover:underline project-link">${esc(project.title)}</a>
           </div>
         </td>
-        <td class="px-4 py-2.5 text-xs text-slate-500 max-w-[140px] truncate" title="${esc(adc.description || '')}">${esc(adc.description || '—')}</td>
+        <td class="px-4 py-2.5">
+          <div class="flex items-center gap-1 flex-wrap">${statusBadge(project.status)} ${priorityBadge(project.priority)}</div>
+        </td>
         <td class="px-4 py-2.5">
           <div class="flex items-center gap-1.5">
             <span class="text-[10px] text-slate-400">${allocCount} alloc${allocCount !== 1 ? 's' : ''}</span>
             <button class="alloc-btn inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors"
-              data-adc-id="${adc.id}">+ Allocate</button>
+              data-project-id="${project.id}">+ Allocate</button>
           </div>
         </td>
         ${months}
         <td class="px-3 py-2.5 text-right font-semibold text-slate-800 tabular-nums text-xs bg-slate-50">${fmtNum(total)}</td>
         <td class="px-4 py-2.5 text-right whitespace-nowrap">
-          <button onclick="enterAdcEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
-          <button data-delete-id="${adc.id}" data-delete-title="${esc(adc.title)}" onclick="handleAdcDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
+          <button class="edit-btn rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
+          <button class="delete-btn ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors" data-delete-id="${project.id}" data-delete-title="${esc(project.title)}">Delete</button>
         </td>`;
 
-      if (adcCol) tr.querySelector('.chevron').classList.add('collapsed');
+      if (projCol) tr.querySelector('.chevron').classList.add('collapsed');
+
+      tr.querySelector('.chevron-wrap').addEventListener('click', e => {
+        e.stopPropagation();
+        toggleProject(project.id);
+      });
+      tr.querySelector('.project-link').addEventListener('click', e => e.stopPropagation());
       tr.querySelector('.alloc-btn').addEventListener('click', e => {
         e.stopPropagation();
-        addAllocationRow(Number(e.currentTarget.dataset.adcId));
+        addAllocationRow(Number(e.currentTarget.dataset.projectId));
       });
-      tr.querySelector('.chevron').parentElement.addEventListener('click', e => {
+      tr.querySelector('.edit-btn').addEventListener('click', e => {
         e.stopPropagation();
-        toggleAdc(adc.id);
+        enterProjectEditMode(tr);
+      });
+      tr.querySelector('.delete-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        handleProjectDelete(e.currentTarget);
+      });
+      tr.addEventListener('click', () => {
+        window.location.href = `/ctb-project.html?id=${project.id}`;
       });
       return tr;
     }
 
-    function makeAllocationRow(alloc, sectionType, targetId, adcId, hidden) {
+    function makeAllocationRow(alloc, sectionType, targetId, projectId, hidden) {
       const tr = document.createElement('tr');
       tr.dataset.rowType     = 'allocation';
       tr.dataset.sectionType = sectionType;
       tr.dataset.grpTargetId = targetId;
-      tr.dataset.adcId       = adcId;
+      tr.dataset.projectId   = projectId;
       tr.dataset.id          = alloc.id;
       const isTbh = alloc.is_tbh;
       tr.className = isTbh
@@ -461,8 +516,10 @@
         <td class="px-3 py-2 text-right font-semibold tabular-nums text-xs text-slate-800 bg-slate-50/50">${fmtNum(total)}</td>
         <td class="px-4 py-2 text-right whitespace-nowrap">
           <button onclick="enterAllocationEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
-          <button data-delete-id="${alloc.id}" data-adc-id="${adcId}" onclick="handleAllocDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
+          <button class="delete-alloc-btn ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors" data-delete-id="${alloc.id}" data-project-id="${projectId}">Delete</button>
         </td>`;
+
+      tr.querySelector('.delete-alloc-btn').addEventListener('click', e => handleAllocDelete(e.currentTarget));
       return tr;
     }
 
@@ -485,71 +542,94 @@
       if (ch) ch.classList.toggle('collapsed', collapsedTargets.has(key));
     }
 
-    function toggleAdc(adcId) {
-      const key = String(adcId);
-      if (collapsedAdcs.has(key)) collapsedAdcs.delete(key);
-      else collapsedAdcs.add(key);
-      document.querySelectorAll(`tr[data-adc-id="${adcId}"]`).forEach(updateRowVisibility);
-      const ch = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"] .chevron`);
-      if (ch) ch.classList.toggle('collapsed', collapsedAdcs.has(key));
+    function toggleProject(projectId) {
+      const key = String(projectId);
+      if (collapsedProjects.has(key)) collapsedProjects.delete(key);
+      else collapsedProjects.add(key);
+      document.querySelectorAll(`tr[data-project-id="${projectId}"]`).forEach(updateRowVisibility);
+      const ch = document.querySelector(`[data-row-type="project"][data-id="${projectId}"] .chevron`);
+      if (ch) ch.classList.toggle('collapsed', collapsedProjects.has(key));
     }
 
-    // ---- ADC edit mode ----
+    // ---- Project edit mode ----
 
-    function enterAdcEditMode(tr) {
-      const id  = tr.dataset.id;
-      const adc = id ? adcs.find(a => a.id === Number(id)) : null;
-      tr.innerHTML = buildAdcEditCells(adc);
-      tr.dataset.rowType = 'edit-adc';
+    function enterProjectEditMode(tr) {
+      const id      = tr.dataset.id;
+      const project = id ? projects.find(p => p.id === Number(id)) : null;
+      tr.innerHTML = buildProjectEditCells(project);
+      tr.dataset.rowType = 'edit-project';
       tr.className = 'bg-indigo-50/40';
-      if (adc) {
-        tr.querySelector('.target-input').value = adc.target_name || '';
-        tr.dataset.targetType    = adc.application_id ? 'application' : 'group';
-        tr.dataset.targetId      = adc.application_id || '';
-        tr.dataset.targetGroupId = adc.application_group_id || '';
+      if (project) {
+        tr.querySelector('.target-input').value = project.target_name || '';
+        tr.dataset.targetType       = project.target_type || '';
+        tr.dataset.targetId         = project.application_id       || '';
+        tr.dataset.targetGroupId    = project.application_group_id || '';
+        tr.dataset.targetPortfolioId = project.portfolio_id        || '';
       }
       setupTargetAutocomplete(tr);
     }
 
-    function buildAdcEditCells(adc) {
+    function buildProjectEditCells(project) {
+      const reasonOpts = ['Regulatory','Revenue Protection','Revenue Generation','Cost Reduction'];
+      const statusOpts = ['Proposed','Approved','Rejected','Cut'];
+      const priorityOpts = ['High','Medium','Low'];
+
+      const reasonSel  = `<select class="reason-sel w-full rounded border border-slate-200 px-1 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100">
+        ${reasonOpts.map(r => `<option value="${r}" ${project && project.reason === r ? 'selected' : ''}>${r}</option>`).join('')}
+      </select>`;
+      const statusSel  = `<select class="status-sel w-full rounded border border-slate-200 px-1 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100">
+        ${statusOpts.map(s => `<option value="${s}" ${project && project.status === s ? 'selected' : (s === 'Proposed' && !project ? 'selected' : '')}>${s}</option>`).join('')}
+      </select>`;
+      const prioritySel = `<select class="priority-sel w-full rounded border border-slate-200 px-1 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100">
+        ${priorityOpts.map(p2 => `<option value="${p2}" ${project && project.priority === p2 ? 'selected' : (p2 === 'Medium' && !project ? 'selected' : '')}>${p2}</option>`).join('')}
+      </select>`;
+
       return `
         <td class="px-2 py-2">
-          <input type="text" placeholder="Search apps & groups…" class="target-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100" autocomplete="off" />
+          <input type="text" placeholder="Search apps, groups, portfolios…" class="target-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100" autocomplete="off" />
         </td>
         <td class="px-2 py-2">
           <input type="text" class="title-input w-32 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
-            placeholder="Title" value="${esc(adc ? adc.title : '')}" />
+            placeholder="Title" value="${esc(project ? project.title : '')}" />
         </td>
         <td class="px-2 py-2">
-          <input type="text" class="desc-input w-36 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
-            placeholder="Description (optional)" value="${esc(adc ? (adc.description || '') : '')}" />
+          <input type="text" class="desc-input w-28 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
+            placeholder="Description" value="${esc(project ? (project.description || '') : '')}" />
         </td>
-        <td colspan="13" class="px-3 py-2 text-xs text-slate-400 italic">Month totals come from allocations</td>
+        <td class="px-2 py-2">${reasonSel}</td>
+        <td class="px-2 py-2">${statusSel}</td>
+        <td class="px-2 py-2">${prioritySel}</td>
+        <td colspan="10" class="px-3 py-2 text-xs text-slate-400 italic">Set benefit, cost &amp; delivery lead on the project detail page →</td>
         <td class="px-2 py-2 text-right whitespace-nowrap">
-          <button onclick="saveAdcRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
-          <button onclick="cancelAdcEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
+          <button onclick="saveProjectRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
+          <button onclick="cancelProjectEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
         </td>`;
     }
 
-    async function saveAdcRow(tr) {
+    async function saveProjectRow(tr) {
       removeInlineError(tr);
-      const id             = tr.dataset.id || null;
-      const targetType     = tr.dataset.targetType || '';
-      const targetId       = tr.dataset.targetId || '';
-      const targetGroupId  = tr.dataset.targetGroupId || '';
+      const id              = tr.dataset.id || null;
+      const targetType      = tr.dataset.targetType || '';
+      const targetId        = tr.dataset.targetId || '';
+      const targetGroupId   = tr.dataset.targetGroupId || '';
+      const targetPortId    = tr.dataset.targetPortfolioId || '';
 
       const body = {
         title:                tr.querySelector('.title-input').value,
         description:          tr.querySelector('.desc-input').value || null,
+        reason:               tr.querySelector('.reason-sel').value,
+        status:               tr.querySelector('.status-sel').value,
+        priority:             tr.querySelector('.priority-sel').value,
         application_id:       targetType === 'application' ? Number(targetId)      : null,
         application_group_id: targetType === 'group'       ? Number(targetGroupId) : null,
+        portfolio_id:         targetType === 'portfolio'   ? Number(targetPortId)  : null,
       };
 
-      const btn = tr.querySelector('button[onclick^="saveAdcRow"]');
+      const btn = tr.querySelector('button[onclick^="saveProjectRow"]');
       btn.disabled = true; btn.textContent = 'Saving…';
 
       try {
-        const res = await fetch(id ? `/api/adcs/${id}` : '/api/adcs', {
+        const res = await fetch(id ? `/api/ctb-projects/${id}` : '/api/ctb-projects', {
           method: id ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
@@ -560,33 +640,33 @@
           btn.disabled = false; btn.textContent = 'Save';
           return;
         }
-        await loadAdcs();
-        showToast(id ? 'ADC updated.' : 'ADC added.', 'success');
+        await loadProjects();
+        showToast(id ? 'Project updated.' : 'Project added.', 'success');
       } catch {
         showInlineError(tr, 'Network error — please try again.');
         btn.disabled = false; btn.textContent = 'Save';
       }
     }
 
-    function cancelAdcEdit(tr) {
+    function cancelProjectEdit(tr) {
       removeInlineError(tr);
       const id = tr.dataset.id;
-      if (!id) { tr.remove(); if (adcs.length === 0) renderTable(); return; }
-      const adc = adcs.find(a => a.id === Number(id));
-      if (adc) {
+      if (!id) { tr.remove(); if (projects.length === 0) renderTable(); return; }
+      const project = projects.find(p => p.id === Number(id));
+      if (project) {
         const st  = tr.dataset.sectionType;
         const tid = Number(tr.dataset.grpTargetId);
-        tr.replaceWith(makeAdcRow(adc, st, tid, false));
+        tr.replaceWith(makeProjectRow(project, st, tid, false));
       }
     }
 
     // ---- Allocation edit mode ----
 
     function enterAllocationEditMode(tr) {
-      const id    = tr.dataset.id;
-      const adcId = tr.dataset.adcId;
-      const adc   = adcs.find(a => a.id === Number(adcId));
-      const alloc = adc ? (adc.allocations || []).find(al => al.id === Number(id)) : null;
+      const id        = tr.dataset.id;
+      const projectId = tr.dataset.projectId;
+      const project   = projects.find(p => p.id === Number(projectId));
+      const alloc     = project ? (project.allocations || []).find(al => al.id === Number(id)) : null;
 
       tr.innerHTML = buildAllocationEditCells(alloc);
       tr.dataset.rowType = 'edit-allocation';
@@ -655,18 +735,18 @@
       const input = tr.querySelector('.person-input');
       input.placeholder = isFte ? 'Search FTEs…' : 'Search or create TBH…';
       input.value = '';
-      tr.dataset.fteId  = '';
-      tr.dataset.tbhId  = '';
+      tr.dataset.fteId = '';
+      tr.dataset.tbhId = '';
       tr.querySelector('.person-info').textContent = '';
     }
 
     async function saveAllocationRow(tr) {
       removeInlineError(tr);
-      const id          = tr.dataset.id || null;
-      const adcId       = tr.dataset.adcId;
-      const personType  = tr.dataset.personType || '';
-      const fteId       = tr.dataset.fteId || '';
-      const tbhId       = tr.dataset.tbhId || '';
+      const id         = tr.dataset.id || null;
+      const projectId  = tr.dataset.projectId;
+      const personType = tr.dataset.personType || '';
+      const fteId      = tr.dataset.fteId || '';
+      const tbhId      = tr.dataset.tbhId || '';
 
       const body = {
         fte_id: personType === 'fte' ? Number(fteId) : null,
@@ -682,8 +762,8 @@
 
       try {
         const url = id
-          ? `/api/adcs/${adcId}/allocations/${id}`
-          : `/api/adcs/${adcId}/allocations`;
+          ? `/api/ctb-projects/${projectId}/allocations/${id}`
+          : `/api/ctb-projects/${projectId}/allocations`;
         const res = await fetch(url, {
           method: id ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -695,7 +775,7 @@
           btn.disabled = false; btn.textContent = 'Save';
           return;
         }
-        await loadAdcs();
+        await loadProjects();
         showToast(id ? 'Allocation updated.' : 'Allocation added.', 'success');
       } catch {
         showInlineError(tr, 'Network error — please try again.');
@@ -705,15 +785,15 @@
 
     function cancelAllocationEdit(tr) {
       removeInlineError(tr);
-      const id    = tr.dataset.id;
-      const adcId = tr.dataset.adcId;
+      const id        = tr.dataset.id;
+      const projectId = tr.dataset.projectId;
       if (!id) { tr.remove(); return; }
-      const adc   = adcs.find(a => a.id === Number(adcId));
-      const alloc = adc ? (adc.allocations || []).find(al => al.id === Number(id)) : null;
+      const project = projects.find(p => p.id === Number(projectId));
+      const alloc   = project ? (project.allocations || []).find(al => al.id === Number(id)) : null;
       if (alloc) {
         const st  = tr.dataset.sectionType;
         const tid = Number(tr.dataset.grpTargetId);
-        tr.replaceWith(makeAllocationRow(alloc, st, tid, Number(adcId), false));
+        tr.replaceWith(makeAllocationRow(alloc, st, tid, Number(projectId), false));
       }
     }
 
@@ -732,29 +812,25 @@
 
     // ---- Add new rows ----
 
-    function addNewAdcRow() {
-      document.querySelectorAll('[data-row-type="new-adc-global"]').forEach(r => r.remove());
-      const tbody = document.getElementById('adc-table-body');
+    function addNewProjectRow() {
+      document.querySelectorAll('[data-row-type="new-project-global"]').forEach(r => r.remove());
+      const tbody = document.getElementById('project-table-body');
       const tr    = document.createElement('tr');
-      tr.dataset.rowType = 'new-adc-global';
+      tr.dataset.rowType = 'new-project-global';
       tr.className = 'bg-indigo-50/40';
-      tr.innerHTML = buildAdcEditCells(null);
+      tr.innerHTML = buildProjectEditCells(null);
       tbody.prepend(tr);
       setupTargetAutocomplete(tr);
       tr.querySelector('.target-input').focus();
     }
 
-    function addAdcRowForTarget(sectionType, targetId, targetName) {
-      document.querySelectorAll('[data-row-type="new-adc-global"], [data-row-type="new-adc"]').forEach(r => r.remove());
+    function addProjectRowForTarget(sectionType, targetId, targetName) {
+      document.querySelectorAll('[data-row-type="new-project-global"], [data-row-type="new-project"]').forEach(r => r.remove());
 
       if (collapsedSections.has(sectionType)) toggleSection(sectionType);
       const tKey = `${sectionType}:${targetId}`;
       if (collapsedTargets.has(tKey)) toggleTarget(sectionType, targetId);
 
-      const adcRows = Array.from(document.querySelectorAll(
-        `[data-row-type="adc"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`
-      ));
-      // Find the last row belonging to this target (could be adc or allocation rows)
       const allTargetRows = Array.from(document.querySelectorAll(
         `[data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]:not([data-row-type="target"])`
       ));
@@ -763,39 +839,48 @@
         : document.querySelector(`[data-row-type="target"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`);
 
       const tr = document.createElement('tr');
-      tr.dataset.rowType     = 'new-adc';
+      tr.dataset.rowType     = 'new-project';
       tr.dataset.sectionType = sectionType;
       tr.dataset.grpTargetId = targetId;
       tr.className = 'bg-indigo-50/40';
-      tr.innerHTML = buildAdcEditCells(null);
+      tr.innerHTML = buildProjectEditCells(null);
       insertAfter.after(tr);
 
       tr.querySelector('.target-input').value = targetName;
       tr.dataset.targetType = sectionType;
-      if (sectionType === 'application') { tr.dataset.targetId = targetId; tr.dataset.targetGroupId = ''; }
-      else { tr.dataset.targetId = ''; tr.dataset.targetGroupId = targetId; }
+      if (sectionType === 'application') {
+        tr.dataset.targetId = targetId;
+        tr.dataset.targetGroupId = '';
+        tr.dataset.targetPortfolioId = '';
+      } else if (sectionType === 'group') {
+        tr.dataset.targetId = '';
+        tr.dataset.targetGroupId = targetId;
+        tr.dataset.targetPortfolioId = '';
+      } else {
+        tr.dataset.targetId = '';
+        tr.dataset.targetGroupId = '';
+        tr.dataset.targetPortfolioId = targetId;
+      }
 
       setupTargetAutocomplete(tr);
       tr.querySelector('.title-input').focus();
     }
 
-    function addAllocationRow(adcId) {
+    function addAllocationRow(projectId) {
       document.querySelectorAll('[data-row-type="new-allocation"]').forEach(r => r.remove());
 
-      // Expand ADC if collapsed
-      if (collapsedAdcs.has(String(adcId))) toggleAdc(adcId);
+      if (collapsedProjects.has(String(projectId))) toggleProject(projectId);
 
-      const allocRows = Array.from(document.querySelectorAll(`tr[data-adc-id="${adcId}"]`));
-      const adcHeaderRow = document.querySelector(`[data-row-type="adc"][data-id="${adcId}"]`);
-      const insertAfter = allocRows.length > 0 ? allocRows[allocRows.length - 1] : adcHeaderRow;
+      const allocRows    = Array.from(document.querySelectorAll(`tr[data-project-id="${projectId}"]`));
+      const projectRow   = document.querySelector(`[data-row-type="project"][data-id="${projectId}"]`);
+      const insertAfter  = allocRows.length > 0 ? allocRows[allocRows.length - 1] : projectRow;
 
       const tr = document.createElement('tr');
-      tr.dataset.rowType = 'new-allocation';
-      tr.dataset.adcId   = adcId;
-      // Inherit section/target from ADC header row
-      if (adcHeaderRow) {
-        tr.dataset.sectionType = adcHeaderRow.dataset.sectionType;
-        tr.dataset.grpTargetId = adcHeaderRow.dataset.grpTargetId;
+      tr.dataset.rowType   = 'new-allocation';
+      tr.dataset.projectId = projectId;
+      if (projectRow) {
+        tr.dataset.sectionType = projectRow.dataset.sectionType;
+        tr.dataset.grpTargetId = projectRow.dataset.grpTargetId;
       }
       tr.className = 'bg-indigo-50/40';
       tr.innerHTML = buildAllocationEditCells(null);
@@ -807,7 +892,7 @@
       tr.querySelector('.person-input').focus();
     }
 
-    // ---- Target autocomplete (body-attached) ----
+    // ---- Target autocomplete ----
 
     const acDropdown = document.createElement('div');
     acDropdown.id = 'ac-dropdown';
@@ -831,9 +916,10 @@
       acInput = input; acTr = tr;
 
       acDropdown.innerHTML = matches.map(t => {
-        const badge = t.type === 'application'
-          ? '<span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">App</span>'
-          : '<span style="font-size:10px;background:#e0e7ff;color:#4338ca;border-radius:4px;padding:1px 4px;font-weight:600">Group</span>';
+        let badge;
+        if (t.type === 'application') badge = '<span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">App</span>';
+        else if (t.type === 'group')  badge = '<span style="font-size:10px;background:#e0e7ff;color:#4338ca;border-radius:4px;padding:1px 4px;font-weight:600">Group</span>';
+        else                          badge = '<span style="font-size:10px;background:#ede9fe;color:#6d28d9;border-radius:4px;padding:1px 4px;font-weight:600">Portfolio</span>';
         return `<div class="ac-item" data-id="${t.id}" data-type="${t.type}" data-name="${esc(t.name)}">${badge} ${esc(t.name)}</div>`;
       }).join('');
 
@@ -845,8 +931,10 @@
           e.preventDefault();
           const { id, type, name } = item.dataset;
           input.value = name;
-          if (type === 'application') { acTr.dataset.targetType = 'application'; acTr.dataset.targetId = id; acTr.dataset.targetGroupId = ''; }
-          else { acTr.dataset.targetType = 'group'; acTr.dataset.targetId = ''; acTr.dataset.targetGroupId = id; }
+          acTr.dataset.targetType        = type;
+          acTr.dataset.targetId          = type === 'application' ? id : '';
+          acTr.dataset.targetGroupId     = type === 'group'       ? id : '';
+          acTr.dataset.targetPortfolioId = type === 'portfolio'   ? id : '';
           hideTargetAc();
         });
       });
@@ -854,7 +942,7 @@
 
     function hideTargetAc() { acDropdown.style.display = 'none'; acInput = null; acTr = null; }
 
-    // ---- Person picker (FTE / TBH autocomplete) ----
+    // ---- Person picker ----
 
     const personDropdown = document.createElement('div');
     personDropdown.id = 'person-dropdown';
@@ -901,7 +989,6 @@
             ${esc(t.label)}
           </div>`
         }));
-        // Offer to create if typed text doesn't exactly match an existing slot
         const exactMatch = tbhSlots.find(t => t.label.toLowerCase() === q);
         if (q && !exactMatch) {
           items.push({ html: `<div class="ac-item create" data-kind="create-tbh" data-name="${esc(input.value.trim())}">+ Create "${esc(input.value.trim())}" as new TBH</div>` });
@@ -929,7 +1016,6 @@
             personTr.dataset.fteId = '';
             personTr.querySelector('.person-info').textContent = 'TBH slot #' + id;
           } else if (kind === 'create-tbh') {
-            // Create TBH slot on the fly
             try {
               const res = await fetch('/api/tbh', {
                 method: 'POST',
@@ -985,28 +1071,26 @@
       }
     }
 
-    function handleAdcDelete(btn) {
+    function handleProjectDelete(btn) {
       twoStepDelete(btn, async () => {
-        const tr = btn.closest('tr');
         const id = btn.dataset.deleteId;
         try {
-          const res = await fetch(`/api/adcs/${id}`, { method: 'DELETE' });
+          const res = await fetch(`/api/ctb-projects/${id}`, { method: 'DELETE' });
           if (!res.ok) { showToast('Delete failed.', 'error'); return; }
-          await loadAdcs();
-          showToast('ADC deleted.', 'success');
+          await loadProjects();
+          showToast('Project deleted.', 'success');
         } catch { showToast('Network error.', 'error'); }
       });
     }
 
     function handleAllocDelete(btn) {
       twoStepDelete(btn, async () => {
-        const tr    = btn.closest('tr');
-        const id    = btn.dataset.deleteId;
-        const adcId = btn.dataset.adcId;
+        const id        = btn.dataset.deleteId;
+        const projectId = btn.dataset.projectId;
         try {
-          const res = await fetch(`/api/adcs/${adcId}/allocations/${id}`, { method: 'DELETE' });
+          const res = await fetch(`/api/ctb-projects/${projectId}/allocations/${id}`, { method: 'DELETE' });
           if (!res.ok) { showToast('Delete failed.', 'error'); return; }
-          await loadAdcs();
+          await loadProjects();
           showToast('Allocation deleted.', 'success');
         } catch { showToast('Network error.', 'error'); }
       });
@@ -1044,7 +1128,7 @@
     }
 
     // ---- Init ----
-    Promise.all([loadTargets(), loadFtes(), loadTbhSlots()]).then(() => loadAdcs());
+    Promise.all([loadTargets(), loadFtes(), loadTbhSlots()]).then(() => loadProjects());
   </script>
 
   <script>
