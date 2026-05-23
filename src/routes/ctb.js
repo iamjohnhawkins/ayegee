@@ -5,9 +5,8 @@ const router = express.Router();
 
 const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
 
-function validateCtb(title, application_id, application_group_id) {
+function validateCtb(application_id, application_group_id) {
   const errors = [];
-  if (!title || !String(title).trim()) errors.push('Title is required');
   const hasApp   = application_id       && Number.isInteger(Number(application_id))       && Number(application_id)       > 0;
   const hasGroup = application_group_id && Number.isInteger(Number(application_group_id)) && Number(application_group_id) > 0;
   if (!hasApp && !hasGroup) errors.push('A target application or application group is required');
@@ -32,7 +31,7 @@ router.get('/', async (req, res) => {
   const year = new Date().getFullYear();
   const { rows } = await db.query(`
     SELECT
-      c.id, c.title, c.description, c.year,
+      c.id, c.year,
       c.application_id, c.application_group_id,
       c.created_at, c.updated_at,
       COALESCE(app.name, ag.name) AS target_name,
@@ -86,9 +85,9 @@ router.get('/', async (req, res) => {
 // Combined target list for autocomplete
 router.get('/targets', async (req, res) => {
   const { rows } = await db.query(`
-    SELECT id, name, 'application' AS type FROM applications
+    SELECT id, name, 'application' AS type, group_id FROM applications
     UNION ALL
-    SELECT id, name, 'group' AS type FROM application_groups
+    SELECT id, name, 'group' AS type, NULL AS group_id FROM application_groups
     ORDER BY name ASC
   `);
   res.json(rows);
@@ -96,15 +95,15 @@ router.get('/targets', async (req, res) => {
 
 // Create CTB
 router.post('/', async (req, res) => {
-  const { title, description = null, application_id = null, application_group_id = null } = req.body;
-  const errors = validateCtb(title, application_id, application_group_id);
+  const { application_id = null, application_group_id = null } = req.body;
+  const errors = validateCtb(application_id, application_group_id);
   if (errors.length) return res.status(422).json({ errors });
   const year = new Date().getFullYear();
   try {
     const { rows } = await db.query(
-      `INSERT INTO baseline_ctb (title, description, year, application_id, application_group_id)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [title.trim(), description || null, year,
+      `INSERT INTO baseline_ctb (year, application_id, application_group_id)
+       VALUES ($1, $2, $3) RETURNING *`,
+      [year,
        application_id       ? Number(application_id)       : null,
        application_group_id ? Number(application_group_id) : null]
     );
@@ -117,19 +116,17 @@ router.post('/', async (req, res) => {
 
 // Update CTB
 router.put('/:id', async (req, res) => {
-  const { title, description = null, application_id = null, application_group_id = null } = req.body;
-  const errors = validateCtb(title, application_id, application_group_id);
+  const { application_id = null, application_group_id = null } = req.body;
+  const errors = validateCtb(application_id, application_group_id);
   if (errors.length) return res.status(422).json({ errors });
   try {
     const { rows } = await db.query(
       `UPDATE baseline_ctb
-          SET title = $1, description = $2,
-              application_id = $3, application_group_id = $4,
+          SET application_id = $1, application_group_id = $2,
               updated_at = NOW()
-        WHERE id = $5
+        WHERE id = $3
         RETURNING *`,
-      [title.trim(), description || null,
-       application_id       ? Number(application_id)       : null,
+      [application_id       ? Number(application_id)       : null,
        application_group_id ? Number(application_group_id) : null,
        req.params.id]
     );

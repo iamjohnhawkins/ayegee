@@ -126,8 +126,6 @@ async function runMigrations() {
   await db.query(`
     CREATE TABLE IF NOT EXISTS baseline_ctb (
       id                   SERIAL PRIMARY KEY,
-      title                VARCHAR(255) NOT NULL,
-      description          TEXT,
       year                 INTEGER      NOT NULL,
       application_id       INTEGER      REFERENCES applications(id) ON DELETE CASCADE,
       application_group_id INTEGER      REFERENCES application_groups(id) ON DELETE CASCADE,
@@ -139,6 +137,8 @@ async function runMigrations() {
       )
     )
   `);
+  await db.query(`ALTER TABLE baseline_ctb DROP COLUMN IF EXISTS title`);
+  await db.query(`ALTER TABLE baseline_ctb DROP COLUMN IF EXISTS description`);
   await db.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_ctb_unique_app   ON baseline_ctb(application_id, year)       WHERE application_id       IS NOT NULL`);
   await db.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_ctb_unique_group ON baseline_ctb(application_group_id, year) WHERE application_group_id IS NOT NULL`);
   await db.query(`

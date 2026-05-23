@@ -92,7 +92,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"/>
           </svg>
-          <span class="nav-label">CTB</span>
+          <span class="nav-label">Baseline CTB</span>
         </a>
       </nav>
       <div class="sidebar-footer border-t border-slate-700/60 px-5 py-4">
@@ -130,7 +130,6 @@
               <thead>
                 <tr class="bg-slate-50 border-b border-slate-200">
                   <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[200px]">Target</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[140px]">Title / Description</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[150px]">Info</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
@@ -149,7 +148,7 @@
                 </tr>
               </thead>
               <tbody id="ctb-table-body">
-                <tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
+                <tr><td colspan="16" class="px-6 py-10 text-center text-sm text-slate-400">Loading…</td></tr>
               </tbody>
             </table>
           </div>
@@ -170,7 +169,6 @@
 
     let collapsedSections = new Set();
     let collapsedTargets  = new Set();
-    let collapsedCtbs     = new Set();
 
     // ---- Data loading ----
 
@@ -181,7 +179,7 @@
         renderTable();
       } catch {
         document.getElementById('ctb-table-body').innerHTML =
-          '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load CTB entries.</td></tr>';
+          '<tr><td colspan="16" class="px-6 py-10 text-center text-sm text-rose-500">Failed to load CTB entries.</td></tr>';
       }
     }
 
@@ -198,14 +196,21 @@
     // ---- Grouping ----
 
     function buildGrouped() {
+      const appTargets = targets.filter(t => t.type === 'application');
       return {
-        application: targets
-          .filter(t => t.type === 'application')
-          .map(t => ({ id: t.id, name: t.name, ctb: ctbs.find(c => c.application_id === t.id) || null }))
+        application: appTargets
+          .map(t => ({ id: t.id, name: t.name, groupId: t.group_id || null, ctb: ctbs.find(c => c.application_id === t.id) || null }))
           .sort((a, b) => a.name.localeCompare(b.name)),
         group: targets
           .filter(t => t.type === 'group')
-          .map(t => ({ id: t.id, name: t.name, ctb: ctbs.find(c => c.application_group_id === t.id) || null }))
+          .map(t => {
+            const directCtb    = ctbs.find(c => c.application_group_id === t.id) || null;
+            const childAppCtbs = appTargets
+              .filter(a => a.group_id === t.id)
+              .map(a => ctbs.find(c => c.application_id === a.id))
+              .filter(Boolean);
+            return { id: t.id, name: t.name, ctb: directCtb, childAppCtbs };
+          })
           .sort((a, b) => a.name.localeCompare(b.name))
       };
     }
@@ -250,35 +255,33 @@
         const tList = grouped[section.type];
         if (!tList.length) return;
 
-        const ctbItems = tList.map(t => t.ctb).filter(Boolean);
+        const ctbItems = tList.flatMap(t => [t.ctb, ...(t.childAppCtbs || [])]).filter(Boolean);
         const secTotals = monthTotals(ctbItems);
         const secCol    = collapsedSections.has(section.type);
 
         tbody.appendChild(makeSectionRow(section, tList.length, definedCount, secTotals, secCol));
 
         tList.forEach(target => {
-          const tKey   = `${section.type}:${target.id}`;
-          const tCol   = collapsedTargets.has(tKey);
-          const ctb    = target.ctb;
-          const tTotals = ctb ? monthTotals([ctb]) : monthTotals([]);
+          const tKey        = `${section.type}:${target.id}`;
+          const tCol        = collapsedTargets.has(tKey);
+          const ctb         = target.ctb;
+          const allCtbItems = [ctb, ...(target.childAppCtbs || [])].filter(Boolean);
+          const tTotals     = monthTotals(allCtbItems);
+          const hidden      = secCol || tCol;
 
           tbody.appendChild(makeTargetRow(target, section.type, tTotals, tCol, secCol));
 
           if (ctb) {
-            const ctbKey  = String(ctb.id);
-            const ctbCol  = collapsedCtbs.has(ctbKey);
-            const ctbHide = secCol || tCol;
-            tbody.appendChild(makeCtbRow(ctb, section.type, target.id, ctbHide));
             const allocs = Array.isArray(ctb.allocations) ? ctb.allocations : [];
             allocs.forEach(alloc => {
-              tbody.appendChild(makeAllocationRow(alloc, section.type, target.id, ctb.id, ctbHide || ctbCol));
+              tbody.appendChild(makeAllocationRow(alloc, section.type, target.id, ctb.id, hidden));
             });
           }
         });
       });
 
       if (!tbody.children.length) {
-        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No applications or groups found. Add them first.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="16" class="px-6 py-10 text-center text-sm text-slate-400">No applications or groups found. Add them first.</td></tr>';
       }
     }
 
@@ -293,7 +296,7 @@
       ).join('');
 
       tr.innerHTML = `
-        <td colspan="3" class="px-4 py-2.5">
+        <td colspan="2" class="px-4 py-2.5">
           <div class="flex items-center gap-2 text-slate-100">${CHEVRON}
             <span class="text-[11px] font-bold uppercase tracking-widest">${section.label}</span>
             <span class="text-[11px] text-slate-500">${targetCount} target${targetCount !== 1 ? 's' : ''}</span>
@@ -324,23 +327,14 @@
         `<td class="px-3 py-2 text-right text-xs tabular-nums text-slate-500">${fmtNum(totals[m])}</td>`
       ).join('');
 
-      const addBtn = !target.ctb
-        ? `<button class="define-ctb-btn ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors"
-             data-tid="${target.id}" data-stype="${sectionType}" data-tname="${esc(target.name)}">+ Define CTB</button>`
-        : '';
-
-      const statusLabel = target.ctb
-        ? '<span class="text-[10px] text-emerald-600 font-semibold">✓ Defined</span>'
-        : '<span class="text-[10px] text-slate-400">Not defined</span>';
-
       tr.innerHTML = `
-        <td colspan="3" class="px-4 py-2">
+        <td colspan="2" class="px-4 py-2">
           <div class="flex items-center gap-2">
             <span class="text-slate-400">${CHEVRON}</span>
             ${badge}
             <span class="text-xs font-semibold text-slate-700">${esc(target.name)}</span>
-            ${statusLabel}
-            ${addBtn}
+            <button class="alloc-target-btn ml-1 inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors"
+              data-tid="${target.id}" data-stype="${sectionType}">+ Allocate</button>
           </div>
         </td>
         ${months}
@@ -349,65 +343,12 @@
 
       if (collapsed) tr.querySelector('.chevron').classList.add('collapsed');
 
-      if (!target.ctb) {
-        tr.querySelector('.define-ctb-btn').addEventListener('click', e => {
-          e.stopPropagation();
-          const b = e.currentTarget;
-          addCtbRowForTarget(b.dataset.stype, Number(b.dataset.tid), b.dataset.tname);
-        });
-      }
+      tr.querySelector('.alloc-target-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        const b = e.currentTarget;
+        addAllocationForTarget(b.dataset.stype, Number(b.dataset.tid));
+      });
       tr.addEventListener('click', () => toggleTarget(sectionType, target.id));
-      return tr;
-    }
-
-    function makeCtbRow(ctb, sectionType, targetId, hidden) {
-      const tr = document.createElement('tr');
-      tr.dataset.rowType     = 'ctb';
-      tr.dataset.sectionType = sectionType;
-      tr.dataset.grpTargetId = targetId;
-      tr.dataset.id          = ctb.id;
-      tr.className = 'bg-white border-b border-slate-100 hover:bg-slate-50/40 transition-colors';
-      if (hidden) tr.style.display = 'none';
-
-      const allocs     = Array.isArray(ctb.allocations) ? ctb.allocations : [];
-      const ctbCol     = collapsedCtbs.has(String(ctb.id));
-      const allocCount = allocs.length;
-      const months     = MONTHS.map(m =>
-        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(ctb[m])}</td>`
-      ).join('');
-      const total = MONTHS.reduce((s, m) => s + (Number(ctb[m]) || 0), 0);
-
-      tr.innerHTML = `
-        <td class="px-4 py-2.5 pl-8">
-          <div class="flex items-center gap-1.5">
-            <span class="text-slate-400">${CHEVRON}</span>
-            <span class="text-sm font-semibold text-slate-800">${esc(ctb.title)}</span>
-          </div>
-        </td>
-        <td class="px-4 py-2.5 text-xs text-slate-500 max-w-[140px] truncate" title="${esc(ctb.description || '')}">${esc(ctb.description || '—')}</td>
-        <td class="px-4 py-2.5">
-          <div class="flex items-center gap-1.5">
-            <span class="text-[10px] text-slate-400">${allocCount} alloc${allocCount !== 1 ? 's' : ''}</span>
-            <button class="alloc-btn inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors"
-              data-ctb-id="${ctb.id}">+ Allocate</button>
-          </div>
-        </td>
-        ${months}
-        <td class="px-3 py-2.5 text-right font-semibold text-slate-800 tabular-nums text-xs bg-slate-50">${fmtNum(total)}</td>
-        <td class="px-4 py-2.5 text-right whitespace-nowrap">
-          <button onclick="enterCtbEditMode(this.closest('tr'))" class="rounded-lg px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">Edit</button>
-          <button data-delete-id="${ctb.id}" data-delete-title="${esc(ctb.title)}" onclick="handleCtbDelete(this)" class="ml-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors">Delete</button>
-        </td>`;
-
-      if (ctbCol) tr.querySelector('.chevron').classList.add('collapsed');
-      tr.querySelector('.alloc-btn').addEventListener('click', e => {
-        e.stopPropagation();
-        addAllocationRow(Number(e.currentTarget.dataset.ctbId));
-      });
-      tr.querySelector('.chevron').parentElement.addEventListener('click', e => {
-        e.stopPropagation();
-        toggleCtb(ctb.id);
-      });
       return tr;
     }
 
@@ -430,9 +371,7 @@
 
       const col2 = isTbh
         ? '<span class="text-xs text-amber-700 font-medium">To Be Hired</span>'
-        : `<span class="inline-flex items-center rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">${esc(alloc.fte_title || '')}</span> <span class="text-xs text-slate-400">${esc(alloc.fte_region || '')}</span>`;
-
-      const col3 = isTbh ? '' : `<span class="text-xs text-slate-400">${esc(alloc.fte_email || '')}</span>`;
+        : `<span class="inline-flex items-center rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">${esc(alloc.fte_title || '')}</span> <span class="text-xs text-slate-400">${esc(alloc.fte_region || '')}</span>${alloc.fte_email ? ` <span class="text-xs text-slate-400">${esc(alloc.fte_email)}</span>` : ''}`;
 
       const total  = MONTHS.reduce((s, m) => s + (Number(alloc[m]) || 0), 0);
       const months = MONTHS.map(m =>
@@ -444,7 +383,6 @@
           <div class="flex items-center gap-1.5">${badge} <span class="text-xs font-medium text-slate-700">${esc(alloc.person_name || '')}</span></div>
         </td>
         <td class="px-4 py-2">${col2}</td>
-        <td class="px-4 py-2">${col3}</td>
         ${months}
         <td class="px-3 py-2 text-right font-semibold tabular-nums text-xs text-slate-800 bg-slate-50/50">${fmtNum(total)}</td>
         <td class="px-4 py-2 text-right whitespace-nowrap">
@@ -459,11 +397,9 @@
     function updateRowVisibility(row) {
       const st  = row.dataset.sectionType;
       const tid = row.dataset.grpTargetId;
-      const cid = row.dataset.ctbId;
       const hidden =
         collapsedSections.has(st) ||
-        (tid && row.dataset.rowType !== 'target' && collapsedTargets.has(`${st}:${tid}`)) ||
-        (cid && collapsedCtbs.has(cid));
+        (tid && row.dataset.rowType !== 'target' && collapsedTargets.has(`${st}:${tid}`));
       row.style.display = hidden ? 'none' : '';
     }
 
@@ -484,121 +420,52 @@
       if (ch) ch.classList.toggle('collapsed', collapsedTargets.has(key));
     }
 
-    function toggleCtb(ctbId) {
-      const key = String(ctbId);
-      if (collapsedCtbs.has(key)) collapsedCtbs.delete(key);
-      else collapsedCtbs.add(key);
-      document.querySelectorAll(`tr[data-ctb-id="${ctbId}"]`).forEach(updateRowVisibility);
-      const ch = document.querySelector(`[data-row-type="ctb"][data-id="${ctbId}"] .chevron`);
-      if (ch) ch.classList.toggle('collapsed', collapsedCtbs.has(key));
-    }
-
     // ---- CTB edit mode ----
 
-    function enterCtbEditMode(tr) {
-      const id  = tr.dataset.id;
-      const ctb = id ? ctbs.find(c => c.id === Number(id)) : null;
-      tr.innerHTML = buildCtbEditCells(ctb);
-      tr.dataset.rowType = 'edit-ctb';
-      tr.className = 'bg-indigo-50/40';
-      if (ctb) {
-        const targetName = ctb.target_name || '';
-        tr.dataset.targetType    = ctb.target_type || '';
-        tr.dataset.targetId      = ctb.application_id       || '';
-        tr.dataset.targetGroupId = ctb.application_group_id || '';
-        tr.querySelector('.target-input').value = targetName;
-        setupTargetAutocomplete(tr);
-        tr.querySelector('.title-input').focus();
-      } else {
-        setupTargetAutocomplete(tr);
-        tr.querySelector('.target-input').focus();
+    async function addAllocationForTarget(sectionType, targetId) {
+      const existing = ctbs.find(c =>
+        sectionType === 'application'
+          ? c.application_id === targetId
+          : c.application_group_id === targetId
+      );
+
+      if (existing) {
+        if (collapsedTargets.has(`${sectionType}:${targetId}`)) toggleTarget(sectionType, targetId);
+        addAllocationRow(existing.id);
+        return;
       }
-    }
 
-    function buildCtbEditCells(ctb) {
-      return `
-        <td class="px-2 py-2">
-          <input type="text" placeholder="Search apps &amp; groups…" class="target-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100" autocomplete="off" />
-        </td>
-        <td class="px-2 py-2">
-          <input type="text" class="title-input w-32 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
-            placeholder="Title" value="${esc(ctb ? ctb.title : '')}" />
-        </td>
-        <td class="px-2 py-2">
-          <input type="text" class="desc-input w-36 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
-            placeholder="Description (optional)" value="${esc(ctb ? (ctb.description || '') : '')}" />
-        </td>
-        <td colspan="13" class="px-3 py-2 text-xs text-slate-400 italic">Month totals come from allocations</td>
-        <td class="px-2 py-2 text-right whitespace-nowrap">
-          <button onclick="saveCtbRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
-          <button onclick="cancelCtbEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
-        </td>`;
-    }
-
-    async function saveCtbRow(tr) {
-      removeInlineError(tr);
-      const id             = tr.dataset.id || null;
-      const targetType     = tr.dataset.targetType || '';
-      const targetId       = tr.dataset.targetId || '';
-      const targetGroupId  = tr.dataset.targetGroupId || '';
-
-      const body = {
-        title:                tr.querySelector('.title-input').value,
-        description:          tr.querySelector('.desc-input').value || null,
-        application_id:       targetType === 'application' ? Number(targetId)      : null,
-        application_group_id: targetType === 'group'       ? Number(targetGroupId) : null,
-      };
-
-      const btn = tr.querySelector('button[onclick^="saveCtbRow"]');
-      btn.disabled = true; btn.textContent = 'Saving…';
+      // Auto-create the CTB for this target
+      const body = sectionType === 'application'
+        ? { application_id: targetId }
+        : { application_group_id: targetId };
 
       try {
-        const res = await fetch(id ? `/api/ctb/${id}` : '/api/ctb', {
-          method: id ? 'PUT' : 'POST',
+        const res = await fetch('/api/ctb', {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
         const data = await res.json();
         if (!res.ok) {
-          showInlineError(tr, (data.errors || ['Error']).join('; '));
-          btn.disabled = false; btn.textContent = 'Save';
+          showToast((data.errors || ['Failed to create CTB']).join('; '), 'error');
           return;
         }
         await loadCtbs();
-        showToast(id ? 'CTB updated.' : 'CTB defined.', 'success');
+        const created = ctbs.find(c =>
+          sectionType === 'application'
+            ? c.application_id === targetId
+            : c.application_group_id === targetId
+        );
+        if (created) {
+          if (collapsedTargets.has(`${sectionType}:${targetId}`)) toggleTarget(sectionType, targetId);
+          addAllocationRow(created.id);
+        }
       } catch {
-        showInlineError(tr, 'Network error — please try again.');
-        btn.disabled = false; btn.textContent = 'Save';
+        showToast('Network error — please try again.', 'error');
       }
     }
 
-    function cancelCtbEdit(tr) {
-      removeInlineError(tr);
-      const id = tr.dataset.id;
-      if (!id) { tr.remove(); return; }
-      const ctb = ctbs.find(c => c.id === Number(id));
-      if (ctb) {
-        const st  = tr.dataset.sectionType;
-        const tid = Number(tr.dataset.grpTargetId);
-        tr.replaceWith(makeCtbRow(ctb, st, tid, false));
-      }
-    }
-
-    async function handleCtbDelete(btn) {
-      if (btn.dataset.confirm !== 'yes') {
-        btn.dataset.confirm = 'yes';
-        btn.textContent = 'Sure?';
-        setTimeout(() => { btn.dataset.confirm = ''; btn.textContent = 'Delete'; }, 3000);
-        return;
-      }
-      btn.disabled = true; btn.textContent = 'Deleting…';
-      try {
-        const res = await fetch(`/api/ctb/${btn.dataset.deleteId}`, { method: 'DELETE' });
-        if (!res.ok) { showToast('Failed to delete CTB.', 'error'); btn.disabled = false; btn.textContent = 'Delete'; return; }
-        await loadCtbs();
-        showToast('CTB deleted.', 'success');
-      } catch { showToast('Network error.', 'error'); btn.disabled = false; btn.textContent = 'Delete'; }
-    }
 
     // ---- Allocation edit mode ----
 
@@ -652,7 +519,6 @@
         <td class="px-3 py-2">
           <span class="person-info text-xs text-slate-400"></span>
         </td>
-        <td class="px-2 py-2"></td>
         ${monthInputs}
         <td class="px-3 py-2 text-right font-semibold text-slate-800 tabular-nums bg-slate-50 w-16 text-xs">
           <span class="total-display">${fmtNum(total)}</span>
@@ -755,46 +621,27 @@
 
     // ---- Add CTB row for target ----
 
-    function addCtbRowForTarget(sectionType, targetId, targetName) {
-      document.querySelectorAll('[data-row-type="new-ctb"]').forEach(r => r.remove());
-
-      const targetRow = document.querySelector(`[data-row-type="target"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`);
-      if (!targetRow) return;
-
-      const tr = document.createElement('tr');
-      tr.dataset.rowType     = 'new-ctb';
-      tr.dataset.sectionType = sectionType;
-      tr.dataset.grpTargetId = targetId;
-      tr.className = 'bg-indigo-50/40';
-      tr.innerHTML = buildCtbEditCells(null);
-      targetRow.after(tr);
-
-      if (sectionType === 'application') { tr.dataset.targetType = 'application'; tr.dataset.targetId = targetId; tr.dataset.targetGroupId = ''; }
-      else { tr.dataset.targetType = 'group'; tr.dataset.targetId = ''; tr.dataset.targetGroupId = targetId; }
-
-      tr.querySelector('.target-input').value = targetName;
-      setupTargetAutocomplete(tr);
-      tr.querySelector('.title-input').focus();
-    }
-
     // ---- Add allocation row ----
 
     function addAllocationRow(ctbId) {
       document.querySelectorAll('[data-row-type="new-allocation"]').forEach(r => r.remove());
 
-      if (collapsedCtbs.has(String(ctbId))) toggleCtb(ctbId);
+      const ctb = ctbs.find(c => c.id === ctbId);
+      if (!ctb) return;
+      const sectionType = ctb.application_id ? 'application' : 'group';
+      const targetId    = ctb.application_id || ctb.application_group_id;
 
-      const allocRows   = Array.from(document.querySelectorAll(`tr[data-ctb-id="${ctbId}"]`));
-      const ctbHeaderRow = document.querySelector(`[data-row-type="ctb"][data-id="${ctbId}"]`);
-      const insertAfter  = allocRows.length > 0 ? allocRows[allocRows.length - 1] : ctbHeaderRow;
+      if (collapsedTargets.has(`${sectionType}:${targetId}`)) toggleTarget(sectionType, targetId);
+
+      const allocRows  = Array.from(document.querySelectorAll(`tr[data-ctb-id="${ctbId}"]`));
+      const targetRow  = document.querySelector(`[data-row-type="target"][data-section-type="${sectionType}"][data-grp-target-id="${targetId}"]`);
+      const insertAfter = allocRows.length > 0 ? allocRows[allocRows.length - 1] : targetRow;
 
       const tr = document.createElement('tr');
-      tr.dataset.rowType = 'new-allocation';
-      tr.dataset.ctbId   = ctbId;
-      if (ctbHeaderRow) {
-        tr.dataset.sectionType = ctbHeaderRow.dataset.sectionType;
-        tr.dataset.grpTargetId = ctbHeaderRow.dataset.grpTargetId;
-      }
+      tr.dataset.rowType     = 'new-allocation';
+      tr.dataset.ctbId       = ctbId;
+      tr.dataset.sectionType = sectionType;
+      tr.dataset.grpTargetId = targetId;
       tr.className = 'bg-indigo-50/40';
       tr.innerHTML = buildAllocationEditCells(null);
       insertAfter.after(tr);
@@ -804,57 +651,6 @@
       setupMonthInputs(tr);
       tr.querySelector('.person-input').focus();
     }
-
-    // ---- Target autocomplete ----
-
-    const acDropdown = document.createElement('div');
-    acDropdown.id = 'ac-dropdown';
-    acDropdown.className = 'ac-popup';
-    acDropdown.style.display = 'none';
-    document.body.appendChild(acDropdown);
-
-    let acInput = null, acTr = null;
-
-    function setupTargetAutocomplete(tr) {
-      const input = tr.querySelector('.target-input');
-      input.addEventListener('input',  () => showTargetAc(tr, input));
-      input.addEventListener('focus',  () => showTargetAc(tr, input));
-      input.addEventListener('blur',   () => setTimeout(() => { if (acInput === input) hideTargetAc(); }, 150));
-    }
-
-    function showTargetAc(tr, input) {
-      const q = input.value.trim().toLowerCase();
-      const matches = q ? targets.filter(t => t.name.toLowerCase().includes(q)) : targets;
-      if (!matches.length) { hideTargetAc(); return; }
-      acInput = input; acTr = tr;
-
-      acDropdown.innerHTML = matches.map(t => {
-        const badge = t.type === 'application'
-          ? '<span class="text-sky-600 text-[9px] font-bold uppercase">App</span>'
-          : '<span class="text-indigo-600 text-[9px] font-bold uppercase">Grp</span>';
-        return `<div class="ac-item" data-id="${t.id}" data-type="${t.type}" data-name="${esc(t.name)}">${badge} ${esc(t.name)}</div>`;
-      }).join('');
-
-      acDropdown.querySelectorAll('.ac-item').forEach(item => {
-        item.addEventListener('mousedown', e => {
-          e.preventDefault();
-          const { id, type, name } = item.dataset;
-          acTr.querySelector('.target-input').value = name;
-          acTr.dataset.targetType    = type;
-          acTr.dataset.targetId      = type === 'application' ? id : '';
-          acTr.dataset.targetGroupId = type === 'group'       ? id : '';
-          hideTargetAc();
-        });
-      });
-
-      const rect = input.getBoundingClientRect();
-      acDropdown.style.display = 'block';
-      acDropdown.style.top  = `${rect.bottom + 2}px`;
-      acDropdown.style.left = `${rect.left}px`;
-      acDropdown.style.width = `${Math.max(rect.width, 220)}px`;
-    }
-
-    function hideTargetAc() { acDropdown.style.display = 'none'; acInput = null; acTr = null; }
 
     // ---- Person autocomplete ----
 
@@ -973,7 +769,7 @@
       const errTr = document.createElement('tr');
       errTr.dataset.errorFor = tr.dataset.id || 'new';
       errTr.className = 'bg-rose-50';
-      errTr.innerHTML = `<td colspan="17" class="px-4 py-2 text-xs text-rose-600">${esc(msg)}</td>`;
+      errTr.innerHTML = `<td colspan="16" class="px-4 py-2 text-xs text-rose-600">${esc(msg)}</td>`;
       tr.after(errTr);
     }
 
