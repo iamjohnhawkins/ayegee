@@ -122,12 +122,7 @@
           <h1 id="page-title" class="text-lg font-semibold text-slate-800">CTB Projects</h1>
           <p class="text-xs text-slate-400 mt-0.5">Change The Bank — discrete initiatives with monthly FTE/TBH allocations</p>
         </div>
-        <button onclick="addNewProjectRow()" class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z" clip-rule="evenodd"/>
-          </svg>
-          Add Project
-        </button>
+        <span class="text-xs text-slate-400">Add projects via each target row</span>
       </header>
 
       <div class="flex-1 px-8 py-7">
@@ -344,7 +339,7 @@
       });
 
       if (!anyRendered) {
-        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No CTB projects yet. Click "+ Add Project" to get started.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="17" class="px-6 py-10 text-center text-sm text-slate-400">No CTB projects yet. Use "+ Add Project" on a target row to get started.</td></tr>';
       }
     }
 
@@ -559,26 +554,15 @@
       tr.innerHTML = buildProjectEditCells(project);
       tr.dataset.rowType = 'edit-project';
       tr.className = 'bg-indigo-50/40';
-      if (project) {
-        tr.querySelector('.target-input').value = project.target_name || '';
-        tr.dataset.targetType       = project.target_type || '';
-        tr.dataset.targetId         = project.application_id       || '';
-        tr.dataset.targetGroupId    = project.application_group_id || '';
-        tr.dataset.targetPortfolioId = project.portfolio_id        || '';
-      }
-      setupTargetAutocomplete(tr);
+      tr.querySelector('.title-input').focus();
     }
 
     function buildProjectEditCells(project) {
-      const reasonOpts = ['Regulatory','Revenue Protection','Revenue Generation','Cost Reduction'];
-      const statusOpts = ['Proposed','Approved','Rejected','Cut'];
+      const reasonOpts   = ['Regulatory','Revenue Protection','Revenue Generation','Cost Reduction'];
       const priorityOpts = ['High','Medium','Low'];
 
-      const reasonSel  = `<select class="reason-sel w-full rounded border border-slate-200 px-1 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100">
+      const reasonSel = `<select class="reason-sel w-full rounded border border-slate-200 px-1 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100">
         ${reasonOpts.map(r => `<option value="${r}" ${project && project.reason === r ? 'selected' : ''}>${r}</option>`).join('')}
-      </select>`;
-      const statusSel  = `<select class="status-sel w-full rounded border border-slate-200 px-1 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100">
-        ${statusOpts.map(s => `<option value="${s}" ${project && project.status === s ? 'selected' : (s === 'Proposed' && !project ? 'selected' : '')}>${s}</option>`).join('')}
       </select>`;
       const prioritySel = `<select class="priority-sel w-full rounded border border-slate-200 px-1 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100">
         ${priorityOpts.map(p2 => `<option value="${p2}" ${project && project.priority === p2 ? 'selected' : (p2 === 'Medium' && !project ? 'selected' : '')}>${p2}</option>`).join('')}
@@ -586,20 +570,12 @@
 
       return `
         <td class="px-2 py-2">
-          <input type="text" placeholder="Search apps, groups, portfolios…" class="target-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100" autocomplete="off" />
-        </td>
-        <td class="px-2 py-2">
-          <input type="text" class="title-input w-32 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
+          <input type="text" class="title-input w-44 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
             placeholder="Title" value="${esc(project ? project.title : '')}" />
         </td>
-        <td class="px-2 py-2">
-          <input type="text" class="desc-input w-28 rounded border border-slate-200 px-2 py-1 text-xs text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100"
-            placeholder="Description" value="${esc(project ? (project.description || '') : '')}" />
-        </td>
         <td class="px-2 py-2">${reasonSel}</td>
-        <td class="px-2 py-2">${statusSel}</td>
         <td class="px-2 py-2">${prioritySel}</td>
-        <td colspan="10" class="px-3 py-2 text-xs text-slate-400 italic">Set benefit, cost &amp; delivery lead on the project detail page →</td>
+        <td colspan="13" class="px-3 py-2 text-xs text-slate-400 italic">Set description, status, benefit, cost &amp; delivery lead on the project detail page →</td>
         <td class="px-2 py-2 text-right whitespace-nowrap">
           <button onclick="saveProjectRow(this.closest('tr'))" class="rounded-lg px-2.5 py-1 text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save</button>
           <button onclick="cancelProjectEdit(this.closest('tr'))" class="ml-1 rounded-lg px-2.5 py-1 text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">Cancel</button>
@@ -608,21 +584,39 @@
 
     async function saveProjectRow(tr) {
       removeInlineError(tr);
-      const id              = tr.dataset.id || null;
-      const targetType      = tr.dataset.targetType || '';
-      const targetId        = tr.dataset.targetId || '';
-      const targetGroupId   = tr.dataset.targetGroupId || '';
-      const targetPortId    = tr.dataset.targetPortfolioId || '';
+      const id          = tr.dataset.id || null;
+      const sectionType = tr.dataset.sectionType || '';
+      const grpTargetId = Number(tr.dataset.grpTargetId) || null;
 
+      // For add: derive target from context; for edit: preserve existing project's target
+      let application_id = null, application_group_id = null, portfolio_id = null;
+      if (id) {
+        const existing = projects.find(p => p.id === Number(id));
+        if (existing) {
+          application_id       = existing.application_id       || null;
+          application_group_id = existing.application_group_id || null;
+          portfolio_id         = existing.portfolio_id         || null;
+        }
+      } else {
+        if (sectionType === 'application') application_id       = grpTargetId;
+        else if (sectionType === 'group')  application_group_id = grpTargetId;
+        else                               portfolio_id         = grpTargetId;
+      }
+
+      // Preserve fields not editable inline (status, description, benefit, cost, lead)
+      const existing = id ? projects.find(p => p.id === Number(id)) : null;
       const body = {
         title:                tr.querySelector('.title-input').value,
-        description:          tr.querySelector('.desc-input').value || null,
         reason:               tr.querySelector('.reason-sel').value,
-        status:               tr.querySelector('.status-sel').value,
         priority:             tr.querySelector('.priority-sel').value,
-        application_id:       targetType === 'application' ? Number(targetId)      : null,
-        application_group_id: targetType === 'group'       ? Number(targetGroupId) : null,
-        portfolio_id:         targetType === 'portfolio'   ? Number(targetPortId)  : null,
+        status:               existing?.status          || 'Proposed',
+        description:          existing?.description     || null,
+        benefit_eur:          existing?.benefit_eur     || 0,
+        external_cost_eur:    existing?.external_cost_eur || 0,
+        delivery_lead_id:     existing?.delivery_lead_id  || null,
+        application_id,
+        application_group_id,
+        portfolio_id,
       };
 
       const btn = tr.querySelector('button[onclick^="saveProjectRow"]');
@@ -812,20 +806,8 @@
 
     // ---- Add new rows ----
 
-    function addNewProjectRow() {
-      document.querySelectorAll('[data-row-type="new-project-global"]').forEach(r => r.remove());
-      const tbody = document.getElementById('project-table-body');
-      const tr    = document.createElement('tr');
-      tr.dataset.rowType = 'new-project-global';
-      tr.className = 'bg-indigo-50/40';
-      tr.innerHTML = buildProjectEditCells(null);
-      tbody.prepend(tr);
-      setupTargetAutocomplete(tr);
-      tr.querySelector('.target-input').focus();
-    }
-
     function addProjectRowForTarget(sectionType, targetId, targetName) {
-      document.querySelectorAll('[data-row-type="new-project-global"], [data-row-type="new-project"]').forEach(r => r.remove());
+      document.querySelectorAll('[data-row-type="new-project"]').forEach(r => r.remove());
 
       if (collapsedSections.has(sectionType)) toggleSection(sectionType);
       const tKey = `${sectionType}:${targetId}`;
@@ -845,24 +827,6 @@
       tr.className = 'bg-indigo-50/40';
       tr.innerHTML = buildProjectEditCells(null);
       insertAfter.after(tr);
-
-      tr.querySelector('.target-input').value = targetName;
-      tr.dataset.targetType = sectionType;
-      if (sectionType === 'application') {
-        tr.dataset.targetId = targetId;
-        tr.dataset.targetGroupId = '';
-        tr.dataset.targetPortfolioId = '';
-      } else if (sectionType === 'group') {
-        tr.dataset.targetId = '';
-        tr.dataset.targetGroupId = targetId;
-        tr.dataset.targetPortfolioId = '';
-      } else {
-        tr.dataset.targetId = '';
-        tr.dataset.targetGroupId = '';
-        tr.dataset.targetPortfolioId = targetId;
-      }
-
-      setupTargetAutocomplete(tr);
       tr.querySelector('.title-input').focus();
     }
 
@@ -891,56 +855,6 @@
       setupMonthInputs(tr);
       tr.querySelector('.person-input').focus();
     }
-
-    // ---- Target autocomplete ----
-
-    const acDropdown = document.createElement('div');
-    acDropdown.id = 'ac-dropdown';
-    acDropdown.className = 'ac-popup';
-    acDropdown.style.display = 'none';
-    document.body.appendChild(acDropdown);
-
-    let acInput = null, acTr = null;
-
-    function setupTargetAutocomplete(tr) {
-      const input = tr.querySelector('.target-input');
-      input.addEventListener('input',  () => showTargetAc(tr, input));
-      input.addEventListener('focus',  () => showTargetAc(tr, input));
-      input.addEventListener('blur',   () => setTimeout(() => { if (acInput === input) hideTargetAc(); }, 150));
-    }
-
-    function showTargetAc(tr, input) {
-      const q = input.value.trim().toLowerCase();
-      const matches = q ? targets.filter(t => t.name.toLowerCase().includes(q)) : targets;
-      if (!matches.length) { hideTargetAc(); return; }
-      acInput = input; acTr = tr;
-
-      acDropdown.innerHTML = matches.map(t => {
-        let badge;
-        if (t.type === 'application') badge = '<span style="font-size:10px;background:#e0f2fe;color:#0369a1;border-radius:4px;padding:1px 4px;font-weight:600">App</span>';
-        else if (t.type === 'group')  badge = '<span style="font-size:10px;background:#e0e7ff;color:#4338ca;border-radius:4px;padding:1px 4px;font-weight:600">Group</span>';
-        else                          badge = '<span style="font-size:10px;background:#ede9fe;color:#6d28d9;border-radius:4px;padding:1px 4px;font-weight:600">Portfolio</span>';
-        return `<div class="ac-item" data-id="${t.id}" data-type="${t.type}" data-name="${esc(t.name)}">${badge} ${esc(t.name)}</div>`;
-      }).join('');
-
-      positionDropdown(acDropdown, input);
-      acDropdown.style.display = 'block';
-
-      acDropdown.querySelectorAll('.ac-item').forEach(item => {
-        item.addEventListener('mousedown', e => {
-          e.preventDefault();
-          const { id, type, name } = item.dataset;
-          input.value = name;
-          acTr.dataset.targetType        = type;
-          acTr.dataset.targetId          = type === 'application' ? id : '';
-          acTr.dataset.targetGroupId     = type === 'group'       ? id : '';
-          acTr.dataset.targetPortfolioId = type === 'portfolio'   ? id : '';
-          hideTargetAc();
-        });
-      });
-    }
-
-    function hideTargetAc() { acDropdown.style.display = 'none'; acInput = null; acTr = null; }
 
     // ---- Person picker ----
 
