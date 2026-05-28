@@ -11,6 +11,7 @@ const adcsRouter = require('./routes/adcs');
 const tbhRouter  = require('./routes/tbh');
 const ctbRouter         = require('./routes/ctb');
 const ctbProjectsRouter = require('./routes/ctb-projects');
+const fteAllocationsRouter = require('./routes/fte-allocations');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -25,6 +26,7 @@ app.use('/api/adcs', adcsRouter);
 app.use('/api/tbh',  tbhRouter);
 app.use('/api/ctb',          ctbRouter);
 app.use('/api/ctb-projects', ctbProjectsRouter);
+app.use('/api/fte-allocations', fteAllocationsRouter);
 
 app.get('/api/dashboard/summary', async (req, res) => {
   const { rows } = await db.query(`
