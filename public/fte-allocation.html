@@ -417,34 +417,53 @@
       return tr;
     }
 
+    // Net CTB cost per month:
+    //   Baseline CTB is mandatory (minimum floor).
+    //   CTB Projects offset against the baseline.
+    //   net_ctb = max(baseline, ctb_projects − baseline)
+    //   Examples: baseline=0.5, projects=2.2 → max(0.5, 1.7) = 1.7
+    //             baseline=0.5, projects=0   → max(0.5, −0.5) = 0.5
+    //             baseline=0.5, projects=0.3 → max(0.5, −0.2) = 0.5
+    function netCtbTotals() {
+      const baseT = monthTotals(getAllocs('baseline_ctb'));
+      const projT = monthTotals(getAllocs('ctb_project'));
+      const net = {};
+      MONTHS.forEach(m => {
+        net[m] = Math.max(baseT[m], projT[m] - baseT[m]);
+      });
+      net.grand = MONTHS.reduce((s, m) => s + net[m], 0);
+      return net;
+    }
+
     function makeGrandTotalRow() {
-      const avail = currentFte ? (currentFte.availability / 100) : null;
-      const allAllocs = [
-        ...getAllocs('adc'),
-        ...getAllocs('baseline_ctb'),
-        ...getAllocs('ctb_project'),
-      ];
-      const totals = monthTotals(allAllocs);
+      const avail  = currentFte ? (currentFte.availability / 100) : null;
+      const adcT   = monthTotals(getAllocs('adc'));
+      const netCtb = netCtbTotals();
+
+      const totals = {};
+      MONTHS.forEach(m => { totals[m] = adcT[m] + netCtb[m]; });
+      totals.grand = MONTHS.reduce((s, m) => s + totals[m], 0);
 
       const tr = document.createElement('tr');
       tr.dataset.rowType = 'grand-total';
       tr.className = 'bg-slate-900 sticky bottom-0';
 
       const months = MONTHS.map(m => {
-        const val = totals[m];
+        const val  = totals[m];
         const over = avail !== null && val > avail;
-        const cls = over
+        const cls  = over
           ? 'px-3 py-2.5 text-right text-xs font-bold tabular-nums bg-rose-600 text-white'
           : 'px-3 py-2.5 text-right text-xs font-bold tabular-nums text-slate-200';
-        return `<td class="${cls}">${fmtNum(val)}</td>`;
+        return `<td class="${cls}" title="${over ? 'Over availability' : ''}">${fmtNum(val)}</td>`;
       }).join('');
 
       const grandOver = avail !== null && totals.grand > avail * 12;
 
       tr.innerHTML = `
         <td colspan="2" class="px-4 py-2.5">
-          <span class="text-[11px] font-bold uppercase tracking-widest text-slate-200">Grand Total</span>
-          ${avail !== null ? `<span class="ml-2 text-[10px] text-slate-500">Availability: ${avail} FTE/month</span>` : ''}
+          <span class="text-[11px] font-bold uppercase tracking-widest text-slate-200">Net Total</span>
+          <span class="ml-2 text-[10px] text-slate-500">ADC + net CTB (baseline offsets projects)</span>
+          ${avail !== null ? `<span class="ml-2 text-[10px] text-slate-400">· availability ${avail}/mo</span>` : ''}
         </td>
         ${months}
         <td class="px-3 py-2.5 text-right text-xs font-bold tabular-nums ${grandOver ? 'bg-rose-600 text-white' : 'text-slate-100 bg-slate-800'}">${fmtNum(totals.grand)}</td>
