@@ -533,6 +533,7 @@
         <td class="px-1 py-2">
           <input type="number" data-month="${MONTHS[i]}" step="0.5" min="0" value="${v}"
             class="w-14 rounded border border-slate-200 px-1 py-1 text-xs text-right text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100 month-input" />
+          ${i === 0 ? `<button type="button" onclick="copyJanToAll(this.closest('tr'))" title="Copy January to all months" class="mt-0.5 block w-14 rounded text-center text-[9px] font-semibold text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors leading-4">→ all</button>` : ''}
         </td>`).join('');
 
       return `
@@ -669,6 +670,18 @@
           if (td) td.textContent = fmtNum(total);
         });
       });
+    }
+
+    function copyJanToAll(tr) {
+      const jan = tr.querySelector('[data-month="jan"]');
+      if (!jan) return;
+      const val = jan.value;
+      MONTHS.slice(1).forEach(m => {
+        const el = tr.querySelector(`[data-month="${m}"]`);
+        if (el) el.value = val;
+      });
+      const feb = tr.querySelector('[data-month="feb"]');
+      if (feb) feb.dispatchEvent(new Event('input'));
     }
 
     // ---- Person picker ----
