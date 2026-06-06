@@ -483,14 +483,21 @@
 
       const months = MONTHS.map((m, i) => {
         const val  = totals[m];
-        const over = avail !== null && val > avail;
-        const cls  = over
-          ? 'px-3 py-2.5 text-right text-xs font-bold tabular-nums bg-rose-600 text-white'
-          : 'px-3 py-2.5 text-right text-xs font-bold tabular-nums text-slate-200';
-        return `<td class="${cls}" title="${over ? 'Over availability' : ''}">${fmtNum(val)}</td>${i === 0 ? '<td class="w-7 px-1 py-2.5 bg-slate-900"></td>' : ''}`;
+        const cls = avail === null
+          ? 'px-3 py-2.5 text-right text-xs font-bold tabular-nums text-slate-200'
+          : val > avail  ? 'px-3 py-2.5 text-right text-xs font-bold tabular-nums bg-rose-600 text-white'
+          : val === avail ? 'px-3 py-2.5 text-right text-xs font-bold tabular-nums bg-emerald-600 text-white'
+          :                 'px-3 py-2.5 text-right text-xs font-bold tabular-nums bg-blue-600 text-white';
+        const title = avail === null ? '' : val > avail ? 'Over availability' : val === avail ? 'Fully allocated' : 'Under allocated';
+        return `<td class="${cls}" title="${title}">${fmtNum(val)}</td>${i === 0 ? '<td class="w-7 px-1 py-2.5 bg-slate-900"></td>' : ''}`;
       }).join('');
 
-      const grandOver = avail !== null && totals.grand > avail * 12;
+      const grandTotal  = totals.grand;
+      const grandTarget = avail !== null ? avail * 12 : null;
+      const grandCls = grandTarget === null      ? 'text-slate-100 bg-slate-800'
+                     : grandTotal > grandTarget  ? 'bg-rose-600 text-white'
+                     : grandTotal === grandTarget ? 'bg-emerald-600 text-white'
+                     :                             'bg-blue-600 text-white';
 
       tr.innerHTML = `
         <td colspan="2" class="px-4 py-2.5">
@@ -499,7 +506,7 @@
           ${avail !== null ? `<span class="ml-2 text-[10px] text-slate-400">· availability ${avail}/mo</span>` : ''}
         </td>
         ${months}
-        <td class="px-3 py-2.5 text-right text-xs font-bold tabular-nums ${grandOver ? 'bg-rose-600 text-white' : 'text-slate-100 bg-slate-800'}">${fmtNum(totals.grand)}</td>
+        <td class="px-3 py-2.5 text-right text-xs font-bold tabular-nums ${grandCls}">${fmtNum(grandTotal)}</td>
         <td class="px-4 py-2.5"></td>`;
       return tr;
     }
