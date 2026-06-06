@@ -3,6 +3,62 @@ const db = require('../db');
 
 const router = express.Router();
 
+// GET /api/fte-allocations/summary
+// Returns aggregated allocation data for all FTEs — used by the summary table.
+// Baseline CTB and CTB Projects are returned at per-target granularity so the
+// frontend can apply the group-scope offset formula.
+router.get('/summary', async (req, res) => {
+  const year = new Date().getFullYear();
+
+  const { rows: ftes } = await db.query(
+    `SELECT id, first_name, last_name, title, region, email, availability
+     FROM ftes ORDER BY last_name ASC, first_name ASC`
+  );
+
+  // ADC totals per FTE (all ADCs summed — only the monthly totals matter here)
+  const { rows: adcRows } = await db.query(`
+    SELECT aa.fte_id,
+      SUM(aa.jan) AS jan, SUM(aa.feb) AS feb, SUM(aa.mar) AS mar,
+      SUM(aa.apr) AS apr, SUM(aa.may) AS may, SUM(aa.jun) AS jun,
+      SUM(aa.jul) AS jul, SUM(aa.aug) AS aug, SUM(aa.sep) AS sep,
+      SUM(aa.oct) AS oct, SUM(aa.nov) AS nov, SUM(aa.dec) AS dec
+    FROM adc_allocations aa
+    JOIN adcs a ON a.id = aa.adc_id
+    WHERE a.year = $1
+    GROUP BY aa.fte_id
+  `, [year]);
+
+  // Baseline CTB per FTE per target (granularity needed for offset formula)
+  const { rows: ctbRows } = await db.query(`
+    SELECT ba.fte_id, b.application_id, b.application_group_id,
+      SUM(ba.jan) AS jan, SUM(ba.feb) AS feb, SUM(ba.mar) AS mar,
+      SUM(ba.apr) AS apr, SUM(ba.may) AS may, SUM(ba.jun) AS jun,
+      SUM(ba.jul) AS jul, SUM(ba.aug) AS aug, SUM(ba.sep) AS sep,
+      SUM(ba.oct) AS oct, SUM(ba.nov) AS nov, SUM(ba.dec) AS dec
+    FROM baseline_ctb_allocations ba
+    JOIN baseline_ctb b ON b.id = ba.ctb_id
+    WHERE b.year = $1
+    GROUP BY ba.fte_id, b.application_id, b.application_group_id
+  `, [year]);
+
+  // CTB projects per FTE per target, including the app's parent group
+  const { rows: projRows } = await db.query(`
+    SELECT pa.fte_id, p.application_id, p.application_group_id, p.portfolio_id,
+      app.group_id AS app_group_id,
+      SUM(pa.jan) AS jan, SUM(pa.feb) AS feb, SUM(pa.mar) AS mar,
+      SUM(pa.apr) AS apr, SUM(pa.may) AS may, SUM(pa.jun) AS jun,
+      SUM(pa.jul) AS jul, SUM(pa.aug) AS aug, SUM(pa.sep) AS sep,
+      SUM(pa.oct) AS oct, SUM(pa.nov) AS nov, SUM(pa.dec) AS dec
+    FROM ctb_project_allocations pa
+    JOIN ctb_projects p ON p.id = pa.project_id
+    LEFT JOIN applications app ON app.id = p.application_id
+    WHERE p.year = $1
+    GROUP BY pa.fte_id, p.application_id, p.application_group_id, p.portfolio_id, app.group_id
+  `, [year]);
+
+  res.json({ ftes, adc: adcRows, baseline_ctb: ctbRows, ctb_projects: projRows });
+});
+
 // GET /api/fte-allocations/:fteId
 // Returns { fte, adc: [], baseline_ctb: [], ctb_projects: [] }
 router.get('/:fteId', async (req, res) => {

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FTE Summary · IT Investment Governance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/app.css" />
+  <style>
+    #sidebar { transition: width 0.2s ease; }
+    #sidebar-toggle { left: 15.25rem; transition: left 0.2s ease; }
+    main { transition: margin-left 0.2s ease; }
+    body.sidebar-collapsed #sidebar { width: 4rem; }
+    body.sidebar-collapsed main { margin-left: 4rem; }
+    body.sidebar-collapsed #sidebar-toggle { left: 3.25rem; }
+    body.sidebar-collapsed #toggle-icon { transform: rotate(180deg); }
+    body.sidebar-collapsed .nav-label,
+    body.sidebar-collapsed .nav-section,
+    body.sidebar-collapsed .sidebar-footer,
+    body.sidebar-collapsed .logo-text { display: none; }
+    body.sidebar-collapsed .nav-item { justify-content: center; padding-left: 0.25rem; padding-right: 0.25rem; }
+    body.sidebar-collapsed .logo-area { justify-content: center; padding-left: 0.5rem; padding-right: 0.5rem; }
+    tbody tr { cursor: pointer; }
+    tbody tr:hover td { background-color: #f1f5f9 !important; }
+  </style>
+</head>
+<body class="h-full bg-slate-100 font-sans antialiased">
+
+  <div class="flex h-full">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-10 flex w-64 flex-col overflow-y-auto bg-slate-900">
+      <div class="logo-area flex items-center gap-3 border-b border-slate-700/60 px-5 py-5">
+        <div class="shrink-0 flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-bold tracking-tight select-none">IG</div>
+        <div class="logo-text">
+          <p class="text-sm font-semibold leading-tight text-white">IT Investment</p>
+          <p class="text-xs font-medium text-indigo-400">Governance</p>
+        </div>
+      </div>
+      <nav class="flex-1 space-y-0.5 px-3 py-4">
+        <p class="nav-section mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Main</p>
+        <a href="/" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm8-3a1 1 0 0 0-.867.5 1 1 0 1 1-1.731-1A3 3 0 0 1 13 10a3.001 3.001 0 0 1-2 2.83V13a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1 1 1 0 1 0 0-2 3 3 0 0 1-3-3zm1 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <p class="nav-section mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Manage</p>
+        <a href="/applications.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V4zM2 12a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2zm10 0a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2z"/>
+          </svg>
+          <span class="nav-label">Applications</span>
+        </a>
+        <a href="/application-groups.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zM5 11a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H5zM11 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V5zM14 11a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1z"/>
+          </svg>
+          <span class="nav-label">Application Groups</span>
+        </a>
+        <a href="/ftes.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM17 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 0 0-1.5-4.33A5 5 0 0 1 19 16v1h-6.07zM6 11a5 5 0 0 1 5 5v1H1v-1a5 5 0 0 1 5-5z"/>
+          </svg>
+          <span class="nav-label">FTEs</span>
+        </a>
+        <a href="/portfolios.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 6V5a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1h2a2 2 0 0 1 2 2v3.57A22.952 22.952 0 0 1 10 13a22.95 22.95 0 0 1-8-1.43V8a2 2 0 0 1 2-2h2zm2-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1H8V5zm1 5a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H10a1 1 0 0 1-1-1z" clip-rule="evenodd"/>
+            <path d="M2 13.692V16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.308A24.974 24.974 0 0 1 10 15c-2.796 0-5.487-.46-8-1.308z"/>
+          </svg>
+          <span class="nav-label">Portfolios</span>
+        </a>
+        <a href="/adcs.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0 0 10 1.944 11.954 11.954 0 0 0 17.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span class="nav-label">ADC</span>
+        </a>
+        <a href="/ctb.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"/>
+          </svg>
+          <span class="nav-label">Baseline CTB</span>
+        </a>
+        <a href="/ctb-projects.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+          </svg>
+          <span class="nav-label">CTB Projects</span>
+        </a>
+        <!-- Visualise -->
+        <p class="nav-section mb-2 mt-5 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Visualise</p>
+        <a href="/fte-allocation.html" class="nav-item flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+          <span class="nav-label">FTE Allocation</span>
+        </a>
+        <a href="/fte-summary.html" class="nav-item flex items-center gap-3 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <span class="nav-label">FTE Summary</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer border-t border-slate-700/60 px-5 py-4">
+        <p class="text-xs text-slate-500">IT Division &middot; Internal Use Only</p>
+        <p class="mt-0.5 text-xs text-slate-600">v1.0</p>
+      </div>
+    </aside>
+
+    <button id="sidebar-toggle" title="Toggle sidebar"
+      class="fixed top-16 z-20 flex h-6 w-6 items-center justify-center rounded-full border border-slate-600 bg-slate-700 text-slate-300 shadow hover:bg-slate-600 transition-colors">
+      <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+
+    <!-- Main -->
+    <main class="ml-64 flex flex-1 flex-col min-h-screen">
+      <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
+        <div>
+          <h1 class="text-lg font-semibold text-slate-800">FTE Summary</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Net monthly allocation (ADC + net CTB) for all FTEs · click a row to view detail</p>
+        </div>
+        <!-- Search -->
+        <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+          </svg>
+          <input id="search" type="text" placeholder="Filter FTEs…"
+            class="w-44 text-sm text-slate-700 outline-none placeholder-slate-400 bg-transparent" />
+        </div>
+      </header>
+
+      <!-- Legend -->
+      <div class="flex items-center gap-4 border-b border-slate-200 bg-white px-8 py-2">
+        <span class="text-xs text-slate-500">Colour key:</span>
+        <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-blue-600"></span>Under allocated</span>
+        <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-emerald-600"></span>Fully allocated</span>
+        <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-rose-600"></span>Over allocated</span>
+        <span class="inline-flex items-center gap-1.5 text-xs text-slate-400"><span class="inline-block w-3 h-3 rounded-sm bg-slate-200"></span>No availability set</span>
+      </div>
+
+      <!-- Loading / error states -->
+      <div id="loading-state" class="flex flex-1 items-center justify-center">
+        <p class="text-sm text-slate-400">Loading…</p>
+      </div>
+      <div id="error-state" class="hidden flex-1 items-center justify-center">
+        <p class="text-sm text-rose-500">Failed to load data. Please refresh.</p>
+      </div>
+
+      <!-- Table -->
+      <div id="table-wrap" class="hidden flex-1 overflow-x-auto">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 sticky top-[73px] z-10">
+              <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[200px]">FTE</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Mar</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Apr</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">May</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jun</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jul</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Aug</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Sep</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Oct</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Nov</th>
+              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Dec</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    // ─── Constants ─────────────────────────────────────────────────────────────
+    const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+
+    function fmtNum(v) {
+      const n = Number(v) || 0;
+      return n === 0 ? '—' : n % 1 === 0 ? String(n) : n.toFixed(1);
+    }
+
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ─── Cell class based on allocation vs availability ─────────────────────────
+    function cellCls(val, avail) {
+      const base = 'px-3 py-2.5 text-right text-xs tabular-nums ';
+      if (avail === null || avail === undefined) return base + 'text-slate-600';
+      if (val > avail)    return base + 'font-semibold bg-rose-600 text-white';
+      if (val === avail)  return base + 'font-semibold bg-emerald-600 text-white';
+      return base + 'font-semibold bg-blue-600 text-white';
+    }
+
+    // ─── Net monthly totals for one FTE ────────────────────────────────────────
+    // Applies the same group-scope baseline CTB offset formula used on the
+    // individual FTE allocation page.
+    function computeNetMonths(fteId, allAdc, allCtb, allProj) {
+      const adcRows  = allAdc.filter(r => Number(r.fte_id) === fteId);
+      const ctbRows  = allCtb.filter(r => Number(r.fte_id) === fteId);
+      const projRows = allProj.filter(r => Number(r.fte_id) === fteId);
+
+      // ADC total per month
+      const adcT = {};
+      MONTHS.forEach(m => { adcT[m] = adcRows.reduce((s, r) => s + (Number(r[m]) || 0), 0); });
+
+      // Baseline CTB pools by key ('app:{id}' | 'grp:{id}')
+      const baseByKey = {};
+      ctbRows.forEach(a => {
+        const key = a.application_id ? `app:${a.application_id}` : `grp:${a.application_group_id}`;
+        if (!baseByKey[key]) baseByKey[key] = {};
+        MONTHS.forEach(m => { baseByKey[key][m] = (baseByKey[key][m] || 0) + (Number(a[m]) || 0); });
+      });
+
+      // CTB project pools — app projects are added to their exact key AND to
+      // their parent group's key so a group baseline can offset them.
+      const projByKey = {};
+      projRows.forEach(a => {
+        if (a.application_id) {
+          const appKey = `app:${a.application_id}`;
+          if (!projByKey[appKey]) projByKey[appKey] = {};
+          MONTHS.forEach(m => { projByKey[appKey][m] = (projByKey[appKey][m] || 0) + (Number(a[m]) || 0); });
+          if (a.app_group_id) {
+            const grpKey = `grp:${a.app_group_id}`;
+            if (!projByKey[grpKey]) projByKey[grpKey] = {};
+            MONTHS.forEach(m => { projByKey[grpKey][m] = (projByKey[grpKey][m] || 0) + (Number(a[m]) || 0); });
+          }
+        } else if (a.application_group_id) {
+          const grpKey = `grp:${a.application_group_id}`;
+          if (!projByKey[grpKey]) projByKey[grpKey] = {};
+          MONTHS.forEach(m => { projByKey[grpKey][m] = (projByKey[grpKey][m] || 0) + (Number(a[m]) || 0); });
+        }
+        // Portfolio-level: no baseline offset, handled in full-cost pass below
+      });
+
+      // Apply offset formula per baseline pool
+      const ctbNet = {};
+      MONTHS.forEach(m => { ctbNet[m] = 0; });
+
+      Object.entries(baseByKey).forEach(([key, baseM]) => {
+        const projM = projByKey[key] || {};
+        MONTHS.forEach(m => {
+          const base = baseM[m] || 0;
+          const proj = projM[m] || 0;
+          ctbNet[m] += Math.max(base, proj - base);
+        });
+      });
+
+      // Full-cost pass: projects with no applicable baseline
+      projRows.forEach(a => {
+        let covered = false;
+        if (a.application_id) {
+          covered = !!baseByKey[`app:${a.application_id}`]
+                 || (a.app_group_id && !!baseByKey[`grp:${a.app_group_id}`]);
+        } else if (a.application_group_id) {
+          covered = !!baseByKey[`grp:${a.application_group_id}`];
+        }
+        if (!covered) {
+          MONTHS.forEach(m => { ctbNet[m] += Number(a[m]) || 0; });
+        }
+      });
+
+      // Net total = ADC + net CTB
+      const net = {};
+      MONTHS.forEach(m => { net[m] = adcT[m] + ctbNet[m]; });
+      return net;
+    }
+
+    // ─── Render ────────────────────────────────────────────────────────────────
+    let summaryData = null;
+    let filterText  = '';
+
+    function render() {
+      if (!summaryData) return;
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+
+      const q = filterText.toLowerCase();
+      const ftes = summaryData.ftes.filter(f => {
+        const name = `${f.first_name} ${f.last_name}`.toLowerCase();
+        const meta = `${f.title || ''} ${f.region || ''}`.toLowerCase();
+        return !q || name.includes(q) || meta.includes(q);
+      });
+
+      if (ftes.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="13" class="px-6 py-10 text-center text-sm text-slate-400">No FTEs match your filter.</td></tr>`;
+        return;
+      }
+
+      ftes.forEach(fte => {
+        const avail = fte.availability != null ? fte.availability / 100 : null;
+        const net   = computeNetMonths(fte.id, summaryData.adc, summaryData.baseline_ctb, summaryData.ctb_projects);
+
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-slate-100 bg-white transition-colors';
+        tr.title = 'View allocations';
+        tr.addEventListener('click', () => {
+          window.location.href = `/fte-allocation.html?id=${fte.id}`;
+        });
+
+        const metaParts = [fte.title, fte.region].filter(Boolean);
+
+        const monthCells = MONTHS.map(m => {
+          const val = net[m];
+          const cls = cellCls(val, avail);
+          const title = avail === null ? '' : val > avail ? 'Over availability' : val === avail ? 'Fully allocated' : 'Under allocated';
+          return `<td class="${cls}" title="${title}">${fmtNum(val)}</td>`;
+        }).join('');
+
+        tr.innerHTML = `
+          <td class="px-6 py-3 bg-white">
+            <div class="font-medium text-sm text-slate-800">${esc(fte.first_name)} ${esc(fte.last_name)}</div>
+            ${metaParts.length ? `<div class="text-xs text-slate-400 mt-0.5">${esc(metaParts.join(' · '))}</div>` : ''}
+          </td>
+          ${monthCells}`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ─── Load data ─────────────────────────────────────────────────────────────
+    async function loadSummary() {
+      try {
+        const res = await fetch('/api/fte-allocations/summary');
+        if (!res.ok) throw new Error(res.status);
+        summaryData = await res.json();
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('table-wrap').classList.remove('hidden');
+        document.getElementById('table-wrap').classList.add('flex');
+        render();
+      } catch (e) {
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+        document.getElementById('error-state').classList.add('flex');
+      }
+    }
+
+    // ─── Search ────────────────────────────────────────────────────────────────
+    document.getElementById('search').addEventListener('input', e => {
+      filterText = e.target.value;
+      render();
+    });
+
+    // ─── Sidebar toggle ────────────────────────────────────────────────────────
+    (function () {
+      const saved = localStorage.getItem('sidebar');
+      if (saved === 'collapsed') document.body.classList.add('sidebar-collapsed');
+      document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        document.body.classList.toggle('sidebar-collapsed');
+        localStorage.setItem('sidebar', document.body.classList.contains('sidebar-collapsed') ? 'collapsed' : 'open');
+      });
+    })();
+
+    loadSummary();
+  </script>
+</body>
+</html>
