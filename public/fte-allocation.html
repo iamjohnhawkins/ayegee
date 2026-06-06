@@ -417,20 +417,52 @@
       return tr;
     }
 
-    // Net CTB cost per month:
-    //   Baseline CTB is mandatory (minimum floor).
-    //   CTB Projects offset against the baseline.
-    //   net_ctb = max(baseline, ctb_projects − baseline)
-    //   Examples: baseline=0.5, projects=2.2 → max(0.5, 1.7) = 1.7
-    //             baseline=0.5, projects=0   → max(0.5, −0.5) = 0.5
-    //             baseline=0.5, projects=0.3 → max(0.5, −0.2) = 0.5
+    // Net CTB cost per month, computed per application / application group:
+    //   Baseline CTB can only offset CTB projects on the same app or group.
+    //   net (per target) = max(baseline, projects − baseline)
+    //   Portfolio-based projects have no baseline to offset and count in full.
+    //   Examples (same target):
+    //     baseline=0.5, projects=2.2 → max(0.5, 1.7) = 1.7
+    //     baseline=0.5, projects=0   → max(0.5, −0.5) = 0.5  (floor)
+    //     baseline=0.5, projects=0.3 → max(0.5, −0.2) = 0.5  (floor)
     function netCtbTotals() {
-      const baseT = monthTotals(getAllocs('baseline_ctb'));
-      const projT = monthTotals(getAllocs('ctb_project'));
-      const net = {};
-      MONTHS.forEach(m => {
-        net[m] = Math.max(baseT[m], projT[m] - baseT[m]);
+      // Per-target month sums for baseline CTB
+      const baseByTarget = {};
+      getAllocs('baseline_ctb').forEach(a => {
+        const key = a.application_id ? `app:${a.application_id}` : `grp:${a.application_group_id}`;
+        if (!baseByTarget[key]) baseByTarget[key] = {};
+        MONTHS.forEach(m => { baseByTarget[key][m] = (baseByTarget[key][m] || 0) + (Number(a[m]) || 0); });
       });
+
+      // Per-target month sums for CTB projects
+      const projByTarget = {};
+      getAllocs('ctb_project').forEach(a => {
+        const key = a.application_id       ? `app:${a.application_id}`
+                  : a.application_group_id  ? `grp:${a.application_group_id}`
+                  : `port:${a.portfolio_id}`;
+        if (!projByTarget[key]) projByTarget[key] = {};
+        MONTHS.forEach(m => { projByTarget[key][m] = (projByTarget[key][m] || 0) + (Number(a[m]) || 0); });
+      });
+
+      const net = {};
+      MONTHS.forEach(m => { net[m] = 0; });
+
+      // Targets with a baseline: apply offset formula
+      Object.entries(baseByTarget).forEach(([key, baseM]) => {
+        const projM = projByTarget[key] || {};
+        MONTHS.forEach(m => {
+          const base = baseM[m] || 0;
+          const proj = projM[m] || 0;
+          net[m] += Math.max(base, proj - base);
+        });
+      });
+
+      // Project-only targets (no matching baseline): full cost
+      Object.entries(projByTarget).forEach(([key, projM]) => {
+        if (baseByTarget[key]) return; // already handled above
+        MONTHS.forEach(m => { net[m] += projM[m] || 0; });
+      });
+
       net.grand = MONTHS.reduce((s, m) => s + net[m], 0);
       return net;
     }
