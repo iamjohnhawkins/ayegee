@@ -80,7 +80,7 @@ router.get('/:fteId', async (req, res) => {
       p.application_id,
       p.application_group_id,
       p.portfolio_id,
-      app.application_group_id AS app_group_id,
+      app.group_id AS app_group_id,
       pa.jan, pa.feb, pa.mar, pa.apr, pa.may, pa.jun,
       pa.jul, pa.aug, pa.sep, pa.oct, pa.nov, pa.dec
     FROM ctb_project_allocations pa
