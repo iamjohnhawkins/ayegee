@@ -153,6 +153,7 @@
                   <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[140px]">Title / Description</th>
                   <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[150px]">Info</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
+                  <th class="w-7 px-1 py-3"></th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Mar</th>
                   <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Apr</th>
@@ -318,8 +319,8 @@
       tr.dataset.sectionType = section.type;
       tr.className = 'bg-slate-800 cursor-pointer select-none';
 
-      const months = MONTHS.map(m =>
-        `<td class="px-3 py-2.5 text-right text-xs tabular-nums text-slate-400">${fmtNum(totals[m])}</td>`
+      const months = MONTHS.map((m, i) =>
+        `<td class="px-3 py-2.5 text-right text-xs tabular-nums text-slate-400">${fmtNum(totals[m])}</td>${i === 0 ? '<td class="w-7 px-1 py-2.5"></td>' : ''}`
       ).join('');
 
       tr.innerHTML = `
@@ -350,8 +351,8 @@
         ? '<span class="inline-flex items-center rounded-full bg-sky-100 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700">App</span>'
         : '<span class="inline-flex items-center rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-700">Group</span>';
 
-      const months = MONTHS.map(m =>
-        `<td class="px-3 py-2 text-right text-xs tabular-nums text-slate-500">${fmtNum(totals[m])}</td>`
+      const months = MONTHS.map((m, i) =>
+        `<td class="px-3 py-2 text-right text-xs tabular-nums text-slate-500">${fmtNum(totals[m])}</td>${i === 0 ? '<td class="w-7 px-1 py-2"></td>' : ''}`
       ).join('');
 
       tr.innerHTML = `
@@ -392,8 +393,8 @@
       const allocs = Array.isArray(adc.allocations) ? adc.allocations : [];
       const adcCol = collapsedAdcs.has(String(adc.id));
       const allocCount = allocs.length;
-      const months = MONTHS.map(m =>
-        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(adc[m])}</td>`
+      const months = MONTHS.map((m, i) =>
+        `<td class="px-3 py-2.5 text-right text-slate-600 tabular-nums text-xs">${fmtNum(adc[m])}</td>${i === 0 ? '<td class="w-7 px-1 py-2.5"></td>' : ''}`
       ).join('');
       const total = MONTHS.reduce((s, m) => s + (Number(adc[m]) || 0), 0);
 
@@ -455,8 +456,8 @@
       const col3 = isTbh ? '' : `<span class="text-xs text-slate-400">${esc(alloc.fte_email || '')}</span>`;
 
       const total = MONTHS.reduce((s, m) => s + (Number(alloc[m]) || 0), 0);
-      const months = MONTHS.map(m =>
-        `<td class="px-3 py-2 text-right tabular-nums text-xs text-slate-600">${fmtNum(alloc[m])}</td>`
+      const months = MONTHS.map((m, i) =>
+        `<td class="px-3 py-2 text-right tabular-nums text-xs text-slate-600">${fmtNum(alloc[m])}</td>${i === 0 ? '<td class="w-7 px-1 py-2"></td>' : ''}`
       ).join('');
 
       tr.innerHTML = `
@@ -621,12 +622,12 @@
       const mv    = alloc ? MONTHS.map(m => Number(alloc[m]) || 0) : MONTHS.map(() => 0);
       const total = mv.reduce((s, v) => s + v, 0);
       const monthInputs = mv.map((v, i) => i === 0 ? `
-        <td class="px-1 py-2 pr-4">
-          <div class="flex items-center gap-1.5">
-            <input type="number" data-month="${MONTHS[i]}" step="0.5" min="0" value="${v}"
-              class="w-14 rounded border border-slate-200 px-1 py-1 text-xs text-right text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100 month-input" />
-            <button type="button" onclick="copyJanToAll(this.closest('tr'))" title="Copy January to all months" class="shrink-0 rounded px-1.5 py-1 text-[9px] font-semibold text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">→ all</button>
-          </div>
+        <td class="px-1 py-2">
+          <input type="number" data-month="${MONTHS[i]}" step="0.5" min="0" value="${v}"
+            class="w-14 rounded border border-slate-200 px-1 py-1 text-xs text-right text-slate-700 outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-100 month-input" />
+        </td>
+        <td class="w-7 px-1 py-2 text-center">
+          <button type="button" onclick="copyJanToAll(this.closest('tr'))" title="Copy January to all months" class="rounded px-1 py-1 text-[9px] font-semibold text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors">→</button>
         </td>` : `
         <td class="px-1 py-2">
           <input type="number" data-month="${MONTHS[i]}" step="0.5" min="0" value="${v}"
