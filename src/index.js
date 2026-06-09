@@ -17,7 +17,6 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/api/applications', applicationsRouter);
 app.use('/api/application-groups', applicationGroupsRouter);
 app.use('/api/ftes', ftesRouter);
@@ -45,6 +44,12 @@ app.get('/health', async (req, res) => {
     res.status(503).json({ status: 'unhealthy', database: 'disconnected' });
   }
 });
+
+// ─── Serve React SPA in production ───────────────────────────────────────────
+// Must come AFTER all /api routes so API calls are never intercepted.
+const clientDist = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(clientDist));
+app.get('*', (req, res) => res.sendFile(path.join(clientDist, 'index.html')));
 
 async function start() {
   try {
