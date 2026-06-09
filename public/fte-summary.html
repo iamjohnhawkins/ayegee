@@ -21,7 +21,8 @@
     body.sidebar-collapsed .nav-item { justify-content: center; padding-left: 0.25rem; padding-right: 0.25rem; }
     body.sidebar-collapsed .logo-area { justify-content: center; padding-left: 0.5rem; padding-right: 0.5rem; }
     tbody tr { cursor: pointer; }
-    tbody tr:hover td { background-color: #f1f5f9 !important; }
+    /* sticky table-header cells — top is set by JS after measuring sticky-header height */
+    #table-wrap thead th { position: sticky; z-index: 10; background-color: #f8fafc; }
   </style>
 </head>
 <body class="h-full bg-slate-100 font-sans antialiased">
@@ -119,28 +120,32 @@
 
     <!-- Main -->
     <main class="ml-64 flex flex-1 flex-col min-h-screen">
-      <header class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-4">
-        <div>
-          <h1 class="text-lg font-semibold text-slate-800">FTE Summary</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Net monthly allocation (ADC + net CTB) for all FTEs · click a row to view detail</p>
-        </div>
-        <!-- Search -->
-        <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
-          </svg>
-          <input id="search" type="text" placeholder="Filter FTEs…"
-            class="w-44 text-sm text-slate-700 outline-none placeholder-slate-400 bg-transparent" />
-        </div>
-      </header>
 
-      <!-- Legend -->
-      <div class="flex items-center gap-4 border-b border-slate-200 bg-white px-8 py-2">
-        <span class="text-xs text-slate-500">Colour key:</span>
-        <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-blue-600"></span>Under allocated</span>
-        <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-emerald-600"></span>Fully allocated</span>
-        <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-rose-600"></span>Over allocated</span>
-        <span class="inline-flex items-center gap-1.5 text-xs text-slate-400"><span class="inline-block w-3 h-3 rounded-sm bg-slate-200"></span>No availability set</span>
+      <!-- Sticky top unit: page header + legend bar together so the table thead
+           can be positioned exactly below this combined height (set via JS).     -->
+      <div id="sticky-header" class="sticky top-0 z-20 bg-white">
+        <header class="flex items-center justify-between border-b border-slate-200 px-8 py-4">
+          <div>
+            <h1 class="text-lg font-semibold text-slate-800">FTE Summary</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Net monthly allocation (ADC + net CTB) for all FTEs · click a row to view detail</p>
+          </div>
+          <!-- Search -->
+          <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+            </svg>
+            <input id="search" type="text" placeholder="Filter FTEs…"
+              class="w-44 text-sm text-slate-700 outline-none placeholder-slate-400 bg-transparent" />
+          </div>
+        </header>
+        <!-- Legend -->
+        <div class="flex items-center gap-4 border-b border-slate-200 px-8 py-2">
+          <span class="text-xs text-slate-500">Colour key:</span>
+          <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-blue-600"></span>Under allocated</span>
+          <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-emerald-600"></span>Fully allocated</span>
+          <span class="inline-flex items-center gap-1.5 text-xs"><span class="inline-block w-3 h-3 rounded-sm bg-rose-600"></span>Over allocated</span>
+          <span class="inline-flex items-center gap-1.5 text-xs text-slate-400"><span class="inline-block w-3 h-3 rounded-sm bg-slate-200"></span>No availability set</span>
+        </div>
       </div>
 
       <!-- Loading / error states -->
@@ -151,24 +156,26 @@
         <p class="text-sm text-rose-500">Failed to load data. Please refresh.</p>
       </div>
 
-      <!-- Table -->
-      <div id="table-wrap" class="hidden flex-1 overflow-x-auto">
-        <table class="w-full border-collapse text-left">
+      <!-- Table — border-separate (not border-collapse) so position:sticky on <th>
+           cells works correctly in all browsers.                                  -->
+      <div id="table-wrap" class="hidden overflow-x-auto">
+        <table class="w-full border-separate border-spacing-0 text-left">
           <thead>
-            <tr class="bg-slate-50 border-b border-slate-200 sticky top-[73px] z-10">
-              <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[200px]">FTE</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Mar</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Apr</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">May</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jun</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jul</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Aug</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Sep</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Oct</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Nov</th>
-              <th class="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Dec</th>
+            <!-- top is set dynamically by fixTheadTop() after sticky-header is measured -->
+            <tr>
+              <th class="border-b-2 border-slate-300 px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[220px] whitespace-nowrap">FTE</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jan</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Feb</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Mar</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Apr</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">May</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jun</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Jul</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Aug</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Sep</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Oct</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Nov</th>
+              <th class="border-b-2 border-slate-300 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14">Dec</th>
             </tr>
           </thead>
           <tbody id="table-body"></tbody>
@@ -192,9 +199,11 @@
     }
 
     // ─── Cell class based on allocation vs availability ─────────────────────────
+    // h-10 + py-0 + align-middle enforces a uniform 40px row height for every
+    // cell so all rows are the same size regardless of FTE name length.
     function cellCls(val, avail) {
-      const base = 'px-3 py-2.5 text-right text-xs tabular-nums ';
-      if (avail === null || avail === undefined) return base + 'text-slate-600';
+      const base = 'h-10 px-3 py-0 align-middle text-right text-xs tabular-nums ';
+      if (avail === null || avail === undefined) return base + 'text-slate-500';
       if (val > avail)    return base + 'font-semibold bg-rose-600 text-white';
       if (val === avail)  return base + 'font-semibold bg-emerald-600 text-white';
       return base + 'font-semibold bg-blue-600 text-white';
@@ -300,7 +309,7 @@
         const net   = computeNetMonths(fte.id, summaryData.adc, summaryData.baseline_ctb, summaryData.ctb_projects);
 
         const tr = document.createElement('tr');
-        tr.className = 'border-b border-slate-100 bg-white transition-colors';
+        tr.className = 'border-b border-slate-100 bg-white';
         tr.title = 'View allocations';
         tr.addEventListener('click', () => {
           window.location.href = `/fte-allocation.html?id=${fte.id}`;
@@ -315,13 +324,28 @@
           return `<td class="${cls}" title="${title}">${fmtNum(val)}</td>`;
         }).join('');
 
+        // Single-line FTE cell: name bold, meta inline in muted text.
+        // h-10 + py-0 + align-middle matches the month cells for uniform row height.
+        const metaHtml = metaParts.length
+          ? `<span class="ml-2 text-xs text-slate-400 font-normal">${esc(metaParts.join(' · '))}</span>`
+          : '';
         tr.innerHTML = `
-          <td class="px-6 py-3 bg-white">
-            <div class="font-medium text-sm text-slate-800">${esc(fte.first_name)} ${esc(fte.last_name)}</div>
-            ${metaParts.length ? `<div class="text-xs text-slate-400 mt-0.5">${esc(metaParts.join(' · '))}</div>` : ''}
+          <td class="h-10 px-6 py-0 align-middle bg-white whitespace-nowrap">
+            <span class="font-semibold text-sm text-slate-800">${esc(fte.first_name)} ${esc(fte.last_name)}</span>${metaHtml}
           </td>
           ${monthCells}`;
         tbody.appendChild(tr);
+      });
+    }
+
+    // ─── Sticky thead positioning ──────────────────────────────────────────────
+    // Measure the combined sticky-header div (page header + legend bar) and set
+    // that as the `top` value for all <th> cells, so the table header sits flush
+    // below the sticky page header when scrolling.
+    function fixTheadTop() {
+      const h = document.getElementById('sticky-header').offsetHeight;
+      document.querySelectorAll('#table-wrap thead th').forEach(th => {
+        th.style.top = h + 'px';
       });
     }
 
@@ -333,8 +357,9 @@
         summaryData = await res.json();
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('table-wrap').classList.remove('hidden');
-        document.getElementById('table-wrap').classList.add('flex');
         render();
+        // Set sticky offset after the table is visible so offsetHeight is accurate
+        fixTheadTop();
       } catch (e) {
         document.getElementById('loading-state').classList.add('hidden');
         document.getElementById('error-state').classList.remove('hidden');
