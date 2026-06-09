@@ -1,0 +1,3 @@
+export function CTBProjectDetail() {
+  return <div className="p-8 text-slate-400 text-sm">CTBProjectDetail — coming soon</div>;
+}

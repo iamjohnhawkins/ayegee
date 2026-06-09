@@ -1,0 +1,3 @@
+export function CTB() {
+  return <div className="p-8 text-slate-400 text-sm">CTB — coming soon</div>;
+}
