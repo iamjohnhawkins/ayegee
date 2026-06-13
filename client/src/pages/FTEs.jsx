@@ -68,7 +68,7 @@ export function FTEs() {
 
   return (
     <>
-      <PageHeader title="FTEs" description="Full-time equivalent staff">
+      <PageHeader title="FTEs" description="Full-time employees">
         <Btn variant="secondary" onClick={() => setBulkOpen(true)}>Bulk Upload</Btn>
         <Btn onClick={openAdd}>+ Add FTE</Btn>
       </PageHeader>
