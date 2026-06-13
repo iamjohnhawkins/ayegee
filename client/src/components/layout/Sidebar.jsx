@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 // ─── Nav item helper ──────────────────────────────────────────────────────────
 function NavItem({ to, icon, label, collapsed }) {
@@ -61,8 +60,7 @@ const icons = {
 };
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
-export function Sidebar() {
-  const [collapsed, setCollapsed] = useLocalStorage('sidebar', false);
+export function Sidebar({ collapsed, setCollapsed }) {
 
   return (
     <>
