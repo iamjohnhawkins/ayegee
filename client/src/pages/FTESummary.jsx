@@ -66,7 +66,7 @@ export function FTESummary() {
         </div>
       </div>
 
-      <div ref={tableRef} className="overflow-x-auto" style={{ '--header-h': '105px' }}>
+      <div ref={tableRef} className="overflow-auto" style={{ '--header-h': '105px', height: 'calc(100vh - var(--header-h))' }}>
         {isLoading && <p className="p-8 text-sm text-slate-400">Loading…</p>}
         {error && <p className="p-8 text-sm text-rose-500">Failed to load data. Please refresh.</p>}
         {data && (
@@ -74,12 +74,12 @@ export function FTESummary() {
             <thead>
               <tr>
                 <th className="border-b-2 border-slate-300 bg-slate-50 px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 min-w-[220px] whitespace-nowrap"
-                  style={{ position:'sticky', top: 'var(--header-h)', zIndex: 10 }}>
+                  style={{ position:'sticky', top: 0, zIndex: 10 }}>
                   FTE
                 </th>
                 {MONTH_LABELS.map(lbl => (
                   <th key={lbl} className="border-b-2 border-slate-300 bg-slate-50 px-3 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 w-14"
-                    style={{ position:'sticky', top: 'var(--header-h)', zIndex: 10 }}>
+                    style={{ position:'sticky', top: 0, zIndex: 10 }}>
                     {lbl}
                   </th>
                 ))}
