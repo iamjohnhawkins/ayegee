@@ -123,11 +123,7 @@ export function FTEAllocation() {
   const allCtbRows  = allocData?.baseline_ctb ?? [];
   const allProjRows = allocData?.ctb_projects ?? [];
 
-  const adcTotals = {};
-  MONTHS.forEach(m => { adcTotals[m] = allAdcRows.reduce((s, r) => s + (Number(r[m]) || 0), 0); });
-  const ctbNet    = fteId ? computeNetMonths(fteId, allAdcRows.map(r => ({...r, fte_id: fteId})), allCtbRows.map(r => ({...r, fte_id: fteId})), allProjRows.map(r => ({...r, fte_id: fteId}))) : {};
-  const grandTotals = {};
-  MONTHS.forEach(m => { grandTotals[m] = adcTotals[m] + (ctbNet[m] ?? 0); });
+  const grandTotals = fteId ? computeNetMonths(fteId, allAdcRows.map(r => ({...r, fte_id: fteId})), allCtbRows.map(r => ({...r, fte_id: fteId})), allProjRows.map(r => ({...r, fte_id: fteId}))) : {};
 
   const fteItems = allFtes.map(f => ({ id: f.id, label: `${f.first_name} ${f.last_name}`, sublabel: [f.title, f.region].filter(Boolean).join(' · ') }));
 
