@@ -7,7 +7,6 @@ import { PersonPicker } from '../components/ui/PersonPicker';
 import { AutocompleteInput } from '../components/ui/AutocompleteInput';
 import { CollapsibleSection } from '../components/ui/CollapsibleSection';
 import { DeleteButton } from '../components/ui/DeleteButton';
-import { SourceBadge } from '../components/ui/StatusBadge';
 import { Btn } from '../components/ui/Modal';
 import { useToast } from '../hooks/useToast.jsx';
 import { api } from '../lib/api';
@@ -50,7 +49,6 @@ function AllocEditRow({ alloc, sourceType, parentId, fteId, ftes, tbhSlots, targ
     <tr className="bg-sky-50 border-b border-sky-100">
       <td className="px-4 py-2">
         <div className="flex items-center gap-2">
-          <SourceBadge type={sourceType} />
           <AutocompleteInput items={parentItems} value={parentText}
             onChange={(t) => { setParentText(t); setSelectedParentId(null); }}
             onSelect={(item) => { setParentText(item.label); setSelectedParentId(item.id); }}
@@ -222,7 +220,6 @@ export function FTEAllocation() {
                           <tr key={alloc.alloc_id} className="border-b border-slate-100 bg-white hover:bg-slate-50 group">
                             <td className="px-4 py-2.5 text-sm text-slate-700">
                               <div className="flex items-center gap-2">
-                                <SourceBadge type={sec.key} />
                                 <span className="font-medium">{alloc.parent_name}</span>
                                 {alloc.target_name && alloc.target_name !== alloc.parent_name && (
                                   <span className="text-slate-400">→ {alloc.target_name}</span>
